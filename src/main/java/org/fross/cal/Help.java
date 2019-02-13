@@ -32,7 +32,8 @@ public class Help {
 		Output.printcolorln(FColor.WHITE, "               https://bitbucket.org/frossm/cal/src/default\n");
 
 		Output.printcolorln(FColor.YELLOW, "Command Line Options:");
-		Output.printcolorln(FColor.WHITE, " -D          Start in debug mode.");
+		Output.printcolorln(FColor.WHITE, " -n #        Sets the number of calendars per row when displaying a year");
+		Output.printcolorln(FColor.WHITE, " -D          Start in debug mode");
 		Output.printcolorln(FColor.WHITE, " -h or -?    Display this help information\n");
 
 		Output.printcolorln(FColor.YELLOW, "Parameters:");
@@ -42,6 +43,11 @@ public class Help {
 		Output.printcolorln(FColor.WHITE, "MONTH YEAR   - Display the current month in the provided year\n");
 
 		Output.printcolorln(FColor.YELLOW, "Examples:");
-		Output.printcolorln(FColor.WHITE, "TBD");
+		Output.printcolorln(FColor.WHITE, "  java -jar cal.jar         Display the current month of the current year");
+		Output.printcolorln(FColor.WHITE, "  java -jar cal.jar 9       Display September of the current year");
+		Output.printcolorln(FColor.WHITE, "  java -jar cal.jar 2022    Display the entire year 2022");
+		Output.printcolorln(FColor.WHITE, "  java -jar cal.jar 9 2022  Display September of 2022");
+		Output.printcolorln(FColor.WHITE, "  java -jar cal.jar -D 6    Display June of current year in debug mode");
+		Output.printcolorln(FColor.WHITE, "  java -jar cal.jar -h      Show this help inforamtion");
 	}
 }

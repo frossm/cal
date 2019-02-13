@@ -71,5 +71,10 @@ public class Output {
 	public static void print(String msg) {
 		System.out.print(msg);
 	}
+	
+	public static void fatalerror(String msg, int errorcode) {
+		Output.printcolorln(FColor.RED, "FATAL ERROR: "+msg);
+		System.exit(errorcode);
+	}
 
 }

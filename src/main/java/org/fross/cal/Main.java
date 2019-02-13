@@ -11,7 +11,6 @@
  ******************************************************************************/
 package org.fross.cal;
 
-import com.diogonunes.jcdp.color.api.Ansi.FColor;
 import gnu.getopt.Getopt;
 
 /**
@@ -23,7 +22,7 @@ import gnu.getopt.Getopt;
 public class Main {
 
 	// Class Constants
-	public static final String VERSION = "2019-02.01";
+	public static final String VERSION = "2019-02.05";
 
 	/**
 	 * Main(): Start of program and holds main command loop
@@ -32,11 +31,27 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		int optionEntry;
+		int month, year;
+
+		// Populate the month and year with todays values as a default
+		java.util.Calendar jc = java.util.Calendar.getInstance();
+		month = jc.get(java.util.Calendar.MONTH) + 1;
+		year = jc.get(java.util.Calendar.YEAR);
 
 		// Process Command Line Options and set flags where needed
-		Getopt optG = new Getopt("DirSize", args, "Dh?");
+		Getopt optG = new Getopt("DirSize", args, "n:Dh?");
 		while ((optionEntry = optG.getopt()) != -1) {
 			switch (optionEntry) {
+			case 'n': // Set Number of Calendars per Row
+				int newNum = 0;
+				try {
+					newNum = Integer.parseInt(optG.getOptarg());
+				} catch (Exception Ex) {
+					Output.fatalerror("Invalid option for -n switch: '" + optG.getOptarg() + "'", 0);
+				}
+				Calendar.setCalsPerRow(newNum);
+				break;
+
 			case 'D': // Debug Mode
 				Debug.enable();
 				break;
@@ -48,9 +63,9 @@ public class Main {
 				break;
 
 			default:
-				Output.printcolorln(FColor.RED, "ERROR: Unknown Command Line Option -" + optG.getOptarg() + "'");
+				Output.fatalerror("ERROR: Unknown Command Line Option -" + optG.getOptarg() + "'", 0);
 				Help.display();
-				System.exit(0);
+
 				break;
 			}
 		}
@@ -71,8 +86,48 @@ public class Main {
 		Debug.println("  - library.path:   " + System.getProperty("java.library.path"));
 		Debug.println("\nCommand Line Options");
 		Debug.println("  -D:  " + Debug.query() + "\n");
+		Debug.println("Current Date: Month = " + month + " Year =" + year);
 
-		String[] x = { args[optG.getOptind()], args[optG.getOptind() + 1] };
-		Calendar.printMonth(x);
+		// Process the command line parameters (non-options). Update month and year as
+		// needed
+		Debug.println("Number of command line arguments:  " + args.length);
+		int clParameters = args.length - optG.getOptind();
+		Debug.println("Number of command line parameters: " + clParameters);
+		try {
+			switch (clParameters) {
+			case 0:
+				// Process no dates provided
+				Debug.println("No Month or Year provided on command line. Using Month:" + month + " Year:" + year);
+				Calendar.printMonth(month,  year);
+				break;
+			case 1:
+				// Just a date or month provided
+				int d = Integer.parseInt(args[optG.getOptind()]);
+				if (d > 31) {
+					year = d;
+					Debug.println("Commandline Year provided. Using Month: " + month + " Year:" + year);
+					Debug.println(" 1         2         3         4         5         6         7");
+					Debug.println("90123456789012345678901234567890123456789012345678901234567890");
+					Calendar.printYear(month, year);
+				} else {
+					month = d;
+					Debug.println("Commandline Month provided. Using Month: " + month + " Year:" + year);
+					Calendar.printMonth(month,  year);
+				}
+				break;
+			case 2:
+				month = Integer.parseInt(args[optG.getOptind()]);
+				year = Integer.parseInt(args[optG.getOptind() + 1]);
+				Debug.println("Commandline Month & Year provided. Month:" + month + " Year:" + year);
+				Calendar.printMonth(month,  year);
+				break;
+			default:
+				// Ignore anything beyond the first two parameters
+			}
+		} catch (NumberFormatException ex) {
+			Output.fatalerror("Parameters can only be numbers.  Usage '-h' for options", 0);
+		}
+
+		// Program End
 	}
 }

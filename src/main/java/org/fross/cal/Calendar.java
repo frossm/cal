@@ -11,12 +11,40 @@
  ******************************************************************************/
 package org.fross.cal;
 
+import java.util.Arrays;
+
+import com.diogonunes.jcdp.color.api.Ansi.FColor;
+
 public class Calendar {
+	// Class Constants
+	static final int CALENDARWIDTH = 21;
+	static final int SPACESBETWEENCALS = 3;
+	static final String[] MONTHLIST = { "none", "January", "February", "March", "April", "May", "June", "July",
+			"August", "September", "October", "November", "December" };
+
+	// Class Variables
+	static int calsPerRow = 3;
+
+	/**
+	 * setCalsPerRow(): Sets the number of calendars per row when showing an entire
+	 * year
+	 * 
+	 * @param cpr
+	 */
+	public static void setCalsPerRow(int cpr) {
+		// Number must be divided into 12
+		if (12 % cpr == 0) {
+			calsPerRow = cpr;
+		} else {
+			Output.printcolorln(FColor.RED, "Error.  Number of calendars per row must evenly divisable into 12\n");
+		}
+	}
 
 	/**
 	 * firstDay(): Given the month, day, and year, return which day of the week it
 	 * falls https://www.tondering.dk/claus/cal/chrweek.php#calcdow
-	 * http://www.cplusplus.com/forum/general/174165/
+	 * 
+	 * Reference: http://www.cplusplus.com/forum/general/174165/
 	 * 
 	 * @param month
 	 * @param day
@@ -33,7 +61,8 @@ public class Calendar {
 
 	/**
 	 * isLeapYear(): Return true if provided year is a leap year. Calculation:
-	 * https://www.wikihow.com/Calculate-Leap-Years
+	 * 
+	 * Reference: https://www.wikihow.com/Calculate-Leap-Years
 	 * 
 	 * @param year
 	 * @return
@@ -51,41 +80,131 @@ public class Calendar {
 	 * 
 	 * @param args
 	 */
-	public static void printMonth(String[] args) {
-		int monthEntered = Integer.parseInt(args[0]); // month (Jan = 1, Dec = 12)
-		int yearEntered = Integer.parseInt(args[1]); // year
-		int calWidth = 20;
+	public static void printMonth(int month, int year) {
+		String[] days = getCalDays(month, year);
 
-		// Build arrays
-		String[] monthArray = { "none", "January", "February", "March", "April", "May", "June", "July", "August",
-				"September", "October", "November", "December" };
+		Output.printcolorln(FColor.CYAN, getCalHeader(month, year));
+		Output.printcolorln(FColor.YELLOW, "Su Mo Tu We Th Fr Sa");
+
+		for (int i = 0; i <= (days.length - 1); i++) {
+			Output.printcolorln(FColor.WHITE, days[i]);
+		}
+	}
+
+	/**
+	 * printYear(): Print the entire year
+	 * 
+	 * @param month
+	 * @param year
+	 */
+	public static void printYear(int month, int year) {
+		String[] days = new String[6];
+		String[] dayrows = new String[6];
+		int i, j, k;
+
+		// Loop through the calendar rows
+		for (i = 0; i < 12; i = i + calsPerRow) {
+			// Initialize the arrays
+			Arrays.fill(days, "");
+			Arrays.fill(dayrows, "");
+
+			// Print Centered Month & Year
+			Output.println("");
+			for (j = 1; j <= calsPerRow; j++) {
+				String header = getCalHeader((i + j), year);
+				Output.printcolor(FColor.CYAN,
+						header + " ".repeat(CALENDARWIDTH - header.length()) + " ".repeat(SPACESBETWEENCALS));
+			}
+			Output.println("");
+
+			// Print The Day Labels
+			String labelString = ("Su Mo Tu We Th Fr Sa " + " ".repeat(SPACESBETWEENCALS)).repeat(calsPerRow);
+			Output.printcolor(FColor.YELLOW, labelString);
+			Output.println("");
+
+			// Loop through each calendar in the row and build an output string
+			for (j = 1; j <= calsPerRow; j++) {
+				days = getCalDays(i + j, year);
+				for (k = 0; k < days.length; k++) {
+					dayrows[k] += days[k] + " ".repeat(SPACESBETWEENCALS);
+				}
+			}
+
+			// Print out the result
+			for (j = 0; j < dayrows.length; j++) {
+				Output.printcolorln(FColor.WHITE, dayrows[j]);
+			}
+
+			// Put a new line between calendar rows
+			Output.println("");
+		}
+	}
+
+	/**
+	 * getCalHeader(): Return a string array with the month/year name correctly
+	 * spaced
+	 * 
+	 * @param month
+	 * @param year
+	 * @return
+	 */
+	public static String getCalHeader(int month, int year) {
+		String returnString = "";
+		String strToCenter = MONTHLIST[month] + " " + year;
+
+		int numSpaces = ((CALENDARWIDTH / 2) - (strToCenter.length() / 2));
+		for (int i = 0; i < numSpaces; i++) {
+			returnString += " ";
+		}
+		returnString += strToCenter;
+
+		return returnString;
+	}
+
+	/**
+	 * getCalDays(): Return a string array of calendar days for printing
+	 * 
+	 * @param month
+	 * @param year
+	 * @return
+	 */
+	public static String[] getCalDays(int month, int year) {
+		String[] returnString = new String[6];
+		int counter = 0;
 		int[] dayArray = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-		// Lets determine if the year selected is a leap year
-		if (monthEntered == 2 && isLeapYear(yearEntered))
-			dayArray[monthEntered] = 29;
+		// Initialize the array
+		Arrays.fill(returnString, "");
 
-		// Display the month header centered in the calendar display
-		String headerString = monthArray[monthEntered] + " " + yearEntered;
-		int numSpaces = (calWidth / 2) - (headerString.length() / 2) - 1;
-		for (int i = 0; i <= numSpaces; i++) {
-			Output.print(" ");
+		// Lets see if the year provided is a leap year
+		if (month == 2 && isLeapYear(year)) {
+			dayArray[month] = 29;
 		}
-		Output.println(headerString);
-		Output.println(" S  M Tu  W Th  F  S");
 
 		// Determine the which day of the week the 1st fall upon
-		int dow = firstDay(monthEntered, 1, yearEntered);
+		int fDay = firstDay(month, 1, year);
+		Debug.println("Firstday for " + month + "/" + year + ": " + fDay);
 
-		// Print first line of calendar
-		for (int i = 0; i < dow; i++)
-			Output.print("   ");
-		// Print remaining days
-		for (int i = 1; i <= dayArray[monthEntered]; i++) {
-			System.out.printf("%2d ", i);
-			if (((i + dow) % 7 == 0) || (i == dayArray[monthEntered]))
-				Output.println("");
+		// Insert spaces until we get to first day of the month in the calendar
+		for (int i = 0; i < fDay; i++) {
+			returnString[counter] += ("   ");
 		}
 
+		// Print the days. After 7 start a new line.
+		for (int i = 1; i <= dayArray[month]; i++) {
+			returnString[counter] += String.format("%2d ", i);
+
+			// Start over if we've printed 7 days
+			if (((i + fDay) % 7 == 0) || (i == dayArray[month])) {
+				// Ensure each array element is 20 characters. Pad with spaces.
+				if (returnString[counter].length() < CALENDARWIDTH) {
+					returnString[counter] += " ".repeat(CALENDARWIDTH - returnString[counter].length());
+				}
+				counter++;
+			}
+		}
+
+		return returnString;
 	}
+
 }
