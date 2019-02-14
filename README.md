@@ -33,13 +33,13 @@ This is a java program that is all bundled into a single jar file.  To run a jar
 
 |Command|Result|
 |---|---|
-|java -jar cal.jar        | Display the current year
-|java -jar cal.jar -n 4   | Display the current year - 4 months per row
-|java -jar cal.jar 9      | Display September of the current year
-|java -jar cal.jar 2022   | Display the entire year 2022
-|java -jar cal.jar 9 2022 | Display September of 2022
-|java -jar cal.jar -D 6   | Display June of current year in debug mode
-|java -jar cal.jar -h     | Show this help information
+|`java -jar cal.jar`        | Display the current year
+|`java -jar cal.jar -n 4`   | Display the current year - 4 months per row
+|`java -jar cal.jar 9`      | Display September of the current year
+|`java -jar cal.jar 2022`   | Display the entire year 2022
+|`java -jar cal.jar 9 2022` | Display September of 2022
+|`java -jar cal.jar -D 6`   | Display June of current year in debug mode
+|`java -jar cal.jar -h`     | Show this help information
 
 **References**
 
