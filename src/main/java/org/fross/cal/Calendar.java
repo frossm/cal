@@ -17,7 +17,7 @@ import com.diogonunes.jcdp.color.api.Ansi.FColor;
 
 public class Calendar {
 	// Class Constants
-	static final int CALENDARWIDTH = 21;
+	static final int CALENDARWIDTH = 20;
 	static final int SPACESBETWEENCALS = 3;
 	static final String[] MONTHLIST = { "none", "January", "February", "March", "April", "May", "June", "July",
 			"August", "September", "October", "November", "December" };
@@ -196,12 +196,18 @@ public class Calendar {
 
 			// Start over if we've printed 7 days
 			if (((i + fDay) % 7 == 0) || (i == dayArray[month])) {
-				// Ensure each array element is 20 characters. Pad with spaces.
+				// Ensure that the array element is padded with space characters
 				if (returnString[counter].length() < CALENDARWIDTH) {
-					returnString[counter] += " ".repeat(CALENDARWIDTH - returnString[counter].length());
+					returnString[counter] += " ".repeat(CALENDARWIDTH - returnString[counter].length() + 1);
 				}
 				counter++;
 			}
+		}
+
+		// Ensure last array element is 20 characters. Pad with spaces.
+		int lastElement = returnString.length - 1;
+		if (returnString[lastElement].length() < CALENDARWIDTH) {
+			returnString[lastElement] += " ".repeat(CALENDARWIDTH - returnString[lastElement].length() + 1);
 		}
 
 		return returnString;

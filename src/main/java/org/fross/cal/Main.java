@@ -22,7 +22,7 @@ import gnu.getopt.Getopt;
 public class Main {
 
 	// Class Constants
-	public static final String VERSION = "2019-02.05";
+	public static final String VERSION = "2019-02.13";
 
 	/**
 	 * Main(): Start of program and holds main command loop
@@ -97,8 +97,8 @@ public class Main {
 			switch (clParameters) {
 			case 0:
 				// Process no dates provided
-				Debug.println("No Month or Year provided on command line. Using Month:" + month + " Year:" + year);
-				Calendar.printMonth(month,  year);
+				Debug.println("No Month or Year provided on command line. Using Year:" + year);
+				Calendar.printYear(month,  year);
 				break;
 			case 1:
 				// Just a date or month provided
@@ -116,6 +116,7 @@ public class Main {
 				}
 				break;
 			case 2:
+				// Month & year provided
 				month = Integer.parseInt(args[optG.getOptind()]);
 				year = Integer.parseInt(args[optG.getOptind() + 1]);
 				Debug.println("Commandline Month & Year provided. Month:" + month + " Year:" + year);
@@ -126,6 +127,10 @@ public class Main {
 			}
 		} catch (NumberFormatException ex) {
 			Output.fatalerror("Parameters can only be numbers.  Usage '-h' for options", 0);
+		} catch (Exception ex) {
+			ex.getMessage();
+			ex.printStackTrace();
+			Output.fatalerror("Something went wrong.  You shouldn't really see this.  Eeek!", 0);
 		}
 
 		// Program End
