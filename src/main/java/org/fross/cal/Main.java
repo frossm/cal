@@ -22,7 +22,7 @@ import gnu.getopt.Getopt;
 public class Main {
 
 	// Class Constants
-	public static final String VERSION = "2019-02.13";
+	public static final String VERSION = "2019.02.14";
 
 	/**
 	 * Main(): Start of program and holds main command loop
@@ -94,6 +94,7 @@ public class Main {
 		int clParameters = args.length - optG.getOptind();
 		Debug.println("Number of command line parameters: " + clParameters);
 		try {
+			Output.println("");
 			switch (clParameters) {
 			case 0:
 				// Process no dates provided
