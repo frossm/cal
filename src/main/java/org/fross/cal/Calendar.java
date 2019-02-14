@@ -42,9 +42,11 @@ public class Calendar {
 
 	/**
 	 * firstDay(): Given the month, day, and year, return which day of the week it
-	 * falls https://www.tondering.dk/claus/cal/chrweek.php#calcdow
+	 * falls 
 	 * 
-	 * Reference: http://www.cplusplus.com/forum/general/174165/
+	 * Reference:
+	 * https://www.tondering.dk/claus/cal/chrweek.php#calcdow
+	 * http://www.cplusplus.com/forum/general/174165/
 	 * 
 	 * @param month
 	 * @param day

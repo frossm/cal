@@ -49,6 +49,6 @@ public class Help {
 		Output.printcolorln(FColor.WHITE, "  java -jar cal.jar 2022    Display the entire year 2022");
 		Output.printcolorln(FColor.WHITE, "  java -jar cal.jar 9 2022  Display September of 2022");
 		Output.printcolorln(FColor.WHITE, "  java -jar cal.jar -D 6    Display June of current year in debug mode");
-		Output.printcolorln(FColor.WHITE, "  java -jar cal.jar -h      Show this help inforamtion");
+		Output.printcolorln(FColor.WHITE, "  java -jar cal.jar -h      Show this help information");
 	}
 }
