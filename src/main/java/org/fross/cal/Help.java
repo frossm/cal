@@ -25,11 +25,11 @@ public class Help {
 	 */
 	public static void display() {
 		Output.printcolorln(FColor.YELLOW, "\n+----------------------------------------------------------------------+");
-		Output.printcolorln(FColor.YELLOW,
-				"-                   CAL - Console Calendar Generator                   -");
+		Output.printcolorln(FColor.YELLOW, "-                   CAL - Console Calendar Generator                   -");
+		Output.printcolorln(FColor.YELLOW, "-                          Version "+Main.VERSION+"                          -");
+		Output.printcolorln(FColor.YELLOW, "-                             Michael Fross                            -");
 		Output.printcolorln(FColor.YELLOW, "+----------------------------------------------------------------------+");
-		Output.printcolorln(FColor.WHITE, "                Cal will print out a calendar on a console");
-		Output.printcolorln(FColor.WHITE, "               https://bitbucket.org/frossm/cal/src/default\n");
+		Output.printcolorln(FColor.CYAN, "               https://bitbucket.org/frossm/cal/src/default\n");
 
 		Output.printcolorln(FColor.YELLOW, "Command Line Options:");
 		Output.printcolorln(FColor.WHITE, " -n #        Sets the number of calendars per row when displaying a year.  Default: 3");

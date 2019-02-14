@@ -83,6 +83,7 @@ public class Calendar {
 	public static void printMonth(int month, int year) {
 		String[] days = getCalDays(month, year);
 
+		Output.println("");
 		Output.printcolorln(FColor.CYAN, getCalHeader(month, year));
 		Output.printcolorln(FColor.YELLOW, "Su Mo Tu We Th Fr Sa");
 
