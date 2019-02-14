@@ -11,7 +11,9 @@ I had need of a simple program that could display a calendar when I'm working on
 |-h or -?|Display the help page
 
 **Parameters**
+
 Parameters are the arguments provided to the program.  They do not include the options above.
+
 |Parameter|Description  |
 |--|--|
 |  |If no parameter is given, display the current year
@@ -20,6 +22,7 @@ Parameters are the arguments provided to the program.  They do not include the o
 |Month Year|Display the current month in the provided year
 
 **Execution**
+
 This is a java program that is all bundled into a single jar file.  To run a jar file on the command line, simply type:
 
     java -jar cal.jar
@@ -27,6 +30,7 @@ This is a java program that is all bundled into a single jar file.  To run a jar
  Please note that cal.jar must be in your path.
 
 **Examples**
+
 |Command|Result|
 |---|---|
 |java -jar cal.jar        | Display the current year
@@ -38,11 +42,14 @@ This is a java program that is all bundled into a single jar file.  To run a jar
 |java -jar cal.jar -h     | Show this help information
 
 **References**
+
 I was able to use several web pages for sources of formulas for the program.  These were very helpful and I'd like to thank their authors for taking the time to record them publicly.
 
 Determine how to calculate the first day of a month given the month and year:
+
 * https://www.tondering.dk/claus/cal/chrweek.php#calcdow
 * http://www.cplusplus.com/forum/general/174165/
 
 Calculate if the year provided is a leap year:
+
 * https://www.wikihow.com/Calculate-Leap-Years
