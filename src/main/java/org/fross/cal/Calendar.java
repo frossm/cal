@@ -42,10 +42,9 @@ public class Calendar {
 
 	/**
 	 * firstDay(): Given the month, day, and year, return which day of the week it
-	 * falls 
+	 * falls
 	 * 
-	 * Reference:
-	 * https://www.tondering.dk/claus/cal/chrweek.php#calcdow
+	 * Reference: https://www.tondering.dk/claus/cal/chrweek.php#calcdow
 	 * http://www.cplusplus.com/forum/general/174165/
 	 * 
 	 * @param month
@@ -114,7 +113,7 @@ public class Calendar {
 			for (j = 1; j <= calsPerRow; j++) {
 				String header = getCalHeader((i + j), year);
 				Output.printcolor(FColor.CYAN,
-						header + " ".repeat(CALENDARWIDTH - header.length()) + " ".repeat(SPACESBETWEENCALS));
+						header + " ".repeat(CALENDARWIDTH - header.length() + 1) + " ".repeat(SPACESBETWEENCALS));
 			}
 			Output.println("");
 
