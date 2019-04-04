@@ -22,7 +22,7 @@ import gnu.getopt.Getopt;
 public class Main {
 
 	// Class Constants
-	public static final String VERSION = "2019.02.14";
+	public static final String VERSION = "2019.04.04";
 
 	/**
 	 * Main(): Start of program and holds main command loop
@@ -104,7 +104,7 @@ public class Main {
 			case 1:
 				// Just a date or month provided
 				int d = Integer.parseInt(args[optG.getOptind()]);
-				if (d > 31) {
+				if (d > 12) {
 					year = d;
 					Debug.println("Commandline Year provided. Using Month: " + month + " Year:" + year);
 					Debug.println(" 1         2         3         4         5         6         7");
