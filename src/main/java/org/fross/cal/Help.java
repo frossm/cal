@@ -25,9 +25,9 @@ public class Help {
 	 */
 	public static void display() {
 		Output.printcolorln(FColor.YELLOW, "\n+----------------------------------------------------------------------+");
-		Output.printcolorln(FColor.YELLOW, "-                   CAL - Console Calendar Generator                   -");
-		Output.printcolorln(FColor.YELLOW, "-                          Version "+Main.VERSION+"                          -");
-		Output.printcolorln(FColor.YELLOW, "-                             Michael Fross                            -");
+		Output.printcolorln(FColor.YELLOW, "+                   CAL - Console Calendar Generator                   +");
+		Output.printcolorln(FColor.YELLOW, "+                          Version "+Main.VERSION+"                          +");
+		Output.printcolorln(FColor.YELLOW, "+                             Michael Fross                            +");
 		Output.printcolorln(FColor.YELLOW, "+----------------------------------------------------------------------+");
 		Output.printcolorln(FColor.CYAN, "               https://bitbucket.org/frossm/cal/src/default\n");
 

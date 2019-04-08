@@ -61,7 +61,7 @@ public class Output {
 	public static void println(String msg) {
 		System.out.println(msg);
 	}
-	
+
 	/**
 	 * print(): Basic System.out.println call. It's here so out text output can go
 	 * through this function.
@@ -71,9 +71,16 @@ public class Output {
 	public static void print(String msg) {
 		System.out.print(msg);
 	}
-	
+
+	/**
+	 * fatalerror(): Print the provided string in RED and exit the program with the
+	 * error code given
+	 * 
+	 * @param msg
+	 * @param errorcode
+	 */
 	public static void fatalerror(String msg, int errorcode) {
-		Output.printcolorln(FColor.RED, "\nFATAL ERROR: "+msg);
+		Output.printcolorln(FColor.RED, "\nFATAL ERROR: " + msg);
 		System.exit(errorcode);
 	}
 

@@ -11,6 +11,8 @@
  ******************************************************************************/
 package org.fross.cal;
 
+import com.diogonunes.jcdp.color.api.Ansi.FColor;
+
 import gnu.getopt.Getopt;
 
 /**
@@ -93,13 +95,18 @@ public class Main {
 		Debug.println("Number of command line arguments:  " + args.length);
 		int clParameters = args.length - optG.getOptind();
 		Debug.println("Number of command line parameters: " + clParameters);
+
+		// Display header information
+		Output.printcolorln(FColor.WHITE, "\nCal - Console Calendar Generator v" + VERSION+" by Michael Fross");
+
+		// Process options and display the calendar
 		try {
 			Output.println("");
 			switch (clParameters) {
 			case 0:
 				// Process no dates provided
 				Debug.println("No Month or Year provided on command line. Using Year:" + year);
-				Calendar.printYear(month,  year);
+				Calendar.printYear(month, year);
 				break;
 			case 1:
 				// Just a date or month provided
@@ -113,7 +120,7 @@ public class Main {
 				} else {
 					month = d;
 					Debug.println("Commandline Month provided. Using Month: " + month + " Year:" + year);
-					Calendar.printMonth(month,  year);
+					Calendar.printMonth(month, year);
 				}
 				break;
 			case 2:
@@ -121,7 +128,7 @@ public class Main {
 				month = Integer.parseInt(args[optG.getOptind()]);
 				year = Integer.parseInt(args[optG.getOptind() + 1]);
 				Debug.println("Commandline Month & Year provided. Month:" + month + " Year:" + year);
-				Calendar.printMonth(month,  year);
+				Calendar.printMonth(month, year);
 				break;
 			default:
 				// Ignore anything beyond the first two parameters
