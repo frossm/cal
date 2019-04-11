@@ -5,7 +5,7 @@
 
 	<groupId>org.fross.cal</groupId>
 	<artifactId>cal</artifactId>
-	<version>2019.04.04</version>
+	<version>2019.04.11</version>
 	<packaging>jar</packaging>
 
 	<name>cal</name>

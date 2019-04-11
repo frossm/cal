@@ -24,7 +24,7 @@ import gnu.getopt.Getopt;
 public class Main {
 
 	// Class Constants
-	public static final String VERSION = "2019.04.04";
+	public static final String VERSION = "2019.04.11";
 
 	/**
 	 * Main(): Start of program and holds main command loop
@@ -97,7 +97,24 @@ public class Main {
 		Debug.println("Number of command line parameters: " + clParameters);
 
 		// Display header information
-		Output.printcolorln(FColor.WHITE, "\nCal - Console Calendar Generator v" + VERSION+" by Michael Fross");
+		int headerWidth = (Calendar.CALENDARWIDTH * Calendar.calsPerRow)
+				+ (Calendar.calsPerRow * Calendar.SPACESBETWEENCALS) - 2;
+		String headerText = "Cal v" + VERSION + "  by Michael Fross";
+		int headerSpaces = headerWidth / 2 - headerText.length() / 2;
+
+		// Ensure we have enough room if user selects -n1
+		if (headerSpaces < 0) {
+			headerSpaces = 0;
+			headerWidth = headerText.length();
+		}
+
+		Debug.println("headerWidth = " + headerWidth);
+		Debug.println("headerText = " + "'" + headerText + "'  (Len = " + headerText.length() + ")");
+		Debug.println("headerSpaces = " + headerSpaces);
+
+		Output.printcolorln(FColor.CYAN, "\n+" + "-".repeat(headerWidth) + "+");
+		Output.printcolorln(FColor.YELLOW, " ".repeat(headerSpaces) + headerText);
+		Output.printcolorln(FColor.CYAN, "+" + "-".repeat(headerWidth) + "+");
 
 		// Process options and display the calendar
 		try {
