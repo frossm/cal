@@ -11,8 +11,10 @@
  ******************************************************************************/
 package org.fross.cal;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import com.diogonunes.jcdp.color.api.Ansi.FColor;
-
 import gnu.getopt.Getopt;
 
 /**
@@ -24,7 +26,8 @@ import gnu.getopt.Getopt;
 public class Main {
 
 	// Class Constants
-	public static final String VERSION = "2019.04.11";
+	public static String VERSION;
+	public static final String PROPERTIES_FILE = "cal.properties";
 
 	/**
 	 * Main(): Start of program and holds main command loop
@@ -34,6 +37,18 @@ public class Main {
 	public static void main(String[] args) {
 		int optionEntry;
 		int month, year;
+
+		// Process application level properties file
+		// Update properties from Maven at build time:
+		// https://stackoverflow.com/questions/3697449/retrieve-version-from-maven-pom-xml-in-code
+		try {
+			InputStream iStream = Main.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE);
+			Properties prop = new Properties();
+			prop.load(iStream);
+			VERSION = prop.getProperty("Application.version");
+		} catch (IOException ex) {
+			Output.fatalerror("Unable to read property file '" + PROPERTIES_FILE + "'", 3);
+		}
 
 		// Populate the month and year with todays values as a default
 		java.util.Calendar jc = java.util.Calendar.getInstance();

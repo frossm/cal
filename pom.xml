@@ -5,14 +5,14 @@
 
 	<groupId>org.fross.cal</groupId>
 	<artifactId>cal</artifactId>
-	<version>2019.04.11</version>
+	<version>2019.04.15</version>
 	<packaging>jar</packaging>
 
 	<name>cal</name>
 
 	<url>http://fross.org/cal</url>
 	<description>Display a console based calendar</description>
-	
+
 	<developers>
 		<developer>
 			<name>Michael Fross</name>
@@ -40,6 +40,13 @@
 	</properties>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
