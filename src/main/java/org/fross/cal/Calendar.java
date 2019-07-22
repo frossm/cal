@@ -36,7 +36,7 @@ public class Calendar {
 		if (12 % cpr == 0) {
 			calsPerRow = cpr;
 		} else {
-			Output.printcolorln(FColor.RED, "Error.  Number of calendars per row must evenly divisable into 12\n");
+			Output.printcolorln(FColor.RED, "Error.  Number of calendars per row must be evenly divisable into 12\n");
 		}
 	}
 
