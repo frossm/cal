@@ -29,7 +29,7 @@ public class Help {
 		Output.printcolorln(FColor.YELLOW, "+                          Version "+Main.VERSION+"                          +");
 		Output.printcolorln(FColor.YELLOW, "+                             Michael Fross                            +");
 		Output.printcolorln(FColor.YELLOW, "+----------------------------------------------------------------------+");
-		Output.printcolorln(FColor.CYAN, "               https://bitbucket.org/frossm/cal/src/default\n");
+		Output.printcolorln(FColor.CYAN, "                        https://github.com/frossm/cal\n");
 
 		Output.printcolorln(FColor.YELLOW, "Command Line Options:");
 		Output.printcolorln(FColor.WHITE, " -n #        Sets the number of calendars per row when displaying a year.  Default: 3");
