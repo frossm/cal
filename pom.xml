@@ -53,7 +53,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<release>10</release>
+					<release>${maven.compiler.release}</release>
 				</configuration>
 			</plugin>
 
@@ -67,10 +67,9 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<release>11</release>
 							<archive>
 								<manifest>
-									<mainClass>org.fross.cal.Main</mainClass>
+									<mainClass>org.fross.${project.name}.Main</mainClass>
 								</manifest>
 							</archive>
 							<descriptorRefs>
