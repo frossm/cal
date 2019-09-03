@@ -37,7 +37,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.release>12</maven.compiler.release>
+		<maven.compiler.release>11</maven.compiler.release>
 	</properties>
 
 	<build>
@@ -67,6 +67,7 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
+							<release>11</release>
 							<archive>
 								<manifest>
 									<mainClass>org.fross.cal.Main</mainClass>
