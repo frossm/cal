@@ -17,10 +17,10 @@ Parameters are the arguments provided to the program.  They do not include the o
 
 Parameter |Description
 ----------|-----------
-          |If no parameter is given, display the current year
-Year      |Display the provided year
-Month     |Display the current month in the current year
-Month Year|Display the current month in the provided year
+|Year      |Display the provided year|
+|Month     |Display the current month in the current year|
+|Month Year|Display the current month in the provided year|
+|          |If no parameter is given, display the current year|
 
 
 **Execution**
@@ -44,16 +44,24 @@ Command|Result
 `java -jar cal.jar -D 6`   | Display June of current year in debug mode
 `java -jar cal.jar -h`     | Show this help information
 
+** License **
+[The MIT License](https://opensource.org/licenses/MIT)
+
+Copyright 2019 by Michael Fross
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 **References**
 
 I was able to use several web pages for sources of formulas for the program.  These were very helpful and I'd like to thank their authors for taking the time to record them publicly.
 
 Determine how to calculate the first day of a month given the month and year:
-
 * https://www.tondering.dk/claus/cal/chrweek.php#calcdow
 * http://www.cplusplus.com/forum/general/174165/
 
 Calculate if the year provided is a leap year:
-
 * https://www.wikihow.com/Calculate-Leap-Years
