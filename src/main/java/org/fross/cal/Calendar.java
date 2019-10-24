@@ -17,13 +17,14 @@ import com.diogonunes.jcdp.color.api.Ansi.FColor;
 
 public class Calendar {
 	// Class Constants
+	static final int DEFAULT_CALS_PER_ROW = 4;
 	static final int CALENDARWIDTH = 20;
 	static final int SPACESBETWEENCALS = 3;
 	static final String[] MONTHLIST = { "none", "January", "February", "March", "April", "May", "June", "July",
 			"August", "September", "October", "November", "December" };
 
 	// Class Variables
-	static int calsPerRow = 3;
+	static int calsPerRow = DEFAULT_CALS_PER_ROW;
 
 	/**
 	 * setCalsPerRow(): Sets the number of calendars per row when showing an entire
