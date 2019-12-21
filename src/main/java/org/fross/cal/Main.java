@@ -14,7 +14,7 @@ package org.fross.cal;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import com.diogonunes.jcdp.color.api.Ansi.FColor;
+import org.fusesource.jansi.Ansi;
 import gnu.getopt.Getopt;
 
 /**
@@ -112,8 +112,7 @@ public class Main {
 		Debug.println("Number of command line parameters: " + clParameters);
 
 		// Display header information
-		int headerWidth = (Calendar.CALENDARWIDTH * Calendar.calsPerRow)
-				+ (Calendar.calsPerRow * Calendar.SPACESBETWEENCALS) - 2;
+		int headerWidth = (Calendar.CALENDARWIDTH * Calendar.calsPerRow) + (Calendar.calsPerRow * Calendar.SPACESBETWEENCALS) - 2;
 		String headerText = "Cal v" + VERSION + "  by Michael Fross";
 		int headerSpaces = headerWidth / 2 - headerText.length() / 2;
 
@@ -127,9 +126,9 @@ public class Main {
 		Debug.println("headerText = " + "'" + headerText + "'  (Len = " + headerText.length() + ")");
 		Debug.println("headerSpaces = " + headerSpaces);
 
-		Output.printcolorln(FColor.CYAN, "\n+" + "-".repeat(headerWidth) + "+");
-		Output.printcolorln(FColor.YELLOW, " ".repeat(headerSpaces) + headerText);
-		Output.printcolorln(FColor.CYAN, "+" + "-".repeat(headerWidth) + "+");
+		Output.printcolorln(Ansi.Color.CYAN, "\n+" + "-".repeat(headerWidth) + "+");
+		Output.printcolorln(Ansi.Color.YELLOW, " ".repeat(headerSpaces) + headerText);
+		Output.printcolorln(Ansi.Color.CYAN, "+" + "-".repeat(headerWidth) + "+");
 
 		// Process options and display the calendar
 		try {

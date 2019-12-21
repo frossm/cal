@@ -12,16 +12,14 @@
 package org.fross.cal;
 
 import java.util.Arrays;
-
-import com.diogonunes.jcdp.color.api.Ansi.FColor;
+import org.fusesource.jansi.Ansi;
 
 public class Calendar {
 	// Class Constants
 	static final int DEFAULT_CALS_PER_ROW = 4;
 	static final int CALENDARWIDTH = 20;
 	static final int SPACESBETWEENCALS = 3;
-	static final String[] MONTHLIST = { "none", "January", "February", "March", "April", "May", "June", "July",
-			"August", "September", "October", "November", "December" };
+	static final String[] MONTHLIST = { "none", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
 	// Class Variables
 	static int calsPerRow = DEFAULT_CALS_PER_ROW;
@@ -37,7 +35,7 @@ public class Calendar {
 		if (12 % cpr == 0) {
 			calsPerRow = cpr;
 		} else {
-			Output.printcolorln(FColor.RED, "Error.  Number of calendars per row must be evenly divisable into 12\n");
+			Output.printcolorln(Ansi.Color.RED, "Error.  Number of calendars per row must be evenly divisable into 12\n");
 		}
 	}
 
@@ -85,11 +83,11 @@ public class Calendar {
 	public static void printMonth(int month, int year) {
 		String[] days = getCalDays(month, year);
 
-		Output.printcolorln(FColor.CYAN, getCalHeader(month, year));
-		Output.printcolorln(FColor.YELLOW, "Su Mo Tu We Th Fr Sa");
+		Output.printcolorln(Ansi.Color.CYAN, getCalHeader(month, year));
+		Output.printcolorln(Ansi.Color.YELLOW, "Su Mo Tu We Th Fr Sa");
 
 		for (int i = 0; i <= (days.length - 1); i++) {
-			Output.printcolorln(FColor.WHITE, days[i]);
+			Output.printcolorln(Ansi.Color.WHITE, days[i]);
 		}
 	}
 
@@ -113,14 +111,13 @@ public class Calendar {
 			// Print Centered Month & Year
 			for (j = 1; j <= calsPerRow; j++) {
 				String header = getCalHeader((i + j), year);
-				Output.printcolor(FColor.CYAN,
-						header + " ".repeat(CALENDARWIDTH - header.length() + 1) + " ".repeat(SPACESBETWEENCALS));
+				Output.printcolor(Ansi.Color.CYAN, header + " ".repeat(CALENDARWIDTH - header.length() + 1) + " ".repeat(SPACESBETWEENCALS));
 			}
 			Output.println("");
 
 			// Print The Day Labels
 			String labelString = ("Su Mo Tu We Th Fr Sa " + " ".repeat(SPACESBETWEENCALS)).repeat(calsPerRow);
-			Output.printcolor(FColor.YELLOW, labelString);
+			Output.printcolor(Ansi.Color.YELLOW, labelString);
 			Output.println("");
 
 			// Loop through each calendar in the row and build an output string
@@ -133,7 +130,7 @@ public class Calendar {
 
 			// Print out the result
 			for (j = 0; j < dayrows.length; j++) {
-				Output.printcolorln(FColor.WHITE, dayrows[j]);
+				Output.printcolorln(Ansi.Color.WHITE, dayrows[j]);
 			}
 
 			// Put a new line between calendar rows

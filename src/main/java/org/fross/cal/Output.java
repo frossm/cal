@@ -17,39 +17,39 @@
 
 package org.fross.cal;
 
-import com.diogonunes.jcdp.color.ColoredPrinter;
-import com.diogonunes.jcdp.color.api.Ansi.Attribute;
-import com.diogonunes.jcdp.color.api.Ansi.FColor;
+import static org.fusesource.jansi.Ansi.*;
+import org.fusesource.jansi.Ansi;
 
 public class Output {
 	/**
 	 * printcolorln(): Print to the console with the provided foreground color
-	 * Acceptable ColorNames: FColor.BLUE, FColor.CYAN, FColor.GREEN,
-	 * FColor.MAGENTA, FColor.NONE, FColor.RED, FColor.WHITE, FColor.YELLOW
+	 * 
+	 * Allowable colors are:
+	 * - Ansi.Color.BLACK
+	 * - Ansi.Color.RED
+	 * - Ansi.Color.GREEN
+	 * - Ansi.Color.YELLOW
+	 * - Ansi.Color.BLUE
+	 * - Ansi.Color.MAGENTA
+	 * - Ansi.Color.CYAN
+	 * - Ansi.Color.WHITE
+	 * - Ansi.Color.DEFAULT
 	 * 
 	 * @param Color
 	 * @param msg
 	 */
-	public static void printcolorln(FColor clr, String msg) {
-		ColoredPrinter cp = new ColoredPrinter.Builder(1, false).foreground(clr).build();
-		cp.setAttribute(Attribute.LIGHT);
-		cp.println(msg);
-		cp.clear();
+	public static void printcolorln(Ansi.Color clr, String msg) {
+		System.out.println(ansi().a(Attribute.INTENSITY_BOLD).fg(clr).a(msg).reset());
 	}
 
 	/**
-	 * printcolor(): Print to the console with NoNewLine. The provided foreground
-	 * color Acceptable ColorNames: FColor.BLUE, FColor.CYAN, FColor.GREEN,
-	 * FColor.MAGENTA, FColor.NONE, FColor.RED, FColor.WHITE, FColor.YELLOW
+	 * printcolor(): Print to the console without a newline
 	 * 
 	 * @param Color
 	 * @param msg
 	 */
-	public static void printcolor(FColor clr, String msg) {
-		ColoredPrinter cp = new ColoredPrinter.Builder(1, false).foreground(clr).build();
-		cp.setAttribute(Attribute.LIGHT);
-		cp.print(msg);
-		cp.clear();
+	public static void printcolor(Ansi.Color clr, String msg) {
+		System.out.print(ansi().a(Attribute.INTENSITY_BOLD).fg(clr).a(msg).reset());
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class Output {
 	 * @param errorcode
 	 */
 	public static void fatalerror(String msg, int errorcode) {
-		Output.printcolorln(FColor.RED, "\nFATAL ERROR: " + msg);
+		Output.printcolorln(Ansi.Color.RED, "\nFATAL ERROR: " + msg);
 		System.exit(errorcode);
 	}
 

@@ -11,7 +11,7 @@
  ******************************************************************************/
 package org.fross.cal;
 
-import com.diogonunes.jcdp.color.api.Ansi.FColor;
+import org.fusesource.jansi.Ansi;
 
 /**
  * Debug contains static methods to maintain the debug state and display
@@ -55,7 +55,7 @@ public class Debug {
 	 */
 	public static void println(String msg) {
 		if (clDebug == true) {
-			Output.printcolorln(FColor.RED, "DEBUG:  " + msg);
+			Output.printcolorln(Ansi.Color.RED, "DEBUG:  " + msg);
 		}
 	}
 }
