@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.util.Properties;
 import org.fusesource.jansi.Ansi;
 import gnu.getopt.Getopt;
+import org.fross.library.Output;
+import org.fross.library.Debug;
 
 /**
  * Main - Main program execution class
@@ -47,7 +49,7 @@ public class Main {
 			prop.load(iStream);
 			VERSION = prop.getProperty("Application.version");
 		} catch (IOException ex) {
-			Output.fatalerror("Unable to read property file '" + PROPERTIES_FILE + "'", 3);
+			Output.fatalError("Unable to read property file '" + PROPERTIES_FILE + "'", 3);
 		}
 
 		// Populate the month and year with todays values as a default
@@ -64,7 +66,7 @@ public class Main {
 				try {
 					newNum = Integer.parseInt(optG.getOptarg());
 				} catch (Exception Ex) {
-					Output.fatalerror("Invalid option for -n switch: '" + optG.getOptarg() + "'", 0);
+					Output.fatalError("Invalid option for -n switch: '" + optG.getOptarg() + "'", 0);
 				}
 				Calendar.setCalsPerRow(newNum);
 				break;
@@ -80,7 +82,7 @@ public class Main {
 				break;
 
 			default:
-				Output.fatalerror("ERROR: Unknown Command Line Option -" + optG.getOptarg() + "'", 0);
+				Output.fatalError("ERROR: Unknown Command Line Option -" + optG.getOptarg() + "'", 0);
 				Help.display();
 
 				break;
@@ -88,28 +90,28 @@ public class Main {
 		}
 
 		// Display some useful information about the environment if in Debug Mode
-		Debug.println("System Information:");
-		Debug.println(" - class.path:     " + System.getProperty("java.class.path"));
-		Debug.println("  - java.home:      " + System.getProperty("java.home"));
-		Debug.println("  - java.vendor:    " + System.getProperty("java.vendor"));
-		Debug.println("  - java.version:   " + System.getProperty("java.version"));
-		Debug.println("  - os.name:        " + System.getProperty("os.name"));
-		Debug.println("  - os.version:     " + System.getProperty("os.version"));
-		Debug.println("  - os.arch:        " + System.getProperty("os.arch"));
-		Debug.println("  - user.name:      " + System.getProperty("user.name"));
-		Debug.println("  - user.home:      " + System.getProperty("user.home"));
-		Debug.println("  - user.dir:       " + System.getProperty("user.dir"));
-		Debug.println("  - file.separator: " + System.getProperty("file.separator"));
-		Debug.println("  - library.path:   " + System.getProperty("java.library.path"));
-		Debug.println("\nCommand Line Options");
-		Debug.println("  -D:  " + Debug.query() + "\n");
-		Debug.println("Current Date: Month = " + month + " Year =" + year);
+		Output.debugPrint("System Information:");
+		Output.debugPrint(" - class.path:     " + System.getProperty("java.class.path"));
+		Output.debugPrint("  - java.home:      " + System.getProperty("java.home"));
+		Output.debugPrint("  - java.vendor:    " + System.getProperty("java.vendor"));
+		Output.debugPrint("  - java.version:   " + System.getProperty("java.version"));
+		Output.debugPrint("  - os.name:        " + System.getProperty("os.name"));
+		Output.debugPrint("  - os.version:     " + System.getProperty("os.version"));
+		Output.debugPrint("  - os.arch:        " + System.getProperty("os.arch"));
+		Output.debugPrint("  - user.name:      " + System.getProperty("user.name"));
+		Output.debugPrint("  - user.home:      " + System.getProperty("user.home"));
+		Output.debugPrint("  - user.dir:       " + System.getProperty("user.dir"));
+		Output.debugPrint("  - file.separator: " + System.getProperty("file.separator"));
+		Output.debugPrint("  - library.path:   " + System.getProperty("java.library.path"));
+		Output.debugPrint("\nCommand Line Options");
+		Output.debugPrint("  -D:  " + Debug.query() + "\n");
+		Output.debugPrint("Current Date: Month = " + month + " Year =" + year);
 
 		// Process the command line parameters (non-options). Update month and year as
 		// needed
-		Debug.println("Number of command line arguments:  " + args.length);
+		Output.debugPrint("Number of command line arguments:  " + args.length);
 		int clParameters = args.length - optG.getOptind();
-		Debug.println("Number of command line parameters: " + clParameters);
+		Output.debugPrint("Number of command line parameters: " + clParameters);
 
 		// Display header information
 		int headerWidth = (Calendar.CALENDARWIDTH * Calendar.calsPerRow) + (Calendar.calsPerRow * Calendar.SPACESBETWEENCALS) - 2;
@@ -122,13 +124,13 @@ public class Main {
 			headerWidth = headerText.length();
 		}
 
-		Debug.println("headerWidth = " + headerWidth);
-		Debug.println("headerText = " + "'" + headerText + "'  (Len = " + headerText.length() + ")");
-		Debug.println("headerSpaces = " + headerSpaces);
+		Output.debugPrint("headerWidth = " + headerWidth);
+		Output.debugPrint("headerText = " + "'" + headerText + "'  (Len = " + headerText.length() + ")");
+		Output.debugPrint("headerSpaces = " + headerSpaces);
 
-		Output.printcolorln(Ansi.Color.CYAN, "\n+" + "-".repeat(headerWidth) + "+");
-		Output.printcolorln(Ansi.Color.YELLOW, " ".repeat(headerSpaces) + headerText);
-		Output.printcolorln(Ansi.Color.CYAN, "+" + "-".repeat(headerWidth) + "+");
+		Output.printColorln(Ansi.Color.CYAN, "\n+" + "-".repeat(headerWidth) + "+");
+		Output.printColorln(Ansi.Color.YELLOW, " ".repeat(headerSpaces) + headerText);
+		Output.printColorln(Ansi.Color.CYAN, "+" + "-".repeat(headerWidth) + "+");
 
 		// Process options and display the calendar
 		try {
@@ -136,7 +138,7 @@ public class Main {
 			switch (clParameters) {
 			case 0:
 				// Process no dates provided
-				Debug.println("No Month or Year provided on command line. Using Year:" + year);
+				Output.debugPrint("No Month or Year provided on command line. Using Year:" + year);
 				Calendar.printYear(month, year);
 				break;
 			case 1:
@@ -144,13 +146,13 @@ public class Main {
 				int d = Integer.parseInt(args[optG.getOptind()]);
 				if (d > 12) {
 					year = d;
-					Debug.println("Commandline Year provided. Using Month: " + month + " Year:" + year);
-					Debug.println(" 1         2         3         4         5         6         7");
-					Debug.println("90123456789012345678901234567890123456789012345678901234567890");
+					Output.debugPrint("Commandline Year provided. Using Month: " + month + " Year:" + year);
+					Output.debugPrint(" 1         2         3         4         5         6         7");
+					Output.debugPrint("90123456789012345678901234567890123456789012345678901234567890");
 					Calendar.printYear(month, year);
 				} else {
 					month = d;
-					Debug.println("Commandline Month provided. Using Month: " + month + " Year:" + year);
+					Output.debugPrint("Commandline Month provided. Using Month: " + month + " Year:" + year);
 					Calendar.printMonth(month, year);
 				}
 				break;
@@ -158,18 +160,18 @@ public class Main {
 				// Month & year provided
 				month = Integer.parseInt(args[optG.getOptind()]);
 				year = Integer.parseInt(args[optG.getOptind() + 1]);
-				Debug.println("Commandline Month & Year provided. Month:" + month + " Year:" + year);
+				Output.debugPrint("Commandline Month & Year provided. Month:" + month + " Year:" + year);
 				Calendar.printMonth(month, year);
 				break;
 			default:
 				// Ignore anything beyond the first two parameters
 			}
 		} catch (NumberFormatException ex) {
-			Output.fatalerror("Parameters can only be numbers.  Usage '-h' for options", 0);
+			Output.fatalError("Parameters can only be numbers.  Usage '-h' for options", 0);
 		} catch (Exception ex) {
 			ex.getMessage();
 			ex.printStackTrace();
-			Output.fatalerror("Something went wrong.  You shouldn't really see this.  Eeek!", 0);
+			Output.fatalError("Something went wrong.  You shouldn't really see this.  Eeek!", 0);
 		}
 
 		// Program End

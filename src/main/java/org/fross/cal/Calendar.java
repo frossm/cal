@@ -13,10 +13,11 @@ package org.fross.cal;
 
 import java.util.Arrays;
 import org.fusesource.jansi.Ansi;
+import org.fross.library.Output;
 
 public class Calendar {
 	// Class Constants
-	static final int DEFAULT_CALS_PER_ROW = 4;
+	static final int DEFAULT_CALS_PER_ROW = 3;
 	static final int CALENDARWIDTH = 20;
 	static final int SPACESBETWEENCALS = 3;
 	static final String[] MONTHLIST = { "none", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -35,7 +36,7 @@ public class Calendar {
 		if (12 % cpr == 0) {
 			calsPerRow = cpr;
 		} else {
-			Output.printcolorln(Ansi.Color.RED, "Error.  Number of calendars per row must be evenly divisable into 12\n");
+			Output.printColorln(Ansi.Color.RED, "Error.  Number of calendars per row must be evenly divisable into 12\n");
 		}
 	}
 
@@ -83,11 +84,11 @@ public class Calendar {
 	public static void printMonth(int month, int year) {
 		String[] days = getCalDays(month, year);
 
-		Output.printcolorln(Ansi.Color.CYAN, getCalHeader(month, year));
-		Output.printcolorln(Ansi.Color.YELLOW, "Su Mo Tu We Th Fr Sa");
+		Output.printColorln(Ansi.Color.CYAN, getCalHeader(month, year));
+		Output.printColorln(Ansi.Color.YELLOW, "Su Mo Tu We Th Fr Sa");
 
 		for (int i = 0; i <= (days.length - 1); i++) {
-			Output.printcolorln(Ansi.Color.WHITE, days[i]);
+			Output.printColorln(Ansi.Color.WHITE, days[i]);
 		}
 	}
 
@@ -111,13 +112,13 @@ public class Calendar {
 			// Print Centered Month & Year
 			for (j = 1; j <= calsPerRow; j++) {
 				String header = getCalHeader((i + j), year);
-				Output.printcolor(Ansi.Color.CYAN, header + " ".repeat(CALENDARWIDTH - header.length() + 1) + " ".repeat(SPACESBETWEENCALS));
+				Output.printColor(Ansi.Color.CYAN, header + " ".repeat(CALENDARWIDTH - header.length() + 1) + " ".repeat(SPACESBETWEENCALS));
 			}
 			Output.println("");
 
 			// Print The Day Labels
 			String labelString = ("Su Mo Tu We Th Fr Sa " + " ".repeat(SPACESBETWEENCALS)).repeat(calsPerRow);
-			Output.printcolor(Ansi.Color.YELLOW, labelString);
+			Output.printColor(Ansi.Color.YELLOW, labelString);
 			Output.println("");
 
 			// Loop through each calendar in the row and build an output string
@@ -130,7 +131,7 @@ public class Calendar {
 
 			// Print out the result
 			for (j = 0; j < dayrows.length; j++) {
-				Output.printcolorln(Ansi.Color.WHITE, dayrows[j]);
+				Output.printColorln(Ansi.Color.WHITE, dayrows[j]);
 			}
 
 			// Put a new line between calendar rows
@@ -181,7 +182,7 @@ public class Calendar {
 
 		// Determine the which day of the week the 1st fall upon
 		int fDay = firstDay(month, 1, year);
-		Debug.println("Firstday for " + month + "/" + year + ": " + fDay);
+		Output.debugPrint("Firstday for " + month + "/" + year + ": " + fDay);
 
 		// Insert spaces until we get to first day of the month in the calendar
 		for (int i = 0; i < fDay; i++) {
