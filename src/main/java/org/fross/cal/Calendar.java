@@ -170,31 +170,31 @@ public class Calendar {
 	public static String[] getCalDays(int month, int year) {
 		String[] returnString = new String[6];
 		int counter = 0;
-		int[] dayArray = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+		int[] daysInMonth = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 		// Initialize the array
 		Arrays.fill(returnString, "");
 
 		// Lets see if the year provided is a leap year
 		if (month == 2 && isLeapYear(year)) {
-			dayArray[month] = 29;
+			daysInMonth[month] = 29;
 		}
 
 		// Determine the which day of the week the 1st fall upon
-		int fDay = firstDay(month, 1, year);
-		Output.debugPrint("Firstday for " + month + "/" + year + ": " + fDay);
+		int firstDayOfMon = firstDay(month, 1, year);
+		Output.debugPrint("Firstday for " + month + "/" + year + ": " + firstDayOfMon);
 
 		// Insert spaces until we get to first day of the month in the calendar
-		for (int i = 0; i < fDay; i++) {
+		for (int i = 0; i < firstDayOfMon; i++) {
 			returnString[counter] += ("   ");
 		}
 
 		// Print the days. After 7 start a new line.
-		for (int i = 1; i <= dayArray[month]; i++) {
+		for (int i = 1; i <= daysInMonth[month]; i++) {
 			returnString[counter] += String.format("%2d ", i);
 
-			// Start over if we've printed 7 days
-			if (((i + fDay) % 7 == 0) || (i == dayArray[month])) {
+			// Start over if we've added 7 days
+			if (((i + firstDayOfMon) % 7 == 0) || (i == daysInMonth[month])) {
 				// Ensure that the array element is padded with space characters
 				if (returnString[counter].length() < CALENDARWIDTH) {
 					returnString[counter] += " ".repeat(CALENDARWIDTH - returnString[counter].length() + 1);
