@@ -19,6 +19,7 @@ import gnu.getopt.Getopt;
 import org.fross.library.Output;
 import org.fross.library.Debug;
 
+
 /**
  * Main - Main program execution class
  * 
@@ -53,9 +54,8 @@ public class Main {
 		}
 
 		// Populate the month and year with todays values as a default
-		java.util.Calendar jc = java.util.Calendar.getInstance();
-		month = jc.get(java.util.Calendar.MONTH) + 1;
-		year = jc.get(java.util.Calendar.YEAR);
+		month = org.fross.library.Date.getCurrentMonth();
+		year = org.fross.library.Date.getCurrentYear();
 
 		// Process Command Line Options and set flags where needed
 		Getopt optG = new Getopt("DirSize", args, "n:Dh?");
