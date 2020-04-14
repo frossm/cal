@@ -19,7 +19,6 @@ import gnu.getopt.Getopt;
 import org.fross.library.Output;
 import org.fross.library.Debug;
 
-
 /**
  * Main - Main program execution class
  * 
@@ -58,7 +57,7 @@ public class Main {
 		year = org.fross.library.Date.getCurrentYear();
 
 		// Process Command Line Options and set flags where needed
-		Getopt optG = new Getopt("DirSize", args, "n:Dh?");
+		Getopt optG = new Getopt("cal", args, "n:Dh?");
 		while ((optionEntry = optG.getopt()) != -1) {
 			switch (optionEntry) {
 			case 'n': // Set Number of Calendars per Row
