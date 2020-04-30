@@ -6,7 +6,7 @@ I had need of a simple program that could display a calendar when I'm working on
 
 Option   | Description
 ---------| -----------
--n #     | Set the number of calendars per row when displaying a year.  The default is 3.
+-n #     |Set the number of calendars per row when displaying a year.  The default is 3.
 -D       |Start in Debug Mode which will display additional debugging data. Normally not used.
 -h or -? |Display the help page
 
