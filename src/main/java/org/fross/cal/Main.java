@@ -18,6 +18,7 @@ import org.fusesource.jansi.Ansi;
 import gnu.getopt.Getopt;
 import org.fross.library.Output;
 import org.fross.library.Debug;
+import org.fross.library.Prefs;
 
 /**
  * Main - Main program execution class
