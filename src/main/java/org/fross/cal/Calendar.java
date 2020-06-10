@@ -3,7 +3,7 @@
  * 
  * A simple console based calculator generator
  * 
- *  Written by Michael Fross.  Copyright 2011-2019.  All rights reserved.
+ *  Written by Michael Fross.  Copyright 2011-2020.  All rights reserved.
  *  
  *  License: MIT License / https://opensource.org/licenses/MIT
  *  Please see included LICENSE.txt file for additional details

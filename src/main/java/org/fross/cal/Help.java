@@ -3,7 +3,7 @@
  * 
  * A simple console based calculator generator
  * 
- *  Written by Michael Fross.  Copyright 2011-2019.  All rights reserved.
+ *  Written by Michael Fross.  Copyright 2011-2020.  All rights reserved.
  *  
  *  License: MIT License / https://opensource.org/licenses/MIT
  *  Please see included LICENSE.txt file for additional details
@@ -28,7 +28,8 @@ public class Help {
 		Output.printColorln(Ansi.Color.YELLOW, "\n+----------------------------------------------------------------------+");
 		Output.printColorln(Ansi.Color.YELLOW, "+                   CAL - Console Calendar Generator                   +");
 		Output.printColorln(Ansi.Color.YELLOW, "+                          Version " + Main.VERSION + "                          +");
-		Output.printColorln(Ansi.Color.YELLOW, "+                             Michael Fross                            +");
+		Output.printColorln(Ansi.Color.YELLOW,
+				"+      Copyright " + Main.INCEPTIONYEAR + "-" + org.fross.library.Date.getCurrentYear() + " by Michael Fross.  All rights reserved      +");
 		Output.printColorln(Ansi.Color.YELLOW, "+----------------------------------------------------------------------+");
 		Output.printColorln(Ansi.Color.CYAN, "                        https://github.com/frossm/cal\n");
 

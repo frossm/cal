@@ -3,7 +3,7 @@
  * 
  * A simple console based calculator generator
  * 
- *  Written by Michael Fross.  Copyright 2011-2019.  All rights reserved.
+ *  Written by Michael Fross.  Copyright 2011-2020.  All rights reserved.
  *  
  *  License: MIT License / https://opensource.org/licenses/MIT
  *  Please see included LICENSE.txt file for additional details
@@ -18,7 +18,6 @@ import org.fusesource.jansi.Ansi;
 import gnu.getopt.Getopt;
 import org.fross.library.Output;
 import org.fross.library.Debug;
-import org.fross.library.Prefs;
 
 /**
  * Main - Main program execution class
@@ -30,7 +29,8 @@ public class Main {
 
 	// Class Constants
 	public static String VERSION;
-	public static final String PROPERTIES_FILE = "cal.properties";
+	public static String INCEPTIONYEAR;
+	public static final String PROPERTIES_FILE = "app.properties";
 
 	/**
 	 * Main(): Start of program and holds main command loop
@@ -49,6 +49,7 @@ public class Main {
 			Properties prop = new Properties();
 			prop.load(iStream);
 			VERSION = prop.getProperty("Application.version");
+			INCEPTIONYEAR = prop.getProperty("Application.inceptionYear");
 		} catch (IOException ex) {
 			Output.fatalError("Unable to read property file '" + PROPERTIES_FILE + "'", 3);
 		}
