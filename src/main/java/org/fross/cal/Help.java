@@ -28,8 +28,7 @@ public class Help {
 		Output.printColorln(Ansi.Color.YELLOW, "\n+----------------------------------------------------------------------+");
 		Output.printColorln(Ansi.Color.YELLOW, "+                   CAL - Console Calendar Generator                   +");
 		Output.printColorln(Ansi.Color.YELLOW, "+                          Version " + Main.VERSION + "                          +");
-		Output.printColorln(Ansi.Color.YELLOW,
-				"+      Copyright " + Main.INCEPTIONYEAR + "-" + org.fross.library.Date.getCurrentYear() + " by Michael Fross.  All rights reserved      +");
+		Output.printColorln(Ansi.Color.YELLOW, "+      " + Main.COPYRIGHT + "      +");
 		Output.printColorln(Ansi.Color.YELLOW, "+----------------------------------------------------------------------+");
 		Output.printColorln(Ansi.Color.CYAN, "                        https://github.com/frossm/cal\n");
 
