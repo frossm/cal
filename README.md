@@ -1,3 +1,5 @@
+<p align="center"> <img width="120" height = "120" src ="https://github.com/frossm/cal/blob/master/graphics/PostIt.jpg"> </p> 
+
 # cal - The Console Calendar Generator
 
 I had need of a simple program that could display a calendar when I'm working on the command line.  This small program fits my needs and I'm hopeful it may be useful to others.
