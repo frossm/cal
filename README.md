@@ -4,7 +4,7 @@
 
 I had need of a simple program that could display a calendar when I'm working on the command line.  This small program fits my needs and I'm hopeful it may be useful to others.
 
-**Command Line Options**
+## Command Line Options
 
 Option   | Description
 ---------| -----------
@@ -13,7 +13,7 @@ Option   | Description
 -h or -? |Display the help page
 
 
-**Parameters**
+## Parameters
 
 Parameters are the arguments provided to the program.  They do not include the options above.
 
@@ -25,7 +25,7 @@ Parameter |Description
 |          |If no parameter is given, display the current year|
 
 
-**Execution**
+## Execution
 
 This is a java program that is all bundled into a single jar file.  To run a jar file on the command line, simply type:
 
@@ -34,7 +34,7 @@ This is a java program that is all bundled into a single jar file.  To run a jar
  Please note that cal.jar must be in your path.
 
 
-**Examples**
+## Examples
 
 Command|Result
 ---|---|
@@ -46,18 +46,7 @@ Command|Result
 `java -jar cal.jar -D 6`   | Display June of current year in debug mode
 `java -jar cal.jar -h`     | Show this help information
 
-** License **
-[The MIT License](https://opensource.org/licenses/MIT)
-
-Copyright 2019-2020 by Michael Fross
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-**References**
+## References
 
 I was able to use several web pages for sources of formulas for the program.  These were very helpful and I'd like to thank their authors for taking the time to record them publicly.
 
@@ -67,3 +56,14 @@ Determine how to calculate the first day of a month given the month and year:
 
 Calculate if the year provided is a leap year:
 * https://www.wikihow.com/Calculate-Leap-Years
+
+## License 
+[The MIT License](https://opensource.org/licenses/MIT)
+
+Copyright (C) 2019 by Michael Fross
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
