@@ -73,7 +73,7 @@ public class Main {
 		year = org.fross.library.Date.getCurrentYear();
 
 		// Process Command Line Options and set flags where needed
-		Getopt optG = new Getopt("cal", args, "n:Dh?");
+		Getopt optG = new Getopt("cal", args, "n:Dvh?");
 		while ((optionEntry = optG.getopt()) != -1) {
 			switch (optionEntry) {
 			case 'n': // Set Number of Calendars per Row
@@ -88,6 +88,12 @@ public class Main {
 
 			case 'D': // Debug Mode
 				Debug.enable();
+				break;
+
+			case 'v': // Version
+				Output.println("Version: " + VERSION);
+				Output.println(COPYRIGHT);
+				System.exit(0);
 				break;
 
 			case '?': // Help

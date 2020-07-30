@@ -48,6 +48,7 @@ public class Help {
 		Output.printColorln(Ansi.Color.YELLOW, "Command Line Options:");
 		Output.printColorln(Ansi.Color.WHITE, " -n #        Sets the number of calendars per row when displaying a year.  Default: 3");
 		Output.printColorln(Ansi.Color.WHITE, " -D          Start in debug mode");
+		Output.printColorln(Ansi.Color.WHITE, " -v          Display program version and exit");
 		Output.printColorln(Ansi.Color.WHITE, " -h or -?    Display this help information\n");
 
 		Output.printColorln(Ansi.Color.YELLOW, "Parameters:");

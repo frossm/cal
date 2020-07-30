@@ -12,6 +12,7 @@ Option   | Description
 ---------| -----------
 -n #     |Set the number of calendars per row when displaying a year.  The default is 3.
 -D       |Start in Debug Mode which will display additional debugging data. Normally not used.
+-v       |Display the current version and copyright of the program and exit
 -h or -? |Display the help page
 
 
