@@ -49,6 +49,17 @@ Command|Result
 `java -jar cal.jar -D 6`   | Display June of current year in debug mode
 `java -jar cal.jar -h`     | Show this help information
 
+## SNAP
+I would encourage anyone with a supported Linux platform to use snap.  See [Snapcraft Homepage](https://snapcraft.io) for more information. You can download, install, and keep Cal up to date automatically by installing the snap via :
+
+`sudo snap install fcal`  (Assuming snap is installed)
+
+I had to call it `fcal` as `cal` was already taken.
+
+This will install the application into a sandbox where it is separate from other applications.  I do want to look at packaging it via Flatpak as well, but my understanding is that Maven is not well supported.  However, I need to do more investigation.
+
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/fcal)
+
 ## References
 
 I was able to use several web pages for sources of formulas for the program.  These were very helpful and I'd like to thank their authors for taking the time to record them publicly.
