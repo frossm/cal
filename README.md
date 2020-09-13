@@ -50,6 +50,9 @@ Command|Result
 `java -jar cal.jar -h`     | Show this help information
 
 ## SNAP
+
+[![fcal](https://snapcraft.io//fcal/badge.svg)](https://snapcraft.io/fcal)
+
 I would encourage anyone with a supported Linux platform to use snap.  See [Snapcraft Homepage](https://snapcraft.io) for more information. You can download, install, and keep Cal up to date automatically by installing the snap via :
 
 `sudo snap install fcal`  (Assuming snap is installed)
