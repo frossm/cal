@@ -25,8 +25,9 @@
 package org.fross.cal;
 
 import java.util.Arrays;
-import org.fusesource.jansi.Ansi;
+
 import org.fross.library.Output;
+import org.fusesource.jansi.Ansi;
 
 public class Calendar {
 	// Class Constants

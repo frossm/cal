@@ -27,10 +27,12 @@ package org.fross.cal;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import org.fusesource.jansi.Ansi;
-import gnu.getopt.Getopt;
-import org.fross.library.Output;
+
 import org.fross.library.Debug;
+import org.fross.library.Output;
+import org.fusesource.jansi.Ansi;
+
+import gnu.getopt.Getopt;
 
 /**
  * Main - Main program execution class
@@ -111,20 +113,8 @@ public class Main {
 		}
 
 		// Display some useful information about the environment if in Debug Mode
-		Output.debugPrint("System Information:");
-		Output.debugPrint(" - class.path:     " + System.getProperty("java.class.path"));
-		Output.debugPrint("  - java.home:      " + System.getProperty("java.home"));
-		Output.debugPrint("  - java.vendor:    " + System.getProperty("java.vendor"));
-		Output.debugPrint("  - java.version:   " + System.getProperty("java.version"));
-		Output.debugPrint("  - os.name:        " + System.getProperty("os.name"));
-		Output.debugPrint("  - os.version:     " + System.getProperty("os.version"));
-		Output.debugPrint("  - os.arch:        " + System.getProperty("os.arch"));
-		Output.debugPrint("  - user.name:      " + System.getProperty("user.name"));
-		Output.debugPrint("  - user.home:      " + System.getProperty("user.home"));
-		Output.debugPrint("  - user.dir:       " + System.getProperty("user.dir"));
-		Output.debugPrint("  - file.separator: " + System.getProperty("file.separator"));
-		Output.debugPrint("  - library.path:   " + System.getProperty("java.library.path"));
-		Output.debugPrint("\nCommand Line Options");
+		Debug.displaySysInfo();
+		Output.debugPrint("Command Line Options");
 		Output.debugPrint("  -D:  " + Debug.query() + "\n");
 		Output.debugPrint("Current Date: Month = " + month + " Year =" + year);
 

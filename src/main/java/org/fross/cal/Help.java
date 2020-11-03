@@ -24,8 +24,8 @@
  ******************************************************************************/
 package org.fross.cal;
 
-import org.fusesource.jansi.Ansi;
 import org.fross.library.Output;
+import org.fusesource.jansi.Ansi;
 
 /**
  * Help(): Display the help page when users enters 'h' or '?' command.
@@ -38,21 +38,21 @@ public class Help {
 	 * display(): Prints help in color using the JCDP library in the output module.
 	 */
 	public static void display() {
-		Output.printColorln(Ansi.Color.YELLOW, "\n+----------------------------------------------------------------------+");
-		Output.printColorln(Ansi.Color.YELLOW, "+                   CAL - Console Calendar Generator                   +");
-		Output.printColorln(Ansi.Color.YELLOW, "+                          Version " + Main.VERSION + "                          +");
-		Output.printColorln(Ansi.Color.YELLOW, "+      " + Main.COPYRIGHT + "      +");
-		Output.printColorln(Ansi.Color.YELLOW, "+----------------------------------------------------------------------+");
+		Output.printColorln(Ansi.Color.CYAN, "\n+----------------------------------------------------------------------+");
+		Output.printColorln(Ansi.Color.WHITE, "+                   CAL - Console Calendar Generator                   +");
+		Output.printColorln(Ansi.Color.WHITE, "+                          Version " + Main.VERSION + "                          +");
+		Output.printColorln(Ansi.Color.WHITE, "+      " + Main.COPYRIGHT + "      +");
+		Output.printColorln(Ansi.Color.CYAN, "+----------------------------------------------------------------------+");
 		Output.printColorln(Ansi.Color.CYAN, "                        https://github.com/frossm/cal\n");
 
 		Output.printColorln(Ansi.Color.YELLOW, "Command Line Options:");
-		Output.printColorln(Ansi.Color.WHITE, " -n #        Sets the number of calendars per row when displaying a year.  Default: 3");
+		Output.printColorln(Ansi.Color.WHITE, " -n #        Number of calendars per row in Year view.  Default: " + Calendar.DEFAULT_CALS_PER_ROW);
 		Output.printColorln(Ansi.Color.WHITE, " -D          Start in debug mode");
 		Output.printColorln(Ansi.Color.WHITE, " -v          Display program version and exit");
 		Output.printColorln(Ansi.Color.WHITE, " -h or -?    Display this help information\n");
 
 		Output.printColorln(Ansi.Color.YELLOW, "Parameters:");
-		Output.printColorln(Ansi.Color.WHITE, "NONE         - Display the current year");
+		Output.printColorln(Ansi.Color.WHITE, "<None>       - Display the current year");
 		Output.printColorln(Ansi.Color.WHITE, "YEAR         - Display the entire year");
 		Output.printColorln(Ansi.Color.WHITE, "MONTH        - Display the current month in the current year");
 		Output.printColorln(Ansi.Color.WHITE, "MONTH YEAR   - Display the current month in the provided year\n");
