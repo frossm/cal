@@ -18,7 +18,6 @@ parts:
   library:
     plugin: maven
     source: https://github.com/frossm/library.git
-    source-tag: master
     source-type: git
     source-tag: v2020.10.12
     maven-options: [install]
@@ -26,6 +25,6 @@ parts:
   cal:
     plugin: maven
     source: https://github.com/frossm/cal.git
-    source-tag: master
+    source-branch: master
     source-type: git
     after: [library]
