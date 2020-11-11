@@ -82,6 +82,9 @@ public class Main {
 				int newNum = 0;
 				try {
 					newNum = Integer.parseInt(optG.getOptarg());
+					if (newNum <= 0) {
+						throw new UnsupportedOperationException();
+					}
 				} catch (Exception Ex) {
 					Output.fatalError("Invalid option for -n switch: '" + optG.getOptarg() + "'", 0);
 				}
