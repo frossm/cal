@@ -4,7 +4,9 @@
 
 # cal - The Console Calendar Generator
 
-<img align="right" width="200" src="https://github.com/frossm/cal/blob/master/graphics/PostIt.jpg">I had need of a simple program that could display a calendar when I'm working on the command line.  This small program fits my needs and I'm hopeful it may be useful to others.
+<img align="right" width="200" src="https://github.com/frossm/cal/blob/master/graphics/PostIt.jpg">Cal (of fCal on SNAP) is a command line utility that will output a calendar for the desired month/year.  It's simple and accurate with a few useful features.
+
+By default, Cal will display the current year.  You can provide a month and year, a month, or just a year.  You can also change the number of calendars per row in your display with the `-n` switch.  See the examples below for a more through description.
 
 ## Command Line Options
 
