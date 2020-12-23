@@ -24,6 +24,7 @@
  ******************************************************************************/
 package org.fross.cal;
 
+import org.fross.library.Format;
 import org.fross.library.Output;
 import org.fusesource.jansi.Ansi;
 
@@ -34,31 +35,33 @@ import org.fusesource.jansi.Ansi;
  *
  */
 public class Help {
+	static final int HELPWIDTH = 80;
+
 	/**
 	 * display(): Prints help in color using the JCDP library in the output module.
 	 */
 	public static void display() {
-		Output.printColorln(Ansi.Color.CYAN, "\n+----------------------------------------------------------------------+");
-		Output.printColorln(Ansi.Color.WHITE, "+                   CAL - Console Calendar Generator                   +");
-		Output.printColorln(Ansi.Color.WHITE, "+                          Version " + Main.VERSION + "                          +");
-		Output.printColorln(Ansi.Color.WHITE, "+      " + Main.COPYRIGHT + "      +");
-		Output.printColorln(Ansi.Color.CYAN, "+----------------------------------------------------------------------+");
-		Output.printColorln(Ansi.Color.CYAN, "                        https://github.com/frossm/cal\n");
+		Output.printColorln(Ansi.Color.CYAN, "\n+" + "-".repeat(HELPWIDTH) + "+");
+		Output.printColorln(Ansi.Color.WHITE, "+" + Format.CenterText(HELPWIDTH, "Cal - The Console Calendar Generator") + "+");
+		Output.printColorln(Ansi.Color.WHITE, "+" + Format.CenterText(HELPWIDTH, "Version v" + Main.VERSION) + "+");
+		Output.printColorln(Ansi.Color.WHITE, "+" + Format.CenterText(HELPWIDTH, Main.COPYRIGHT) + "+");
+		Output.printColorln(Ansi.Color.CYAN, "+" + "-".repeat(HELPWIDTH) + "+");
+		Output.printColorln(Ansi.Color.CYAN, Format.CenterText(HELPWIDTH, "https://github.com/frossm/cal"));
 
-		Output.printColorln(Ansi.Color.YELLOW, "Command Line Options:");
+		Output.printColorln(Ansi.Color.YELLOW, "\nCommand Line Options:");
 		Output.printColorln(Ansi.Color.WHITE, " -n #        Number of calendars per row in Year view.  Default: " + Calendar.DEFAULT_CALS_PER_ROW);
 		Output.printColorln(Ansi.Color.WHITE, " -D          Start in debug mode");
 		Output.printColorln(Ansi.Color.WHITE, " -v          Display program version and exit");
 		Output.printColorln(Ansi.Color.WHITE, " -z          Display colorized output");
-		Output.printColorln(Ansi.Color.WHITE, " -h or -?    Display this help information\n");
+		Output.printColorln(Ansi.Color.WHITE, " -h or -?    Display this help information");
 
-		Output.printColorln(Ansi.Color.YELLOW, "Parameters:");
+		Output.printColorln(Ansi.Color.YELLOW, "\nParameters:");
 		Output.printColorln(Ansi.Color.WHITE, "<None>       - Display the current year");
 		Output.printColorln(Ansi.Color.WHITE, "YEAR         - Display the entire year");
 		Output.printColorln(Ansi.Color.WHITE, "MONTH        - Display the current month in the current year");
-		Output.printColorln(Ansi.Color.WHITE, "MONTH YEAR   - Display the current month in the provided year\n");
+		Output.printColorln(Ansi.Color.WHITE, "MONTH YEAR   - Display the current month in the provided year");
 
-		Output.printColorln(Ansi.Color.YELLOW, "Examples:");
+		Output.printColorln(Ansi.Color.YELLOW, "\nExamples:");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar         Display the current year");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -n 4    Display the current year - 4 months per row");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 9       Display September of the current year");

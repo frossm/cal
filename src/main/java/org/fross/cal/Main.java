@@ -64,8 +64,7 @@ public class Main {
 			Properties prop = new Properties();
 			prop.load(iStream);
 			VERSION = prop.getProperty("Application.version");
-			COPYRIGHT = "Copyright " + prop.getProperty("Application.inceptionYear") + "-" + org.fross.library.Date.getCurrentYear()
-					+ " by Michael Fross.  All rights reserved";
+			COPYRIGHT = "Copyright " + prop.getProperty("Application.inceptionYear") + "-" + org.fross.library.Date.getCurrentYear() + " by Michael Fross";
 		} catch (IOException ex) {
 			Output.fatalError("Unable to read property file '" + PROPERTIES_FILE + "'", 3);
 		}
@@ -100,7 +99,7 @@ public class Main {
 				Output.println(COPYRIGHT);
 				System.exit(0);
 				break;
-				
+
 			case 'z': // Disable Colorized Output
 				Output.enableColor(false);
 				break;
