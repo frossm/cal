@@ -102,7 +102,7 @@ public class Main {
 				break;
 				
 			case 'z': // Disable Colorized Output
-				Output.setColor(false);
+				Output.enableColor(false);
 				break;
 
 			case '?': // Help

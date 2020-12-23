@@ -1,5 +1,5 @@
 name: fcal
-version: '2.1.0'
+version: '2.1.1'
 summary: Command line calendar display
 description: |
   fcal is a command line calendar display utility.  It will display a
@@ -10,6 +10,9 @@ grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict  # use 'strict' once you have the right plugs and slots
 base: core18
 
+# Enable faszter LZO compression
+compression: lzo
+
 apps:
   fcal:
     command: bin/java -jar $SNAP/jar/cal.jar
@@ -19,7 +22,7 @@ parts:
     plugin: maven
     source: https://github.com/frossm/library.git
     source-type: git
-    source-tag: 'v2020.12.21'
+    source-tag: 'v2020.12.23'
     maven-options: [install]
 
   cal:
