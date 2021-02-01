@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Cal - A command line calendar utility
  *  
- *  Copyright (c) 2019 Michael Fross
+ *  Copyright (c) 2019-2021 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.fross.library.Debug;
+import org.fross.library.GitHub;
 import org.fross.library.Output;
 import org.fusesource.jansi.Ansi;
 
@@ -95,8 +96,10 @@ public class Main {
 				break;
 
 			case 'v': // Version
-				Output.println("Version: " + VERSION);
-				Output.println(COPYRIGHT);
+				Output.printColorln(Ansi.Color.WHITE, "Cal Version: v" + VERSION);
+				Output.printColorln(Ansi.Color.CYAN, COPYRIGHT);
+				Output.printColorln(Ansi.Color.WHITE, "\nLatest Release on GitHub: " + GitHub.updateCheck("cal"));
+				Output.printColorln(Ansi.Color.CYAN, "HomePage: https://github.com/frossm/cal");
 				System.exit(0);
 				break;
 

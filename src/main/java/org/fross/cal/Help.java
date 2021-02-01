@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Cal - A command line calendar utility
  *  
- *  Copyright (c) 2019 Michael Fross
+ *  Copyright (c) 2019-2021 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -51,15 +51,15 @@ public class Help {
 		Output.printColorln(Ansi.Color.YELLOW, "\nCommand Line Options:");
 		Output.printColorln(Ansi.Color.WHITE, " -n #        Number of calendars per row in Year view.  Default: " + Calendar.DEFAULT_CALS_PER_ROW);
 		Output.printColorln(Ansi.Color.WHITE, " -D          Start in debug mode");
-		Output.printColorln(Ansi.Color.WHITE, " -v          Display program version and exit");
+		Output.printColorln(Ansi.Color.WHITE, " -v          Display the program version and latest GitHub Cal release");
 		Output.printColorln(Ansi.Color.WHITE, " -z          Display colorized output");
 		Output.printColorln(Ansi.Color.WHITE, " -h or -?    Display this help information");
 
 		Output.printColorln(Ansi.Color.YELLOW, "\nParameters:");
-		Output.printColorln(Ansi.Color.WHITE, "<None>       - Display the current year");
-		Output.printColorln(Ansi.Color.WHITE, "YEAR         - Display the entire year");
-		Output.printColorln(Ansi.Color.WHITE, "MONTH        - Display the current month in the current year");
-		Output.printColorln(Ansi.Color.WHITE, "MONTH YEAR   - Display the current month in the provided year");
+		Output.printColorln(Ansi.Color.WHITE, "<None>       Display the current year");
+		Output.printColorln(Ansi.Color.WHITE, "YEAR         Display the entire year");
+		Output.printColorln(Ansi.Color.WHITE, "MONTH        Display the current month in the current year");
+		Output.printColorln(Ansi.Color.WHITE, "MONTH YEAR   Display the current month in the provided year");
 
 		Output.printColorln(Ansi.Color.YELLOW, "\nExamples:");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar         Display the current year");
