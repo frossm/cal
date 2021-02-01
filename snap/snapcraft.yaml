@@ -1,8 +1,8 @@
 name: fcal
-version: '2.2.0'
+version: '2.2.1'
 summary: Command line calendar display
 description: |
-  fcal is a command line calendar display utility.  It will display a
+  fCal is a command line calendar display utility.  It will display a
   calendar on the command line with any month/year requested.  Defaults 
   to the current year.
 
@@ -34,4 +34,4 @@ parts:
 
 plugs:
    cal-network:
-   interface: network
+      interface: network
