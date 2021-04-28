@@ -1,5 +1,5 @@
 <p align="center"> 
-    <img width="70%" src ="https://github.com/frossm/cal/blob/master/graphics/cal-Year-4wide.jpg">
+    <img width="70%" src ="https://github.com/frossm/cal/blob/master/graphics/SnapShot.jpg">
 </p> 
 
 # cal - The Console Calendar Generator
