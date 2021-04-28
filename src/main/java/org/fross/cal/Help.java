@@ -52,7 +52,7 @@ public class Help {
 		Output.printColorln(Ansi.Color.WHITE, " -n #        Number of calendars per row in Year view.  Default: " + Calendar.DEFAULT_CALS_PER_ROW);
 		Output.printColorln(Ansi.Color.WHITE, " -D          Start in debug mode");
 		Output.printColorln(Ansi.Color.WHITE, " -v          Display the program version and latest GitHub Cal release");
-		Output.printColorln(Ansi.Color.WHITE, " -z          Display colorized output");
+		Output.printColorln(Ansi.Color.WHITE, " -z          Disable colorized output");
 		Output.printColorln(Ansi.Color.WHITE, " -h or -?    Display this help information");
 
 		Output.printColorln(Ansi.Color.YELLOW, "\nParameters:");

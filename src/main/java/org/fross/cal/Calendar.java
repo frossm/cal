@@ -24,24 +24,28 @@
  ******************************************************************************/
 package org.fross.cal;
 
+import static org.fusesource.jansi.Ansi.ansi;
+
 import java.util.Arrays;
 
+import org.fross.library.Date;
 import org.fross.library.Output;
 import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.Ansi.Attribute;
 
 public class Calendar {
 	// Class Constants
 	static final int DEFAULT_CALS_PER_ROW = 3;
 	static final int CALENDARWIDTH = 20;
 	static final int SPACESBETWEENCALS = 3;
-	static final String[] MONTHLIST = { "none", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+	static final String[] MONTHLIST = { "none", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
+			"December" };
 
 	// Class Variables
 	static int calsPerRow = DEFAULT_CALS_PER_ROW;
 
 	/**
-	 * setCalsPerRow(): Sets the number of calendars per row when showing an entire
-	 * year
+	 * setCalsPerRow(): Sets the number of calendars per row when showing an entire year
 	 * 
 	 * @param cpr
 	 */
@@ -55,8 +59,7 @@ public class Calendar {
 	}
 
 	/**
-	 * firstDay(): Given the month, day, and year, return which day of the week it
-	 * falls
+	 * firstDay(): Given the month, day, and year, return which day of the week it falls
 	 * 
 	 * Reference: https://www.tondering.dk/claus/cal/chrweek.php#calcdow
 	 * http://www.cplusplus.com/forum/general/174165/
@@ -154,8 +157,7 @@ public class Calendar {
 	}
 
 	/**
-	 * getCalHeader(): Return a string array with the month/year name correctly
-	 * spaced
+	 * getCalHeader(): Return a string array with the month/year name correctly spaced
 	 * 
 	 * @param month
 	 * @param year
@@ -183,6 +185,7 @@ public class Calendar {
 	 */
 	public static String[] getCalDays(int month, int year) {
 		String[] returnString = new String[6];
+		int[] returnStringLen = { 0, 0, 0, 0, 0, 0 };
 		int counter = 0;
 		int[] daysInMonth = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
@@ -203,21 +206,33 @@ public class Calendar {
 			returnString[counter] += ("   ");
 		}
 
-		// Print the days. After 7 start a new line.
-		for (int i = 1; i <= daysInMonth[month]; i++) {
-			returnString[counter] += String.format("%2d ", i);
+		// I can't just use the length of returnString[counter] because the ANSI characters take up a lot
+		// more room. Therefore I'll keep the length of the returnString separately
+		returnStringLen[counter] = returnString[counter].length();
 
-			// Start over if we've added 7 days
+		// Create the day strings. After 7 days start a new line.
+		for (int i = 1; i <= daysInMonth[month]; i++) {
+			// When we get to today's date, add a background color as long as the disable color flag is set
+			if (month == Date.getCurrentMonth() && year == Date.getCurrentYear() && i == Date.getCurrentDay() && Output.queryColorEnabled() == true) {
+				String today = ansi().a(Attribute.INTENSITY_BOLD).fg(Ansi.Color.YELLOW).bg(Ansi.Color.BLUE).a(String.format("%02d", i)).reset().toString();
+				returnString[counter] += String.format("%s ", today);
+				returnStringLen[counter] += 3;
+			} else {
+				returnString[counter] += String.format("%2d ", i);
+				returnStringLen[counter] += 3;
+			}
+
+			// Start over if we've added 7 days after filling in remaining line with spaces
 			if (((i + firstDayOfMon) % 7 == 0) || (i == daysInMonth[month])) {
 				// Ensure that the array element is padded with space characters
-				if (returnString[counter].length() < CALENDARWIDTH) {
-					returnString[counter] += " ".repeat(CALENDARWIDTH - returnString[counter].length() + 1);
+				if (returnStringLen[counter] < CALENDARWIDTH) {
+					returnString[counter] += " ".repeat(CALENDARWIDTH - returnStringLen[counter] + 1);
 				}
 				counter++;
 			}
 		}
 
-		// Ensure last array element is 20 characters. Pad with spaces.
+		// Ensure last row / array element is 20 characters. Pad with spaces.
 		int lastElement = returnString.length - 1;
 		if (returnString[lastElement].length() < CALENDARWIDTH) {
 			returnString[lastElement] += " ".repeat(CALENDARWIDTH - returnString[lastElement].length() + 1);
