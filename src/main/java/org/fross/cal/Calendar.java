@@ -177,7 +177,7 @@ public class Calendar {
 	}
 
 	/**
-	 * getCalDays(): Return a string array of calendar days for printing
+	 * getCalDays(): Return a string array of calendar days for a single month used for printing
 	 * 
 	 * @param month
 	 * @param year
@@ -212,9 +212,9 @@ public class Calendar {
 
 		// Create the day strings. After 7 days start a new line.
 		for (int i = 1; i <= daysInMonth[month]; i++) {
-			// When we get to today's date, add a background color as long as the disable color flag is set
+			// When we get to today's date, add colorization as long as the disable color flag is set
 			if (month == Date.getCurrentMonth() && year == Date.getCurrentYear() && i == Date.getCurrentDay() && Output.queryColorEnabled() == true) {
-				String today = ansi().a(Attribute.INTENSITY_BOLD).fg(Ansi.Color.YELLOW).bg(Ansi.Color.BLUE).a(String.format("%02d", i)).reset().toString();
+				String today = ansi().a(Attribute.INTENSITY_BOLD).fg(Ansi.Color.WHITE).bg(Ansi.Color.BLUE).a(String.format("%02d", i)).reset().toString();
 				returnString[counter] += String.format("%s ", today);
 				returnStringLen[counter] += 3;
 			} else {
@@ -222,7 +222,7 @@ public class Calendar {
 				returnStringLen[counter] += 3;
 			}
 
-			// Start over if we've added 7 days after filling in remaining line with spaces
+			// Start a new row after 7 days or if we are at the end of the month after padding
 			if (((i + firstDayOfMon) % 7 == 0) || (i == daysInMonth[month])) {
 				// Ensure that the array element is padded with space characters
 				if (returnStringLen[counter] < CALENDARWIDTH) {
@@ -232,7 +232,7 @@ public class Calendar {
 			}
 		}
 
-		// Ensure last row / array element is 20 characters. Pad with spaces.
+		// Ensure last row / array element is CALENDARWIDTH characters. Pad with spaces.
 		int lastElement = returnString.length - 1;
 		if (returnString[lastElement].length() < CALENDARWIDTH) {
 			returnString[lastElement] += " ".repeat(CALENDARWIDTH - returnString[lastElement].length() + 1);
