@@ -135,7 +135,7 @@ public class Main {
 
 		// Display header information
 		int headerWidth = (Calendar.CALENDARWIDTH * Calendar.calsPerRow) + (Calendar.calsPerRow * Calendar.SPACESBETWEENCALS) - 2;
-		String headerText = "Cal v" + VERSION + "  by Michael Fross";
+		String headerText = "Cal v" + VERSION + " by Michael Fross";
 		int headerSpaces = headerWidth / 2 - headerText.length() / 2;
 
 		// Ensure we have enough room if user selects -n1
