@@ -214,7 +214,7 @@ public class Calendar {
 		for (int i = 1; i <= daysInMonth[month]; i++) {
 			// When we get to today's date, add colorization as long as the disable color flag is set
 			if (month == Date.getCurrentMonth() && year == Date.getCurrentYear() && i == Date.getCurrentDay() && Output.queryColorEnabled() == true) {
-				String today = ansi().a(Attribute.INTENSITY_BOLD).fg(Ansi.Color.WHITE).bg(Ansi.Color.BLUE).a(String.format("%02d", i)).reset().toString();
+				String today = ansi().a(Attribute.INTENSITY_BOLD).fg(Ansi.Color.WHITE).bg(Ansi.Color.BLUE).a(String.format("%2d", i)).reset().toString();
 				returnString[counter] += String.format("%s ", today);
 				returnStringLen[counter] += 3;
 			} else {
