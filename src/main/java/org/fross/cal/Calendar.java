@@ -186,7 +186,7 @@ public class Calendar {
 	public static String[] getCalDays(int month, int year) {
 		String[] returnString = new String[6];
 		int[] returnStringLen = { 0, 0, 0, 0, 0, 0 };
-		int counter = 0;
+		int row = 0;
 		int[] daysInMonth = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 		// Initialize the array
@@ -203,32 +203,32 @@ public class Calendar {
 
 		// Insert spaces until we get to first day of the month in the calendar
 		for (int i = 0; i < firstDayOfMon; i++) {
-			returnString[counter] += ("   ");
+			returnString[row] += ("   ");
 		}
 
 		// I can't just use the length of returnString[counter] because the ANSI characters take up a lot
 		// more room. Therefore I'll keep the length of the returnString separately
-		returnStringLen[counter] = returnString[counter].length();
+		returnStringLen[row] = returnString[row].length();
 
 		// Create the day strings. After 7 days start a new line.
 		for (int i = 1; i <= daysInMonth[month]; i++) {
-			// When we get to today's date, add colorization as long as the disable color flag is set
+			// If we get to today's date, add colorization as long as the disable color flag is not set
 			if (month == Date.getCurrentMonth() && year == Date.getCurrentYear() && i == Date.getCurrentDay() && Output.queryColorEnabled() == true) {
 				String today = ansi().a(Attribute.INTENSITY_BOLD).fg(Ansi.Color.WHITE).bg(Ansi.Color.BLUE).a(String.format("%2d", i)).reset().toString();
-				returnString[counter] += String.format("%s ", today);
-				returnStringLen[counter] += 3;
+				returnString[row] += String.format("%s ", today);
+				returnStringLen[row] += 3;
 			} else {
-				returnString[counter] += String.format("%2d ", i);
-				returnStringLen[counter] += 3;
+				returnString[row] += String.format("%2d ", i);
+				returnStringLen[row] += 3;
 			}
 
 			// Start a new row after 7 days or if we are at the end of the month after padding
 			if (((i + firstDayOfMon) % 7 == 0) || (i == daysInMonth[month])) {
 				// Ensure that the array element is padded with space characters
-				if (returnStringLen[counter] < CALENDARWIDTH) {
-					returnString[counter] += " ".repeat(CALENDARWIDTH - returnStringLen[counter] + 1);
+				if (returnStringLen[row] < CALENDARWIDTH) {
+					returnString[row] += " ".repeat(CALENDARWIDTH - returnStringLen[row] + 1);
 				}
-				counter++;
+				row++;
 			}
 		}
 
