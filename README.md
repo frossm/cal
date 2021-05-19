@@ -37,7 +37,7 @@ This is a java program that is all bundled into a single jar file.  To run a jar
 
     java -jar cal.jar
   
- Please note that cal.jar must be in your path.
+ Please note that java must be in your path and this assumes cal.jar is in your current directory.  Basic command line topics and I won't go into detail here.
 
 
 ## Examples
