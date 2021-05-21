@@ -206,7 +206,7 @@ public class Calendar {
 			returnString[row] += ("   ");
 		}
 
-		// I can't just use the length of returnString[counter] because the ANSI characters take up a lot
+		// I can't just use the length of returnString[row] because the ANSI characters take up a lot
 		// more room. Therefore I'll keep the length of the returnString separately
 		returnStringLen[row] = returnString[row].length();
 
