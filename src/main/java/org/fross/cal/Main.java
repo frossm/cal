@@ -133,24 +133,24 @@ public class Main {
 		int clParameters = args.length - optG.getOptind();
 		Output.debugPrint("Number of command line parameters: " + clParameters);
 
-		// Display header information
-		int headerWidth = (Calendar.CALENDARWIDTH * Calendar.calsPerRow) + (Calendar.calsPerRow * Calendar.SPACESBETWEENCALS) - 2;
-		String headerText = "Cal v" + VERSION + " by Michael Fross";
-		int headerSpaces = headerWidth / 2 - headerText.length() / 2;
-
-		// Ensure we have enough room if user selects -n1
-		if (headerSpaces < 0) {
-			headerSpaces = 0;
-			headerWidth = headerText.length();
-		}
-
-		Output.debugPrint("headerWidth = " + headerWidth);
-		Output.debugPrint("headerText = " + "'" + headerText + "'  (Len = " + headerText.length() + ")");
-		Output.debugPrint("headerSpaces = " + headerSpaces);
-
-		Output.printColorln(Ansi.Color.CYAN, "\n+" + "-".repeat(headerWidth) + "+");
-		Output.printColorln(Ansi.Color.YELLOW, " ".repeat(headerSpaces) + headerText);
-		Output.printColorln(Ansi.Color.CYAN, "+" + "-".repeat(headerWidth) + "+");
+//		// Display header information
+//		int headerWidth = (Calendar.CALENDARWIDTH * Calendar.calsPerRow) + (Calendar.calsPerRow * Calendar.SPACESBETWEENCALS) - 2;
+//		String headerText = "Cal v" + VERSION + " by Michael Fross";
+//		int headerSpaces = headerWidth / 2 - headerText.length() / 2;
+//
+//		// Ensure we have enough room if user selects -n1
+//		if (headerSpaces < 0) {
+//			headerSpaces = 0;
+//			headerWidth = headerText.length();
+//		}
+//
+//		Output.debugPrint("headerWidth = " + headerWidth);
+//		Output.debugPrint("headerText = " + "'" + headerText + "'  (Len = " + headerText.length() + ")");
+//		Output.debugPrint("headerSpaces = " + headerSpaces);
+//
+//		Output.printColorln(Ansi.Color.CYAN, "\n+" + "-".repeat(headerWidth) + "+");
+//		Output.printColorln(Ansi.Color.YELLOW, " ".repeat(headerSpaces) + headerText);
+//		Output.printColorln(Ansi.Color.CYAN, "+" + "-".repeat(headerWidth) + "+");
 
 		// Process options and display the calendar
 		try {
