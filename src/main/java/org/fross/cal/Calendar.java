@@ -167,11 +167,12 @@ public class Calendar {
 		String returnString = "";
 		String strToCenter = MONTHLIST[month] + " " + year;
 
+		// Add the correct number of spaces to center name
 		int numSpaces = ((CALENDARWIDTH / 2) - (strToCenter.length() / 2));
-		for (int i = 0; i < numSpaces; i++) {
-			returnString += " ";
-		}
-		returnString += strToCenter;
+		returnString = " ".repeat(numSpaces);
+		
+		// Add the Month & Year to the spaces
+		returnString += MONTHLIST[month] + " " + year;
 
 		return returnString;
 	}
