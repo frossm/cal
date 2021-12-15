@@ -57,16 +57,16 @@ public class Help {
 
 		Output.printColorln(Ansi.Color.YELLOW, "\nParameters:");
 		Output.printColorln(Ansi.Color.WHITE, "<None>       Display the current year");
-		Output.printColorln(Ansi.Color.WHITE, "YEAR         Display the entire year");
-		Output.printColorln(Ansi.Color.WHITE, "MONTH        Display the current month in the current year");
-		Output.printColorln(Ansi.Color.WHITE, "MONTH YEAR   Display the current month in the provided year");
+		Output.printColorln(Ansi.Color.WHITE, "YEAR         Display the entire YEAR");
+		Output.printColorln(Ansi.Color.WHITE, "MONTH        Display the MONTH in the current year");
+		Output.printColorln(Ansi.Color.WHITE, "MONTH YEAR   Display the MONTH and YEAR provided");
 
 		Output.printColorln(Ansi.Color.YELLOW, "\nExamples:");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar         Display the current year");
-		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -n 4    Display the current year - 4 months per row");
+		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -n 4    Display the current year with 4 months per row");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 9       Display September of the current year");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 2022    Display the entire year 2022");
-		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 9 2022  Display September of 2022");
+		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 9 2022  Display only September of 2022");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -D 6    Display June of current year in debug mode");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -h      Show this help information");
 	}
