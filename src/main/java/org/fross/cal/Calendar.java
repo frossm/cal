@@ -61,8 +61,7 @@ public class Calendar {
 	/**
 	 * firstDay(): Given the month, day, and year, return which day of the week it falls
 	 * 
-	 * Reference: https://www.tondering.dk/claus/cal/chrweek.php#calcdow
-	 * http://www.cplusplus.com/forum/general/174165/
+	 * Reference: https://www.tondering.dk/claus/cal/chrweek.php#calcdow & http://www.cplusplus.com/forum/general/174165/
 	 * 
 	 * @param month
 	 * @param day
@@ -170,7 +169,7 @@ public class Calendar {
 		// Add the correct number of spaces to center name
 		int numSpaces = ((CALENDARWIDTH / 2) - (strToCenter.length() / 2));
 		returnString = " ".repeat(numSpaces);
-		
+
 		// Add the Month & Year to the spaces
 		returnString += MONTHLIST[month] + " " + year;
 

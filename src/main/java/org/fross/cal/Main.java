@@ -56,6 +56,7 @@ public class Main {
 	public static void main(String[] args) {
 		int optionEntry;
 		int month, year;
+		int numCalPerRow = 0;
 
 		// Process application level properties file
 		// Update properties from Maven at build time:
@@ -79,16 +80,15 @@ public class Main {
 		while ((optionEntry = optG.getopt()) != -1) {
 			switch (optionEntry) {
 			case 'n': // Set Number of Calendars per Row
-				int newNum = 0;
 				try {
-					newNum = Integer.parseInt(optG.getOptarg());
-					if (newNum <= 0) {
+					numCalPerRow = Integer.parseInt(optG.getOptarg());
+					if (numCalPerRow <= 0) {
 						throw new UnsupportedOperationException();
 					}
 				} catch (Exception Ex) {
 					Output.fatalError("Invalid option for -n switch: '" + optG.getOptarg() + "'", 0);
 				}
-				Calendar.setCalsPerRow(newNum);
+				Calendar.setCalsPerRow(numCalPerRow);
 				break;
 
 			case 'D': // Debug Mode
@@ -124,15 +124,16 @@ public class Main {
 		// Display some useful information about the environment if in Debug Mode
 		Debug.displaySysInfo();
 		Output.debugPrint("Command Line Options");
-		Output.debugPrint("  -D:  " + Debug.query() + "\n");
-		Output.debugPrint("Current Date: Month = " + month + " Year =" + year);
+		Output.debugPrint("  -D:  " + Debug.query());
+		Output.debugPrint("  -n:  " + numCalPerRow);
 
-		// Process the command line parameters (non-options). Update month and year as
-		// needed
+		// Process the command line parameters (non-options). Update month and year as needed
 		Output.debugPrint("Number of command line arguments:  " + args.length);
 		int clParameters = args.length - optG.getOptind();
 		Output.debugPrint("Number of command line parameters: " + clParameters);
+		Output.debugPrint("Current Date: Month:  " + month + "   Year: " + year);
 
+// DISABLE THIE HEADER AS IT SEEMS OBTRUSIVE
 //		// Display header information
 //		int headerWidth = (Calendar.CALENDARWIDTH * Calendar.calsPerRow) + (Calendar.calsPerRow * Calendar.SPACESBETWEENCALS) - 2;
 //		String headerText = "Cal v" + VERSION + " by Michael Fross";
@@ -158,21 +159,26 @@ public class Main {
 			switch (clParameters) {
 			case 0:
 				// Process no dates provided
-				Output.debugPrint("No Month or Year provided on command line. Using Year:" + year);
+				Output.debugPrint("No Month or Year provided on command line. Using Year: " + year);
 				Calendar.printYear(month, year);
 				break;
+
 			case 1:
 				// Just a date or month provided
 				int d = Integer.parseInt(args[optG.getOptind()]);
+
+				// Assume the number provided is a year
 				if (d > 12) {
 					year = d;
-					Output.debugPrint("Commandline Year provided. Using Month: " + month + " Year:" + year);
+					Output.debugPrint("Commandline Year provided. Using Month: " + month + "  Year: " + year);
 					Output.debugPrint(" 1         2         3         4         5         6         7");
 					Output.debugPrint("90123456789012345678901234567890123456789012345678901234567890");
 					Calendar.printYear(month, year);
+
+					// Assume the number provided is a month
 				} else {
 					month = d;
-					Output.debugPrint("Commandline Month provided. Using Month: " + month + " Year:" + year);
+					Output.debugPrint("Commandline Month provided. Using Month: " + month + "  Year:" + year);
 					Calendar.printMonth(month, year);
 				}
 				break;
@@ -180,20 +186,22 @@ public class Main {
 				// Month & year provided
 				month = Integer.parseInt(args[optG.getOptind()]);
 				year = Integer.parseInt(args[optG.getOptind() + 1]);
-				Output.debugPrint("Commandline Month & Year provided. Month:" + month + " Year:" + year);
+				Output.debugPrint("Commandline Month & Year provided. Month: " + month + "  Year: " + year);
 				Calendar.printMonth(month, year);
 				break;
+
 			default:
 				// Ignore anything beyond the first two parameters
+				break;
 			}
+
 		} catch (NumberFormatException ex) {
 			Output.fatalError("Parameters can only be numbers.  Usage '-h' for options", 0);
 		} catch (Exception ex) {
 			ex.getMessage();
 			ex.printStackTrace();
-			Output.fatalError("Something went wrong.  You shouldn't really see this.  Eeek!", 0);
+			Output.fatalError("Something went very wrong.  You shouldn't really see this.  Eeek!", 0);
 		}
 
-		// Program End
 	}
 }
