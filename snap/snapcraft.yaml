@@ -1,5 +1,5 @@
 name: fcal
-version: '2.3.11'
+version: '2.3.12'
 summary: Command line calendar display
 description: |
   fCal is a command line calendar display utility.  It will display a
@@ -31,6 +31,9 @@ parts:
     source-branch: master
     source-type: git
     after: [library]
+    override-prime: |
+      snapcraftctl prime
+      rm -vf usr/lib/jvm/java-11-openjdk-*/lib/security/blacklisted.certs
 
 plugs:
    cal-network:
