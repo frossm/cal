@@ -1,10 +1,10 @@
 <p align="center"> 
-    <img width="70%" src ="https://github.com/frossm/cal/blob/master/graphics/SnapShot.jpg">
+    <img width="70%" src ="https://github.com/frossm/cal/raw/master/graphics/SnapShot.jpg">
 </p> 
 
 # cal - The Console Calendar Generator
 
-<img align="right" width="200" src="https://github.com/frossm/cal/blob/master/graphics/PostIt.jpg">Cal (or fCal on SNAP) is a command line utility that will output a calendar for the desired month/year.  It's simple and accurate with a few useful features.
+<img align="right" width="200" src="https://github.com/frossm/cal/raw/master/graphics/PostIt.jpg">Cal (or fCal on SNAP) is a command line utility that will output a calendar for the desired month/year.  It's simple and accurate with a few useful features.
 
 By default, Cal will display the current year.  You can provide a month and year, a month, or just a year.  You can also change the number of calendars per row in your display with the `-n` switch.  See the examples below for a more through description.
 
