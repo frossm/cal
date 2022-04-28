@@ -116,7 +116,6 @@ public class Main {
 			default:
 				Output.fatalError("ERROR: Unknown Command Line Option -" + optG.getOptarg() + "'", 0);
 				Help.display();
-
 				break;
 			}
 		}
@@ -131,31 +130,19 @@ public class Main {
 		Output.debugPrint("Number of command line arguments:  " + args.length);
 		int clParameters = args.length - optG.getOptind();
 		Output.debugPrint("Number of command line parameters: " + clParameters);
-		Output.debugPrint("Current Date: Month:  " + month + "   Year: " + year);
+		Output.debugPrint("Current Date: Month: " + month + "   Year: " + year);
 
-// DISABLE THIE HEADER AS IT SEEMS OBTRUSIVE
-//		// Display header information
-//		int headerWidth = (Calendar.CALENDARWIDTH * Calendar.calsPerRow) + (Calendar.calsPerRow * Calendar.SPACESBETWEENCALS) - 2;
-//		String headerText = "Cal v" + VERSION + " by Michael Fross";
-//		int headerSpaces = headerWidth / 2 - headerText.length() / 2;
-//
-//		// Ensure we have enough room if user selects -n1
-//		if (headerSpaces < 0) {
-//			headerSpaces = 0;
-//			headerWidth = headerText.length();
-//		}
-//
-//		Output.debugPrint("headerWidth = " + headerWidth);
-//		Output.debugPrint("headerText = " + "'" + headerText + "'  (Len = " + headerText.length() + ")");
-//		Output.debugPrint("headerSpaces = " + headerSpaces);
-//
-//		Output.printColorln(Ansi.Color.CYAN, "\n+" + "-".repeat(headerWidth) + "+");
-//		Output.printColorln(Ansi.Color.YELLOW, " ".repeat(headerSpaces) + headerText);
-//		Output.printColorln(Ansi.Color.CYAN, "+" + "-".repeat(headerWidth) + "+");
+		// Ensure the month and year are greater than zero
+		for (int i=0; i < clParameters; i++) {
+			if (args[i].compareTo("0") == 0) {
+				Output.fatalError("Month & Year must be greater than zero", 6);
+			}
+		}
 
 		// Process options and display the calendar
 		try {
 			Output.println("");
+
 			switch (clParameters) {
 			case 0:
 				// Process no dates provided
@@ -171,8 +158,6 @@ public class Main {
 				if (d > 12) {
 					year = d;
 					Output.debugPrint("Commandline Year provided. Using Month: " + month + "  Year: " + year);
-					Output.debugPrint(" 1         2         3         4         5         6         7");
-					Output.debugPrint("90123456789012345678901234567890123456789012345678901234567890");
 					Calendar.printYear(month, year);
 
 					// Assume the number provided is a month

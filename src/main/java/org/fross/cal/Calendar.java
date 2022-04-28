@@ -37,8 +37,8 @@ public class Calendar {
 	// Class Constants
 	static final int DEFAULT_CALS_PER_ROW = 3;
 	static final int CALENDARWIDTH = 20;
-	static final int SPACESBETWEENCALS = 3;
-	static final String[] MONTHLIST = { "none", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
+	static final int SPACESBETWEENCALS = 2;
+	static final String[] MONTHLIST = { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
 			"December" };
 
 	// Class Variables
@@ -100,6 +100,9 @@ public class Calendar {
 	public static void printMonth(int month, int year) {
 		String[] days = getCalDays(month, year);
 
+		Output.debugPrint(" 1         2         3         4         5         6         7         8\n"
+				+ "12345678901234567890123456789012345678901234567890123456789012345678901234567890");
+
 		Output.printColorln(Ansi.Color.CYAN, getCalHeader(month, year));
 		Output.printColorln(Ansi.Color.YELLOW, "Su Mo Tu We Th Fr Sa");
 
@@ -118,6 +121,9 @@ public class Calendar {
 		String[] days = new String[6];
 		String[] dayrows = new String[6];
 		int i, j, k;
+
+		Output.debugPrint(" 1         2         3         4         5         6         7         8\n"
+				+ "12345678901234567890123456789012345678901234567890123456789012345678901234567890");
 
 		// Loop through the calendar rows
 		for (i = 0; i < 12; i = i + calsPerRow) {
