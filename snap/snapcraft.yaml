@@ -1,5 +1,5 @@
 name: fcal
-version: '2.3.15'
+version: '2.3.16'
 summary: Command line calendar display
 description: |
   fCal is a command line calendar display utility.  It will display a
@@ -22,7 +22,7 @@ parts:
     plugin: maven
     source: https://github.com/frossm/library.git
     source-type: git
-    source-tag: 'v2022.06.28'
+    source-tag: 'v2022.07.28'
     maven-options: [install]
 
   cal:

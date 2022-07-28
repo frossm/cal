@@ -5,7 +5,7 @@
 
 	<groupId>org.fross</groupId>
 	<artifactId>cal</artifactId>
-	<version>2.3.15</version>
+	<version>2.3.16</version>
 	<packaging>jar</packaging>
 
 	<name>cal</name>
@@ -180,7 +180,7 @@
 		<dependency>
 			<groupId>org.fross</groupId>
 			<artifactId>library</artifactId>
-			<version>2022.06.28</version>
+			<version>2022.07.28</version>
 		</dependency>
 	</dependencies>
 
