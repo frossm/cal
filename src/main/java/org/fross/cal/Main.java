@@ -133,7 +133,7 @@ public class Main {
 		Output.debugPrint("Current Date: Month: " + month + "   Year: " + year);
 
 		// Ensure the month and year are greater than zero
-		for (int i=0; i < clParameters; i++) {
+		for (int i = 0; i < clParameters; i++) {
 			if (args[i].compareTo("0") == 0) {
 				Output.fatalError("Month & Year must be greater than zero", 6);
 			}

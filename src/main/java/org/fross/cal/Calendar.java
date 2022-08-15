@@ -32,6 +32,7 @@ import org.fross.library.Date;
 import org.fross.library.Output;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
+import org.fusesource.jansi.Ansi.Color;
 
 public class Calendar {
 	// Class Constants
@@ -40,6 +41,8 @@ public class Calendar {
 	static final int SPACESBETWEENCALS = 2;
 	static final String[] MONTHLIST = { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
 			"December" };
+	static final Color TODAYHIGHLIGHT_FG = Ansi.Color.WHITE;
+	static final Color TODAYHIGHLIGHT_BG = Ansi.Color.BLUE;
 
 	// Class Variables
 	static int calsPerRow = DEFAULT_CALS_PER_ROW;
@@ -218,9 +221,9 @@ public class Calendar {
 
 		// Create the day strings. After 7 days start a new line.
 		for (int i = 1; i <= daysInMonth[month]; i++) {
-			// If we get to today's date, add colorization as long as the disable color flag is not set
+			// If we get to today's date, add colorization as long as the 'disable color' flag is not set
 			if (month == Date.getCurrentMonth() && year == Date.getCurrentYear() && i == Date.getCurrentDay() && Output.queryColorEnabled() == true) {
-				String today = ansi().a(Attribute.INTENSITY_BOLD).fg(Ansi.Color.WHITE).bg(Ansi.Color.BLUE).a(String.format("%2d", i)).reset().toString();
+				String today = ansi().a(Attribute.INTENSITY_BOLD).fg(TODAYHIGHLIGHT_FG).bg(TODAYHIGHLIGHT_BG).a(String.format("%2d", i)).reset().toString();
 				returnString[row] += String.format("%s ", today);
 				returnStringLen[row] += 3;
 			} else {
