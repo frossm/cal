@@ -62,6 +62,15 @@ public class Calendar {
 	}
 
 	/**
+	 * queryCalsPerRow(): Return the current number of calendars printed per row
+	 * 
+	 * @return
+	 */
+	public static int queryCalsPerRow() {
+		return calsPerRow;
+	}
+
+	/**
 	 * firstDay(): Given the month, day, and year, return which day of the week it falls
 	 * 
 	 * Reference: https://www.tondering.dk/claus/cal/chrweek.php#calcdow & http://www.cplusplus.com/forum/general/174165/

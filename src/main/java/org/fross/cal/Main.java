@@ -29,11 +29,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.fross.library.Debug;
-import org.fross.library.GitHub;
 import org.fross.library.Output;
-import org.fusesource.jansi.Ansi;
-
-import gnu.getopt.Getopt;
 
 /**
  * Main - Main program execution class
@@ -42,7 +38,6 @@ import gnu.getopt.Getopt;
  *
  */
 public class Main {
-
 	// Class Constants
 	public static String VERSION;
 	public static String COPYRIGHT;
@@ -54,10 +49,6 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int optionEntry;
-		int month, year;
-		int numCalPerRow = 0;
-
 		// Process application level properties file
 		// Update properties from Maven at build time:
 		// https://stackoverflow.com/questions/3697449/retrieve-version-from-maven-pom-xml-in-code
@@ -71,122 +62,59 @@ public class Main {
 			Output.fatalError("Unable to read property file '" + PROPERTIES_FILE + "'", 3);
 		}
 
-		// Populate the month and year with todays values as a default
-		month = org.fross.library.Date.getCurrentMonth();
-		year = org.fross.library.Date.getCurrentYear();
-
-		// Process Command Line Options and set flags where needed
-		Getopt optG = new Getopt("cal", args, "n:Dvzh?");
-		while ((optionEntry = optG.getopt()) != -1) {
-			switch (optionEntry) {
-			case 'n': // Set Number of Calendars per Row
-				try {
-					numCalPerRow = Integer.parseInt(optG.getOptarg());
-					if (numCalPerRow <= 0) {
-						throw new UnsupportedOperationException();
-					}
-				} catch (Exception Ex) {
-					Output.fatalError("Invalid option for -n switch: '" + optG.getOptarg() + "'", 0);
-				}
-				Calendar.setCalsPerRow(numCalPerRow);
-				break;
-
-			case 'D': // Debug Mode
-				Debug.enable();
-				break;
-
-			case 'v': // Version
-				Output.printColorln(Ansi.Color.WHITE, "Cal Version: v" + VERSION);
-				Output.printColorln(Ansi.Color.CYAN, COPYRIGHT);
-				Output.printColorln(Ansi.Color.WHITE, "\nLatest Release on GitHub: " + GitHub.updateCheck("cal"));
-				Output.printColorln(Ansi.Color.CYAN, "HomePage: https://github.com/frossm/cal");
-				System.exit(0);
-				break;
-
-			case 'z': // Disable Colorized Output
-				Output.enableColor(false);
-				break;
-
-			case '?': // Help
-			case 'h':
-				Help.display();
-				System.exit(0);
-				break;
-
-			default:
-				Output.fatalError("ERROR: Unknown Command Line Option -" + optG.getOptarg() + "'", 0);
-				Help.display();
-				break;
-			}
-		}
+		// Process the command line arguments and switches
+		CommandLineArgs.ProcessCommandLine(args);
 
 		// Display some useful information about the environment if in Debug Mode
 		Debug.displaySysInfo();
 		Output.debugPrint("Command Line Options");
 		Output.debugPrint("  -D:  " + Debug.query());
-		Output.debugPrint("  -n:  " + numCalPerRow);
-
-		// Process the command line parameters (non-options). Update month and year as needed
+		Output.debugPrint("  -n:  " + Calendar.queryCalsPerRow());
+		Output.debugPrint("  -z:  " + Output.queryColorEnabled());
 		Output.debugPrint("Number of command line arguments:  " + args.length);
-		int clParameters = args.length - optG.getOptind();
-		Output.debugPrint("Number of command line parameters: " + clParameters);
-		Output.debugPrint("Current Date: Month: " + month + "   Year: " + year);
 
-		// Ensure the month and year are greater than zero
-		for (int i = 0; i < clParameters; i++) {
-			if (args[i].compareTo("0") == 0) {
-				Output.fatalError("Month & Year must be greater than zero", 6);
+		// Ensure there are not more than 2 parameters given
+		if (CommandLineArgs.cli.clMonthAndOrYear.size() > 2) {
+			Output.fatalError("There can not be more than 2 dates given on the commandline.\nPlease see Help (-h)", 6);
+		}
+
+		// Ensure the month / year is a valid integer
+		for (int i = 0; i < CommandLineArgs.cli.clMonthAndOrYear.size(); i++) {
+			int monthAndOrYear = 0;
+			try {
+				monthAndOrYear = Integer.parseInt(CommandLineArgs.cli.clMonthAndOrYear.get(i));
+
+				// Ensure no negative value is provided for the month and/or year
+				if (monthAndOrYear <= 0) {
+					Output.fatalError("Month & Year values must be greater than zero", 6);
+				}
+
+			} catch (Exception ex) {
+				Output.fatalError("Invalid Month and/or Year: '" + monthAndOrYear + "'", 6);
 			}
 		}
 
-		// Process options and display the calendar
-		try {
-			Output.println("");
+		// Display the calendars
+		Output.println("");
+		switch (CommandLineArgs.cli.clMonthAndOrYear.size()) {
+		case 0:
+			Calendar.printYear(CommandLineArgs.queryMonthToUse(), CommandLineArgs.queryYearToUse());
+			break;
 
-			switch (clParameters) {
-			case 0:
-				// Process no dates provided
-				Output.debugPrint("No Month or Year provided on command line. Using Year: " + year);
-				Calendar.printYear(month, year);
-				break;
-
-			case 1:
-				// Just a date or month provided
-				int d = Integer.parseInt(args[optG.getOptind()]);
-
-				// Assume the number provided is a year
-				if (d > 12) {
-					year = d;
-					Output.debugPrint("Commandline Year provided. Using Month: " + month + "  Year: " + year);
-					Calendar.printYear(month, year);
-
-					// Assume the number provided is a month
-				} else {
-					month = d;
-					Output.debugPrint("Commandline Month provided. Using Month: " + month + "  Year:" + year);
-					Calendar.printMonth(month, year);
-				}
-				break;
-			case 2:
-				// Month & year provided
-				month = Integer.parseInt(args[optG.getOptind()]);
-				year = Integer.parseInt(args[optG.getOptind() + 1]);
-				Output.debugPrint("Commandline Month & Year provided. Month: " + month + "  Year: " + year);
-				Calendar.printMonth(month, year);
-				break;
-
-			default:
-				// Ignore anything beyond the first two parameters
-				break;
+		case 1:
+			if (Integer.parseInt(CommandLineArgs.cli.clMonthAndOrYear.get(0)) > 12) {
+				Calendar.printYear(CommandLineArgs.queryMonthToUse(), CommandLineArgs.queryYearToUse());
+			} else {
+				Calendar.printMonth(CommandLineArgs.queryMonthToUse(), CommandLineArgs.queryYearToUse());
 			}
+			break;
 
-		} catch (NumberFormatException ex) {
-			Output.fatalError("Parameters can only be numbers.  Usage '-h' for options", 0);
-		} catch (Exception ex) {
-			ex.getMessage();
-			ex.printStackTrace();
-			Output.fatalError("Something went very wrong.  You shouldn't really see this.  Eeek!", 0);
+		case 2:
+			Calendar.printMonth(CommandLineArgs.queryMonthToUse(), CommandLineArgs.queryYearToUse());
+			break;
+
 		}
 
 	}
+
 }
