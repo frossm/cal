@@ -1,0 +1,110 @@
+/**
+ * 
+ */
+package org.fross.cal;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
+/**
+ * @author Michael Fross (michael@fross.org)
+ *
+ */
+class CalendarTest {
+	/**
+	 * Test method for {@link org.fross.cal.Calendar#setCalsPerRow(int)}.
+	 */
+	@Test
+	void testSetCalsPerRow() {
+		// Successful
+		assertEquals(3, Calendar.calsPerRow);
+		Calendar.setCalsPerRow(4);
+		assertEquals(4, Calendar.calsPerRow);
+		Calendar.setCalsPerRow(6);
+		assertEquals(6, Calendar.calsPerRow);
+
+		// Failures
+		Calendar.setCalsPerRow(-1);
+		assertEquals(6, Calendar.calsPerRow);
+		Calendar.setCalsPerRow(7);
+		assertEquals(6, Calendar.calsPerRow);
+		Calendar.setCalsPerRow(101);
+		assertEquals(6, Calendar.calsPerRow);
+	}
+
+	/**
+	 * Test method for {@link org.fross.cal.Calendar#firstDay(int, int, int)}.
+	 */
+	@Test
+	void testFirstDay() {
+		// Test each month in 2022
+		assertEquals(6, Calendar.firstDay(1, 1, 2022));
+		assertEquals(2, Calendar.firstDay(2, 1, 2022));
+		assertEquals(2, Calendar.firstDay(3, 1, 2022));
+		assertEquals(5, Calendar.firstDay(4, 1, 2022));
+		assertEquals(0, Calendar.firstDay(5, 1, 2022));
+		assertEquals(3, Calendar.firstDay(6, 1, 2022));
+		assertEquals(5, Calendar.firstDay(7, 1, 2022));
+		assertEquals(1, Calendar.firstDay(8, 1, 2022));
+		assertEquals(4, Calendar.firstDay(9, 1, 2022));
+		assertEquals(6, Calendar.firstDay(10, 1, 2022));
+		assertEquals(2, Calendar.firstDay(11, 1, 2022));
+		assertEquals(4, Calendar.firstDay(12, 1, 2022));
+	}
+
+	/**
+	 * Test method for {@link org.fross.cal.Calendar#isLeapYear(int)}.
+	 */
+	@Test
+	void testIsLeapYear() {
+		assertTrue(Calendar.isLeapYear(2020));
+		assertFalse(Calendar.isLeapYear(2021));
+		assertFalse(Calendar.isLeapYear(2022));
+		assertFalse(Calendar.isLeapYear(2023));
+		assertTrue(Calendar.isLeapYear(2024));
+		assertFalse(Calendar.isLeapYear(2025));
+		assertFalse(Calendar.isLeapYear(2026));
+		assertFalse(Calendar.isLeapYear(2027));
+		assertTrue(Calendar.isLeapYear(2028));
+		assertFalse(Calendar.isLeapYear(2029));
+	}
+
+	/**
+	 * Test method for {@link org.fross.cal.Calendar#getCalHeader(int, int)}.
+	 */
+	@Test
+	void testGetCalHeader() {
+		assertEquals("     August 2022", Calendar.getCalHeader(8, 2022));
+		assertEquals("   September 2055", Calendar.getCalHeader(9, 2055));
+		assertEquals("      May 2023", Calendar.getCalHeader(5, 2023));
+		assertEquals("     December 6", Calendar.getCalHeader(12, 6));
+	}
+
+	/**
+	 * Test method for {@link org.fross.cal.Calendar#getCalDays(int, int)}.
+	 */
+	@Test
+	void testGetCalDays() {
+		// Lets evaluate a month in the future
+		String[] calDays = Calendar.getCalDays(2, 2099);
+		assertEquals(" 1  2  3  4  5  6  7 ", calDays[0]);
+		assertEquals(" 8  9 10 11 12 13 14 ", calDays[1]);
+		assertEquals("15 16 17 18 19 20 21 ", calDays[2]);
+		assertEquals("22 23 24 25 26 27 28 ", calDays[3]);
+		assertEquals("", calDays[4]);
+		assertEquals("                     ", calDays[5]);
+
+		// And one in the past
+		calDays = Calendar.getCalDays(12, 71);
+		assertEquals("       1  2  3  4  5 ", calDays[0]);
+		assertEquals(" 6  7  8  9 10 11 12 ", calDays[1]);
+		assertEquals("13 14 15 16 17 18 19 ", calDays[2]);
+		assertEquals("20 21 22 23 24 25 26 ", calDays[3]);
+		assertEquals("27 28 29 30 31       ", calDays[4]);
+		assertEquals("                     ", calDays[5]);
+	}
+
+}

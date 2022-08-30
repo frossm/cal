@@ -54,10 +54,10 @@ public class Calendar {
 	 */
 	public static void setCalsPerRow(int cpr) {
 		// Number must be divided into 12
-		if (12 % cpr == 0) {
+		if (12 % cpr == 0 && cpr > 0) {
 			calsPerRow = cpr;
 		} else {
-			Output.printColorln(Ansi.Color.RED, "Error.  Number of calendars per row must be evenly divisable into 12\n");
+			Output.printColorln(Ansi.Color.RED, "Error:  Number of calendars per row given ('" + cpr + "') must be evenly divisable into 12");
 		}
 	}
 
@@ -203,7 +203,8 @@ public class Calendar {
 
 		// Lets see if the year provided is a leap year
 		if (month == 2 && isLeapYear(year)) {
-			daysInMonth[month] = 29;
+			// It's a leap year - set February to have 29 days
+			daysInMonth[2] = 29;
 		}
 
 		// Determine the which day of the week the 1st fall upon
