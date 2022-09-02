@@ -57,23 +57,23 @@ class CalendarTest {
 	}
 
 	/**
-	 * Test method for {@link org.fross.cal.Calendar#firstDay(int, int, int)}.
+	 * Test method for {@link org.fross.cal.Calendar#getDayOfWeek(int, int, int)}.
 	 */
 	@Test
-	void testFirstDay() {
+	void testGetDayOfWeek() {
 		// Test each month in 2022
-		assertEquals(6, Calendar.firstDay(1, 1, 2022));
-		assertEquals(2, Calendar.firstDay(2, 1, 2022));
-		assertEquals(2, Calendar.firstDay(3, 1, 2022));
-		assertEquals(5, Calendar.firstDay(4, 1, 2022));
-		assertEquals(0, Calendar.firstDay(5, 1, 2022));
-		assertEquals(3, Calendar.firstDay(6, 1, 2022));
-		assertEquals(5, Calendar.firstDay(7, 1, 2022));
-		assertEquals(1, Calendar.firstDay(8, 1, 2022));
-		assertEquals(4, Calendar.firstDay(9, 1, 2022));
-		assertEquals(6, Calendar.firstDay(10, 1, 2022));
-		assertEquals(2, Calendar.firstDay(11, 1, 2022));
-		assertEquals(4, Calendar.firstDay(12, 1, 2022));
+		assertEquals(6, Calendar.getDayOfWeek(1, 1, 2022));
+		assertEquals(2, Calendar.getDayOfWeek(2, 1, 2022));
+		assertEquals(2, Calendar.getDayOfWeek(3, 1, 2022));
+		assertEquals(5, Calendar.getDayOfWeek(4, 1, 2022));
+		assertEquals(0, Calendar.getDayOfWeek(5, 1, 2022));
+		assertEquals(3, Calendar.getDayOfWeek(6, 1, 2022));
+		assertEquals(5, Calendar.getDayOfWeek(7, 1, 2022));
+		assertEquals(1, Calendar.getDayOfWeek(8, 1, 2022));
+		assertEquals(4, Calendar.getDayOfWeek(9, 1, 2022));
+		assertEquals(6, Calendar.getDayOfWeek(10, 1, 2022));
+		assertEquals(2, Calendar.getDayOfWeek(11, 1, 2022));
+		assertEquals(4, Calendar.getDayOfWeek(12, 1, 2022));
 	}
 
 	/**

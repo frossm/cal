@@ -71,7 +71,7 @@ public class Calendar {
 	}
 
 	/**
-	 * firstDay(): Given the month, day, and year, return which day of the week it falls
+	 * getDayOfWeek(): Given the month, day, and year, return which day of the week that dates falls
 	 * 
 	 * Reference: https://www.tondering.dk/claus/cal/chrweek.php#calcdow & http://www.cplusplus.com/forum/general/174165/
 	 * 
@@ -80,7 +80,7 @@ public class Calendar {
 	 * @param year
 	 * @return
 	 */
-	public static int firstDay(int month, int day, int year) {
+	public static int getDayOfWeek(int month, int day, int year) {
 		int a = (14 - month) / 12;
 		int y = year - a;
 		int m = month + (12 * a) - 2;
@@ -148,10 +148,10 @@ public class Calendar {
 				String header = getCalHeader((i + j), year);
 				Output.printColor(Ansi.Color.CYAN, header + " ".repeat(CALENDARWIDTH - header.length() + 1) + " ".repeat(SPACESBETWEENCALS));
 			}
-			Output.println("");
 
 			// Print The Day Labels
 			String labelString = ("Su Mo Tu We Th Fr Sa " + " ".repeat(SPACESBETWEENCALS)).repeat(calsPerRow);
+			Output.println("");
 			Output.printColor(Ansi.Color.YELLOW, labelString);
 			Output.println("");
 
@@ -217,16 +217,15 @@ public class Calendar {
 		}
 
 		// Determine the which day of the week the 1st fall upon
-		int firstDayOfMon = firstDay(month, 1, year);
+		int firstDayOfMon = getDayOfWeek(month, 1, year);
 		Output.debugPrint("Firstday for " + month + "/" + year + ": " + firstDayOfMon);
 
 		// Insert spaces until we get to first day of the month in the calendar
-		for (int i = 0; i < firstDayOfMon; i++) {
-			returnString[row] += ("   ");
-		}
+		returnString[row] += "   ".repeat(firstDayOfMon);
 
-		// I can't just use the length of returnString[row] because the ANSI characters take up a lot
-		// more room. Therefore I'll keep the length of the returnString separately
+		// Initialize the length of the each row
+		// I can't just use the length of returnString[row] because the ANSI colored characters take up more room and that won't be
+		// printed. Therefore I'll keep the length of the returnString in a separate variable
 		returnStringLen[row] = returnString[row].length();
 
 		// Create the day strings. After 7 days start a new line.
@@ -235,11 +234,14 @@ public class Calendar {
 			if (month == Date.getCurrentMonth() && year == Date.getCurrentYear() && i == Date.getCurrentDay() && Output.queryColorEnabled() == true) {
 				String today = ansi().a(Attribute.INTENSITY_BOLD).fg(TODAYHIGHLIGHT_FG).bg(TODAYHIGHLIGHT_BG).a(String.format("%2d", i)).reset().toString();
 				returnString[row] += String.format("%s ", today);
-				returnStringLen[row] += 3;
+
 			} else {
+				// Add the day to the month's row
 				returnString[row] += String.format("%2d ", i);
-				returnStringLen[row] += 3;
 			}
+
+			// Update the length of the row's length with 3 spaces (a day's width)
+			returnStringLen[row] += 3;
 
 			// Start a new row after 7 days or if we are at the end of the month after padding
 			if (((i + firstDayOfMon) % 7 == 0) || (i == daysInMonth[month])) {
@@ -247,6 +249,8 @@ public class Calendar {
 				if (returnStringLen[row] < CALENDARWIDTH) {
 					returnString[row] += " ".repeat(CALENDARWIDTH - returnStringLen[row] + 1);
 				}
+
+				// Move to the next row in the calendar
 				row++;
 			}
 		}

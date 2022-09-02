@@ -1,13 +1,13 @@
 name: fcal
-version: '2.4.0'
+version: '2.4.1'
 summary: Command line calendar display
 description: |
-  fCal is a command line calendar display utility.  It will display a
+  fCal is a command line calendar utility.  It will display a
   calendar on the command line with any month/year requested.  Defaults 
   to the current year.
 
-grade: stable # must be 'stable' to release into candidate/stable channels
-confinement: strict  # use 'strict' once you have the right plugs and slots
+grade: stable
+confinement: strict
 base: core18
 
 # Enable faszter LZO compression
@@ -16,6 +16,8 @@ compression: lzo
 apps:
   fcal:
     command: bin/java -jar $SNAP/jar/cal.jar
+    plugs:
+       - network
 
 parts:
   library:
@@ -31,10 +33,7 @@ parts:
     source-branch: master
     source-type: git
     after: [library]
+    
     override-prime: |
       snapcraftctl prime
       rm -vf usr/lib/jvm/java-11-openjdk-*/lib/security/blacklisted.certs
-
-plugs:
-   cal-network:
-      interface: network
