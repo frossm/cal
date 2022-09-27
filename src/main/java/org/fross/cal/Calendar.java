@@ -36,13 +36,13 @@ import org.fusesource.jansi.Ansi.Color;
 
 public class Calendar {
 	// Class Constants
-	static final int DEFAULT_CALS_PER_ROW = 3;
-	static final int CALENDARWIDTH = 20;
-	static final int SPACESBETWEENCALS = 2;
-	static final String[] MONTHLIST = { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
+	static protected final int DEFAULT_CALS_PER_ROW = 3;
+	static protected final int CALENDARWIDTH = 20;
+	static protected final int SPACESBETWEENCALS = 2;
+	static protected final String[] MONTHLIST = { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
 			"December" };
-	static final Color TODAYHIGHLIGHT_FG = Ansi.Color.WHITE;
-	static final Color TODAYHIGHLIGHT_BG = Ansi.Color.BLUE;
+	static protected final Color TODAYHIGHLIGHT_FG = Ansi.Color.WHITE;
+	static protected final Color TODAYHIGHLIGHT_BG = Ansi.Color.BLUE;
 
 	// Class Variables
 	static int calsPerRow = DEFAULT_CALS_PER_ROW;

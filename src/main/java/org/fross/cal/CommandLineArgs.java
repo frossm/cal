@@ -83,8 +83,9 @@ public class CommandLineArgs {
 		// Process the parsed command line options
 		// ---------------------------------------------------------------------------------------------
 		// Debug Switch
-		if (cli.clDebug == true)
+		if (cli.clDebug == true) {
 			Debug.enable();
+		}
 
 		// Set the stack name and restore stack from Preferences
 		if (cli.clNum != Calendar.DEFAULT_CALS_PER_ROW) {
