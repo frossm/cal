@@ -112,8 +112,8 @@ public class Calendar {
 	public static void printMonth(int month, int year) {
 		String[] days = getCalDays(month, year);
 
-		Output.debugPrint(" 1         2         3         4         5         6         7         8\n"
-				+ "12345678901234567890123456789012345678901234567890123456789012345678901234567890");
+		Output.debugPrint(" 1         2         3         4         5         6         7         8         9         1\n"
+				+ "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 
 		Output.printColorln(Ansi.Color.CYAN, getCalHeader(month, year));
 		Output.printColorln(Ansi.Color.YELLOW, "Su Mo Tu We Th Fr Sa");
@@ -134,8 +134,8 @@ public class Calendar {
 		String[] dayrows = new String[6];
 		int i, j, k;
 
-		Output.debugPrint(" 1         2         3         4         5         6         7         8\n"
-				+ "12345678901234567890123456789012345678901234567890123456789012345678901234567890");
+		Output.debugPrint(" 1         2         3         4         5         6         7         8         9         1\n"
+				+ "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 
 		// Loop through the calendar rows
 		for (i = 0; i < 12; i = i + calsPerRow) {
