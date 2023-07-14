@@ -125,7 +125,7 @@ public class CommandLineArgs {
 
 			// Process no dates provided
 			case 0:
-				Output.debugPrint("No Month or Year provided on command line. Showing current year: " + yearToUse);
+				Output.debugPrintln("No Month or Year provided on command line. Showing current year: " + yearToUse);
 				break;
 
 			// Just a date or month provided
@@ -135,12 +135,12 @@ public class CommandLineArgs {
 				// Number must be a year if it's greater than 12
 				if (d > 12) {
 					yearToUse = d;
-					Output.debugPrint("Commandline Year provided. Showing Year: " + yearToUse);
+					Output.debugPrintln("Commandline Year provided. Showing Year: " + yearToUse);
 
 					// If number is <= 12, assume it's a month
 				} else {
 					monthToUse = d;
-					Output.debugPrint("Commandline Month provided. Using Month: " + monthToUse + "  Year:" + yearToUse);
+					Output.debugPrintln("Commandline Month provided. Using Month: " + monthToUse + "  Year:" + yearToUse);
 				}
 				break;
 
@@ -148,7 +148,7 @@ public class CommandLineArgs {
 			case 2:
 				monthToUse = Integer.parseInt(cli.clMonthAndOrYear.get(0));
 				yearToUse = Integer.parseInt(cli.clMonthAndOrYear.get(1));
-				Output.debugPrint("Commandline Month & Year provided. Month: " + monthToUse + "  Year: " + yearToUse);
+				Output.debugPrintln("Commandline Month & Year provided. Month: " + monthToUse + "  Year: " + yearToUse);
 				break;
 			}
 

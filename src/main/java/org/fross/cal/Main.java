@@ -67,11 +67,11 @@ public class Main {
 
 		// Display some useful information about the environment if in Debug Mode
 		Debug.displaySysInfo();
-		Output.debugPrint("Command Line Options");
-		Output.debugPrint("  -D:  " + Debug.query());
-		Output.debugPrint("  -n:  " + Calendar.queryCalsPerRow());
-		Output.debugPrint("  -z:  " + Output.queryColorEnabled());
-		Output.debugPrint("Number of command line arguments:  " + args.length);
+		Output.debugPrintln("Command Line Options");
+		Output.debugPrintln("  -D:  " + Debug.query());
+		Output.debugPrintln("  -n:  " + Calendar.queryCalsPerRow());
+		Output.debugPrintln("  -z:  " + Output.queryColorEnabled());
+		Output.debugPrintln("Number of command line arguments:  " + args.length);
 
 		// Ensure there are not more than 2 parameters given
 		if (CommandLineArgs.cli.clMonthAndOrYear.size() > 2) {

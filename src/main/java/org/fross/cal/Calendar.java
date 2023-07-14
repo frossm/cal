@@ -112,7 +112,7 @@ public class Calendar {
 	public static void printMonth(int month, int year) {
 		String[] days = getCalDays(month, year);
 
-		Output.debugPrint(" 1         2         3         4         5         6         7         8         9         1\n"
+		Output.debugPrintln(" 1         2         3         4         5         6         7         8         9         1\n"
 				+ "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 
 		Output.printColorln(Ansi.Color.CYAN, getCalHeader(month, year));
@@ -134,7 +134,7 @@ public class Calendar {
 		String[] dayrows = new String[6];
 		int i, j, k;
 
-		Output.debugPrint(" 1         2         3         4         5         6         7         8         9         1\n"
+		Output.debugPrintln(" 1         2         3         4         5         6         7         8         9         1\n"
 				+ "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 
 		// Loop through the calendar rows
@@ -218,7 +218,7 @@ public class Calendar {
 
 		// Determine the which day of the week the 1st fall upon
 		int firstDayOfMon = getDayOfWeek(month, 1, year);
-		Output.debugPrint("Firstday for " + month + "/" + year + ": " + firstDayOfMon);
+		Output.debugPrintln("Firstday for " + month + "/" + year + ": " + firstDayOfMon);
 
 		// Insert spaces until we get to first day of the month in the calendar
 		returnString[row] += "   ".repeat(firstDayOfMon);
