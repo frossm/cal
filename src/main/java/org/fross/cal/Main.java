@@ -97,16 +97,16 @@ public class Main {
 		// Display the calendars
 		Output.println("");
 		switch (CommandLineArgs.cli.clMonthAndOrYear.size()) {
-		
+
 		// No month or year provided
 		case 0:
-			Calendar.printYear(CommandLineArgs.queryMonthToUse(), CommandLineArgs.queryYearToUse());
+			Calendar.printYear(CommandLineArgs.queryYearToUse());
 			break;
 
-		// A month or year was given.  Assume it's a month if it's 1-12
+		// A month or year was given. Assume it's a month if it's 1-12
 		case 1:
 			if (Integer.parseInt(CommandLineArgs.cli.clMonthAndOrYear.get(0)) > 12) {
-				Calendar.printYear(CommandLineArgs.queryMonthToUse(), CommandLineArgs.queryYearToUse());
+				Calendar.printYear(CommandLineArgs.queryYearToUse());
 			} else {
 				Calendar.printMonth(CommandLineArgs.queryMonthToUse(), CommandLineArgs.queryYearToUse());
 			}

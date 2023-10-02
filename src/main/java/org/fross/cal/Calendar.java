@@ -39,8 +39,8 @@ public class Calendar {
 	static protected final int DEFAULT_CALS_PER_ROW = 3;
 	static protected final int CALENDARWIDTH = 20;
 	static protected final int SPACESBETWEENCALS = 2;
-	static protected final String[] MONTHLIST = { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
-			"December" };
+	static protected final String[] MONTHLIST = { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+			"November", "December" };
 	static protected final Color TODAYHIGHLIGHT_FG = Ansi.Color.WHITE;
 	static protected final Color TODAYHIGHLIGHT_BG = Ansi.Color.BLUE;
 
@@ -126,10 +126,9 @@ public class Calendar {
 	/**
 	 * printYear(): Print the entire year
 	 * 
-	 * @param month
 	 * @param year
 	 */
-	public static void printYear(int month, int year) {
+	public static void printYear(int year) {
 		String[] days = new String[6];
 		String[] dayrows = new String[6];
 		int i, j, k;
