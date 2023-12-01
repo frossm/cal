@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Cal - A command line calendar utility
  *  
- *  Copyright (c) 2019-2022 Michael Fross
+ *  Copyright (c) 2019-2024 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.fross.library.Output;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -109,6 +110,8 @@ class CalendarTest {
 	 */
 	@Test
 	void testGetCalDays() {
+		Output.enableColor(false);
+		
 		// Lets evaluate a month in the future
 		String[] calDays = Calendar.getCalDays(2, 2099);
 		assertEquals(" 1  2  3  4  5  6  7 ", calDays[0]);

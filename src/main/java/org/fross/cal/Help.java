@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Cal - A command line calendar utility
  *  
- *  Copyright (c) 2019-2022 Michael Fross
+ *  Copyright (c) 2019-2024 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -50,6 +50,7 @@ public class Help {
 
 		Output.printColorln(Ansi.Color.YELLOW, "\nCommand Line Options:");
 		Output.printColorln(Ansi.Color.WHITE, " -n #        Number of calendars per row in Year view.  Default: " + Calendar.DEFAULT_CALS_PER_ROW);
+		Output.printColorln(Ansi.Color.WHITE, " -d          Display local county holidays in the calendar");
 		Output.printColorln(Ansi.Color.WHITE, " -D          Start in debug mode");
 		Output.printColorln(Ansi.Color.WHITE, " -v          Display the program version and latest GitHub Cal release");
 		Output.printColorln(Ansi.Color.WHITE, " -z          Disable colorized output");
@@ -63,11 +64,16 @@ public class Help {
 
 		Output.printColorln(Ansi.Color.YELLOW, "\nExamples:");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar         Display the current year");
-		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -n 4    Display the current year with 4 months per row");
+		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -n 4 -d Display the current year with 4 months per row with holidays");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 9       Display September of the current year");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 2022    Display the entire year 2022");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 9 2022  Display only September of 2022");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -D 6    Display June of current year in debug mode");
 		Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -h      Show this help information");
+
+		Output.printColorln(Ansi.Color.YELLOW, "\nNotes:");
+		Output.printColorln(Ansi.Color.WHITE, "  For a list of supported countries for use with 'Display Holidays' option see:");
+		Output.printColorln(Ansi.Color.WHITE, "     - https://date.nager.at/Country");
+
 	}
 }

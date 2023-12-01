@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Cal - A command line calendar utility
  *  
- *  Copyright (c) 2019-2022 Michael Fross
+ *  Copyright (c) 2019-2024 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,10 @@ package org.fross.cal;
 import static org.fusesource.jansi.Ansi.ansi;
 
 import java.util.Arrays;
+import java.util.TreeMap;
 
 import org.fross.library.Date;
+import org.fross.library.Format;
 import org.fross.library.Output;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
@@ -43,9 +45,11 @@ public class Calendar {
 			"November", "December" };
 	static protected final Color TODAYHIGHLIGHT_FG = Ansi.Color.WHITE;
 	static protected final Color TODAYHIGHLIGHT_BG = Ansi.Color.BLUE;
+	static protected final Color HOLIDAYHIGHLIGHT_FG = Ansi.Color.BLUE;
 
 	// Class Variables
 	static int calsPerRow = DEFAULT_CALS_PER_ROW;
+	static TreeMap<String, String> holidayList = null;
 
 	/**
 	 * setCalsPerRow(): Sets the number of calendars per row when showing an entire year
@@ -136,6 +140,10 @@ public class Calendar {
 		Output.debugPrintln(" 1         2         3         4         5         6         7         8         9         1\n"
 				+ "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 
+		if (Holidays.queryHolidaysEnabled() == true) {
+			holidayList = Holidays.getHolidays(year);
+		}
+
 		// Loop through the calendar rows
 		for (i = 0; i < 12; i = i + calsPerRow) {
 			// Initialize the arrays
@@ -169,6 +177,61 @@ public class Calendar {
 
 			// Put a new line between calendar rows
 			Output.println("");
+		}
+
+		// If display holidays is enabled, display the list after the calendar
+		if (Holidays.queryHolidaysEnabled() == true) {
+			int displayWidth = (CALENDARWIDTH + SPACESBETWEENCALS) * calsPerRow;
+			Output.debugPrintln("Width of calendar display for centering: " + displayWidth);
+
+			// Display the holiday display header
+			String header = Holidays.queryCountry() + " holidays for " + year;
+			try {
+				Output.printColorln(Ansi.Color.YELLOW, Format.CenterText(displayWidth, header));
+			} catch (Exception ex) {
+				Output.printColorln(Ansi.Color.YELLOW, header);
+			}
+
+			// List the holidays
+			Object[] keySet = holidayList.keySet().toArray();
+			String keyLeft = "";
+			String keyRight = "";
+			for (int l = 0; l < ((holidayList.size() + 1) / 2); l++) {
+				try {
+					keyLeft = keySet[l].toString();
+
+					// Process odd numbers and even numbers differently
+					if ((holidayList.size() % 2) == 0) {
+						keyRight = keySet[keySet.length / 2 + l].toString();
+					} else {
+						keyRight = keySet[(keySet.length + 1) / 2 + l].toString();
+					}
+
+					// Build output data removing the year as it's redundant
+					String outputLeft = keyLeft.substring(5) + "|" + holidayList.get(keyLeft);
+					String outputRight = keyRight.substring(5) + "|" + holidayList.get(keyRight);
+
+					// Shorten the holiday name if it's longer than 1/2 the display width
+					if (outputLeft.length() > (displayWidth / 2 - 1)) {
+						outputLeft = outputLeft.substring(0, displayWidth / 2 - 5);
+						outputLeft = outputLeft + "..>";
+					}
+
+					// Display the left item and the spacer
+					Output.printColor(Ansi.Color.CYAN, outputLeft);
+					Output.print(" ".repeat((displayWidth / 2) - outputLeft.length()));
+
+					// Display the Right column item
+					Output.printColorln(Ansi.Color.CYAN, outputRight);
+
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					// Display the left side and nothing on the right for odd number of holidays
+					Output.printColor(Ansi.Color.CYAN, keyLeft + ":" + holidayList.get(keyLeft));
+
+				} catch (IllegalArgumentException ex) {
+					Output.printColorln(Ansi.Color.RED, "ERROR: Could not display holiday list correctly");
+				}
+			}
 		}
 	}
 
@@ -228,22 +291,31 @@ public class Calendar {
 		returnStringLen[row] = returnString[row].length();
 
 		// Create the day strings. After 7 days start a new line.
-		for (int i = 1; i <= daysInMonth[month]; i++) {
-			// If we get to today's date, add colorization as long as the 'disable color' flag is not set
-			if (month == Date.getCurrentMonth() && year == Date.getCurrentYear() && i == Date.getCurrentDay() && Output.queryColorEnabled() == true) {
-				String today = ansi().a(Attribute.INTENSITY_BOLD).fg(TODAYHIGHLIGHT_FG).bg(TODAYHIGHLIGHT_BG).a(String.format("%2d", i)).reset().toString();
-				returnString[row] += String.format("%s ", today);
+		for (int day = 1; day <= daysInMonth[month]; day++) {
+			// Build the colorized days
+			String colorizedDay = "";
 
+			// Colorize Today
+			if (month == Date.getCurrentMonth() && year == Date.getCurrentYear() && day == Date.getCurrentDay()) {
+				colorizedDay = ColorizeDay(day, TODAYHIGHLIGHT_FG, TODAYHIGHLIGHT_BG);
+				returnString[row] += String.format("%s ", colorizedDay);
+
+				// If holiday display is on, check to see if the current day we're processing is one
+			} else if (Holidays.queryHolidaysEnabled() == true
+					&& holidayList.get(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day)) != null) {
+				colorizedDay = ColorizeDay(day, HOLIDAYHIGHLIGHT_FG);
+				returnString[row] += String.format("%s ", colorizedDay);
+
+				// No colorization needed
 			} else {
-				// Add the day to the month's row
-				returnString[row] += String.format("%2d ", i);
+				returnString[row] += String.format("%2d ", day);
 			}
 
 			// Update the length of the row's length with 3 spaces (a day's width)
 			returnStringLen[row] += 3;
 
 			// Start a new row after 7 days or if we are at the end of the month after padding
-			if (((i + firstDayOfMon) % 7 == 0) || (i == daysInMonth[month])) {
+			if (((day + firstDayOfMon) % 7 == 0) || (day == daysInMonth[month])) {
 				// Ensure that the array element is padded with space characters
 				if (returnStringLen[row] < CALENDARWIDTH) {
 					returnString[row] += " ".repeat(CALENDARWIDTH - returnStringLen[row] + 1);
@@ -263,4 +335,34 @@ public class Calendar {
 		return returnString;
 	}
 
+	/**
+	 * ColorizeDay(): Return colorized day with the provided foreground
+	 * 
+	 * @param day
+	 * @param fg
+	 * @return
+	 */
+	public static String ColorizeDay(int day, Ansi.Color fg) {
+		if (Output.queryColorEnabled() == true) {
+			return ansi().a(Attribute.INTENSITY_BOLD).fg(fg).a(String.format("%2d", day)).reset().toString();
+		} else {
+			return String.valueOf(day);
+		}
+	}
+
+	/**
+	 * ColorizeDay(): Return colorized day with the provided foreground & background
+	 * 
+	 * @param day
+	 * @param fg
+	 * @param bg
+	 * @return
+	 */
+	public static String ColorizeDay(int day, Ansi.Color fg, Ansi.Color bg) {
+		if (Output.queryColorEnabled() == true) {
+			return ansi().a(Attribute.INTENSITY_BOLD).fg(fg).bg(bg).a(String.format("%2d", day)).reset().toString();
+		} else {
+			return String.valueOf(day);
+		}
+	}
 }

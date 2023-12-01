@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Cal - A command line calendar utility
  *  
- *  Copyright (c) 2019-2022 Michael Fross
+ *  Copyright (c) 2019-2024 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -71,6 +71,7 @@ public class Main {
 		Output.debugPrintln("  -D:  " + Debug.query());
 		Output.debugPrintln("  -n:  " + Calendar.queryCalsPerRow());
 		Output.debugPrintln("  -z:  " + Output.queryColorEnabled());
+		Output.debugPrintln("  -d:  " + Holidays.queryHolidaysEnabled());
 		Output.debugPrintln("Number of command line arguments:  " + args.length);
 
 		// Ensure there are not more than 2 parameters given

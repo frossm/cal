@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Cal - A command line calendar utility
  *  
- *  Copyright (c) 2019-2022 Michael Fross
+ *  Copyright (c) 2019-2024 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -58,6 +58,9 @@ public class CommandLineArgs {
 	@Parameter(names = { "-D", "--debug" }, description = "Turn on Debug mode to display extra program information")
 	protected boolean clDebug = false;
 
+	@Parameter(names = { "-d", "--display-holidays" }, description = "Display local country holidays in the calendar")
+	protected boolean clDisplayHolidays = false;
+
 	@Parameter(names = { "-n", "--num" }, description = "Number of calendar months to display per row")
 	protected int clNum = Calendar.DEFAULT_CALS_PER_ROW;
 
@@ -111,6 +114,11 @@ public class CommandLineArgs {
 		// Disable Colorized Output Switch
 		if (cli.clNoColor == true) {
 			Output.enableColor(false);
+		}
+
+		// Display local county holidays in the calendar
+		if (cli.clDisplayHolidays == true) {
+			Holidays.setDisplayHolidays(true);
 		}
 
 		// Show Help and Exit
