@@ -57,16 +57,24 @@ public class Holidays {
 		// Build the ISO3 to ISO2 Country Map
 		buildCountryCodeMap();
 
-		// Debug
-		Output.debugPrintln("Locale Information: ");
-		Output.debugPrintln("  - ISO3 Code: " + locale.getISO3Country());
-		Output.debugPrintln("  - ISO2 Code: " + countryMap.get(locale.getISO3Country()));
-		Output.debugPrintln("  - Name: " + locale.getDisplayCountry());
+		try {
+			// Debug
+			Output.debugPrintln("Locale Information: ");
+			Output.debugPrintln("  - ISO3 Code: " + locale.getISO3Country());
+			Output.debugPrintln("  - ISO2 Code: " + countryMap.get(locale.getISO3Country()));
+			Output.debugPrintln("  - Name: " + locale.getDisplayCountry());
 
-		// Build the URL and fetch the data
-		// https://date.nager.at/api/v3/publicholidays/2023/US
-		// TESTING: URL = URL + year + "/" + "MX";
-		URL = URL + year + "/" + countryMap.get(locale.getISO3Country());
+			// Build the URL and fetch the data
+			// https://date.nager.at/api/v3/publicholidays/2023/US
+			URL = URL + year + "/" + countryMap.get(locale.getISO3Country());
+		
+		} catch (Exception Ex) {
+			// Couldn't retrieve the holidays - turn off holiday display
+			Holidays.setDisplayHolidays(false);
+			Output.printColorln(Ansi.Color.RED, "It doesn't look like the following country is supported: '" + locale.getDisplayCountry() + "'\n");
+			return null;
+		}
+
 		Output.debugPrintln("URL to use: " + URL);
 
 		// Pull the JSON holidays from the website
@@ -77,7 +85,7 @@ public class Holidays {
 		} catch (Exception ex) {
 			// Couldn't retrieve the holidays - turn off holiday display
 			Holidays.setDisplayHolidays(false);
-			Output.printColorln(Ansi.Color.RED, "Unable to retrieve holiday information from the internet\n");
+			Output.printColorln(Ansi.Color.RED, "Unable to retrieve holidays for " + locale.getDisplayCountry() + "\n");
 			return null;
 		}
 
@@ -94,9 +102,12 @@ public class Holidays {
 			for (int holidayEntry = 0; holidayEntry < gsonMap.length; holidayEntry++) {
 				holidays.put(gsonMap[holidayEntry].get("date").toString(), gsonMap[holidayEntry].get("localName").toString());
 			}
+			
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
-			System.out.println(ex.getStackTrace());
+			// Couldn't retrieve the holidays - turn off holiday display
+			Holidays.setDisplayHolidays(false);
+			Output.printColorln(Ansi.Color.RED, "Unable to process holidays for " + locale.getDisplayCountry() + "\n");
+			return null;
 		}
 
 		return holidays;
