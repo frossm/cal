@@ -185,7 +185,7 @@ public class Calendar {
 			Output.debugPrintln("Width of calendar display for centering: " + displayWidth);
 
 			// Display the holiday display header
-			String header = Holidays.queryCountry() + " holidays for " + year;
+			String header = year + " holidays for " + Holidays.queryCountry();
 			try {
 				Output.printColorln(Ansi.Color.YELLOW, Format.CenterText(displayWidth, header));
 			} catch (Exception ex) {
@@ -226,7 +226,7 @@ public class Calendar {
 
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					// Display the left side and nothing on the right for odd number of holidays
-					Output.printColor(Ansi.Color.CYAN, keyLeft + ":" + holidayList.get(keyLeft));
+					Output.printColor(Ansi.Color.CYAN, keyLeft.substring(5) + "|" + holidayList.get(keyLeft));
 
 				} catch (IllegalArgumentException ex) {
 					Output.printColorln(Ansi.Color.RED, "ERROR: Could not display holiday list correctly");

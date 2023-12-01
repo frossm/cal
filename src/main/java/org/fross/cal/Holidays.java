@@ -45,6 +45,9 @@ public class Holidays {
 	 * 
 	 * Date is in the format 'yyyy-mm-dd'
 	 * 
+	 * Can test via command line with "java -Duser.country=MX -jar target\cal.jar -d" or adding -Duser.country=MX to the
+	 * debug/run configuration
+	 * 
 	 * @param year
 	 * @return
 	 */
