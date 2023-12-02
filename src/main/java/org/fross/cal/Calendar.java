@@ -35,6 +35,7 @@ import org.fross.library.Output;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
 import org.fusesource.jansi.Ansi.Color;
+import org.fusesource.jansi.AnsiConsole;
 
 public class Calendar {
 	// Class Constants
@@ -45,7 +46,6 @@ public class Calendar {
 			"November", "December" };
 	static protected final Color TODAYHIGHLIGHT_FG = Ansi.Color.WHITE;
 	static protected final Color TODAYHIGHLIGHT_BG = Ansi.Color.BLUE;
-	static protected final Color HOLIDAYHIGHLIGHT_FG = Ansi.Color.BLUE;
 
 	// Class Variables
 	static int calsPerRow = DEFAULT_CALS_PER_ROW;
@@ -303,7 +303,7 @@ public class Calendar {
 				// If holiday display is on, check to see if the current day we're processing is one
 			} else if (Holidays.queryHolidaysEnabled() == true
 					&& holidayList.get(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day)) != null) {
-				colorizedDay = ColorizeDay(day, HOLIDAYHIGHLIGHT_FG);
+				colorizedDay = ColorizeDay(day, 179);
 				returnString[row] += String.format("%s ", colorizedDay);
 
 				// No colorization needed
@@ -364,5 +364,55 @@ public class Calendar {
 		} else {
 			return String.valueOf(day);
 		}
+	}
+
+	/**
+	 * ColorizeDay(): Returned a colorized day with a 256 color index number provided for the foreground
+	 * 
+	 * @param day
+	 * @param colorIndexFG
+	 * @return
+	 */
+	public static String ColorizeDay(int day, int colorIndexFG) {
+		if (Output.queryColorEnabled() == true) {
+			return ansi().fg(colorIndexFG).a(String.format("%2d", day)).reset().toString();
+		} else {
+			return String.valueOf(day);
+		}
+	}
+
+	/**
+	 * ColorizeDay(): Returned a colorized day with a 256 color index number provided for both FG and BG
+	 * 
+	 * @param day
+	 * @param colorIndexFG
+	 * @return
+	 */
+	public static String ColorizeDay(int day, int colorIndexFG, int colorIndexBG) {
+		if (Output.queryColorEnabled() == true) {
+			return ansi().fg(colorIndexFG).bg(colorIndexBG).a(String.format("%2d", day)).reset().toString();
+		} else {
+			return String.valueOf(day);
+		}
+	}
+
+	/**
+	 * JAnsi256Test(): Simple printout of colors to test jAnsi 256 on terminals
+	 * 
+	 */
+	public static void JAnsi256Test() {
+		// Test Foregrounds
+		Ansi ansi = Ansi.ansi();
+		for (int index = 0; index < 256; index++) {
+			ansi.fg(index).a("FG %d ".formatted(index));
+		}
+		AnsiConsole.out().println(ansi);
+
+		// Test Backgrounds
+		ansi = Ansi.ansi();
+		for (int index = 0; index < 256; index++) {
+			ansi.bg(index).a("BG %d ".formatted(index));
+		}
+		AnsiConsole.out().println(ansi);
 	}
 }
