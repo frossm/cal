@@ -67,7 +67,7 @@ public class Holidays {
 			// Build the URL and fetch the data
 			// https://date.nager.at/api/v3/publicholidays/2023/US
 			URL = URL + year + "/" + countryMap.get(locale.getISO3Country());
-		
+
 		} catch (Exception Ex) {
 			// Couldn't retrieve the holidays - turn off holiday display
 			Holidays.setDisplayHolidays(false);
@@ -85,7 +85,7 @@ public class Holidays {
 		} catch (Exception ex) {
 			// Couldn't retrieve the holidays - turn off holiday display
 			Holidays.setDisplayHolidays(false);
-			Output.printColorln(Ansi.Color.RED, "Unable to retrieve holidays for " + locale.getDisplayCountry() + "\n");
+			Output.printColorln(Ansi.Color.RED, "Unable to retrieve the " + year + " holidays for " + locale.getDisplayCountry() + "\n");
 			return null;
 		}
 
@@ -102,11 +102,11 @@ public class Holidays {
 			for (int holidayEntry = 0; holidayEntry < gsonMap.length; holidayEntry++) {
 				holidays.put(gsonMap[holidayEntry].get("date").toString(), gsonMap[holidayEntry].get("localName").toString());
 			}
-			
+
 		} catch (Exception ex) {
 			// Couldn't retrieve the holidays - turn off holiday display
 			Holidays.setDisplayHolidays(false);
-			Output.printColorln(Ansi.Color.RED, "Unable to process holidays for " + locale.getDisplayCountry() + "\n");
+			Output.printColorln(Ansi.Color.RED, "Unable to process the " + year + " holidays for " + locale.getDisplayCountry() + "\n");
 			return null;
 		}
 
