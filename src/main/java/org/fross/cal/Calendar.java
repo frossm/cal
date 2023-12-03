@@ -35,7 +35,6 @@ import org.fross.library.Output;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
 import org.fusesource.jansi.Ansi.Color;
-import org.fusesource.jansi.AnsiConsole;
 
 public class Calendar {
 	// Class Constants
@@ -396,23 +395,4 @@ public class Calendar {
 		}
 	}
 
-	/**
-	 * JAnsi256Test(): Simple printout of colors to test jAnsi 256 on terminals
-	 * 
-	 */
-	public static void JAnsi256Test() {
-		// Test Foregrounds
-		Ansi ansi = Ansi.ansi();
-		for (int index = 0; index < 256; index++) {
-			ansi.fg(index).a("FG %d ".formatted(index));
-		}
-		AnsiConsole.out().println(ansi);
-
-		// Test Backgrounds
-		ansi = Ansi.ansi();
-		for (int index = 0; index < 256; index++) {
-			ansi.bg(index).a("BG %d ".formatted(index));
-		}
-		AnsiConsole.out().println(ansi);
-	}
 }
