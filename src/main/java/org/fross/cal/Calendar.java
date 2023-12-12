@@ -139,10 +139,6 @@ public class Calendar {
 		Output.debugPrintln(" 1         2         3         4         5         6         7         8         9         1\n"
 				+ "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 
-		if (Holidays.queryHolidaysEnabled() == true) {
-			holidayList = Holidays.getHolidays(year);
-		}
-
 		// Loop through the calendar rows
 		for (i = 0; i < 12; i = i + calsPerRow) {
 			// Initialize the arrays
@@ -277,6 +273,11 @@ public class Calendar {
 			daysInMonth[2] = 29;
 		}
 
+		// If Display Holidays is enabled get the information
+		if (Holidays.queryHolidaysEnabled() == true) {
+			holidayList = Holidays.getHolidays(year);
+		}
+		
 		// Determine the which day of the week the 1st fall upon
 		int firstDayOfMon = getDayOfWeek(month, 1, year);
 		Output.debugPrintln("Firstday for " + month + "/" + year + ": " + firstDayOfMon);
