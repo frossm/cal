@@ -120,6 +120,15 @@ class CalendarTest {
 		assertEquals("22 23 24 25 26 27 28 ", calDays[3]);
 		assertEquals("", calDays[4]);
 		assertEquals("                     ", calDays[5]);
+		
+		// Test output for a November 2027
+		calDays = Calendar.getCalDays(11, 2027);
+		assertEquals("    1  2  3  4  5  6 ", calDays[0]);
+		assertEquals(" 7  8  9 10 11 12 13 ", calDays[1]);
+		assertEquals("14 15 16 17 18 19 20 ", calDays[2]);
+		assertEquals("21 22 23 24 25 26 27 ", calDays[3]);
+		assertEquals("28 29 30             ", calDays[4]);
+		assertEquals("                     ", calDays[5]);
 
 		// And one in the past
 		calDays = Calendar.getCalDays(12, 71);

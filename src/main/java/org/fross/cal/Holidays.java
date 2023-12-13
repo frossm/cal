@@ -27,6 +27,7 @@ package org.fross.cal;
 import java.util.Locale;
 import java.util.TreeMap;
 
+import org.fross.library.Format;
 import org.fross.library.Output;
 import org.fross.library.URLOperations;
 import org.fusesource.jansi.Ansi;
@@ -112,6 +113,90 @@ public class Holidays {
 
 		return holidays;
 
+	}
+
+	/**
+	 * printHolidayListYear(): Print a 2 column list of holidays for the given year
+	 * 
+	 * @param year
+	 * @param displayWidth
+	 */
+	public static void printHolidayListYear(int year, int displayWidth) {
+		Output.debugPrintln("Width of calendar display for centering: " + displayWidth);
+
+		// Display the holiday display header
+		String header = year + " holidays for " + Holidays.queryCountry();
+		try {
+			Output.printColorln(Ansi.Color.YELLOW, Format.CenterText(displayWidth, header));
+		} catch (Exception ex) {
+			Output.printColorln(Ansi.Color.YELLOW, header);
+		}
+
+		// List the holidays
+		Object[] keySet = holidays.keySet().toArray();
+		String keyLeft = "";
+		String keyRight = "";
+		for (int l = 0; l < ((holidays.size() + 1) / 2); l++) {
+			try {
+				keyLeft = keySet[l].toString();
+
+				// Process odd numbers and even numbers differently
+				if ((holidays.size() % 2) == 0) {
+					keyRight = keySet[keySet.length / 2 + l].toString();
+				} else {
+					keyRight = keySet[(keySet.length + 1) / 2 + l].toString();
+				}
+
+				// Build output data removing the year as it's redundant
+				String outputLeft = keyLeft.substring(5) + "|" + holidays.get(keyLeft);
+				String outputRight = keyRight.substring(5) + "|" + holidays.get(keyRight);
+
+				// Shorten the holiday name if it's longer than 1/2 the display width
+				if (outputLeft.length() > (displayWidth / 2 - 1)) {
+					outputLeft = outputLeft.substring(0, displayWidth / 2 - 5);
+					outputLeft = outputLeft + "..>";
+				}
+
+				// Display the left item and the spacer
+				Output.printColor(Ansi.Color.CYAN, outputLeft);
+				Output.print(" ".repeat((displayWidth / 2) - outputLeft.length()));
+
+				// Display the Right column item
+				Output.printColorln(Ansi.Color.CYAN, outputRight);
+
+			} catch (ArrayIndexOutOfBoundsException ex) {
+				// Display the left side and nothing on the right for odd number of holidays
+				Output.printColor(Ansi.Color.CYAN, keyLeft.substring(5) + "|" + holidays.get(keyLeft));
+
+			} catch (IllegalArgumentException ex) {
+				Output.printColorln(Ansi.Color.RED, "ERROR: Could not display holiday list correctly");
+			}
+		}
+	}
+
+	/**
+	 * queryHolidayListMonth(): Return the holidays for the month provided
+	 * 
+	 * @param month
+	 */
+	public static StringBuilder queryHolidayListMonth(int mon) {
+		String month = "";
+		StringBuilder sb = new StringBuilder();
+
+		// Convert the month integer to a string
+		month = String.valueOf(mon);
+
+		Output.printColorln(Ansi.Color.YELLOW, "\nHolidays");
+
+		// Loop through the holidays for the current year, printing those in the given month
+		for (String key : holidays.keySet()) {
+			if (key.split("-")[1].compareTo(month) == 0) {
+				// Output.printColorln(Ansi.Color.CYAN, key + " | " + holidays.get(key));
+				sb.append(key + " | " + holidays.get(key));
+				sb.append("\n");
+			}
+		}
+		return sb;
 	}
 
 	/**

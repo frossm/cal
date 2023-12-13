@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.TreeMap;
 
 import org.fross.library.Date;
-import org.fross.library.Format;
 import org.fross.library.Output;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
@@ -124,6 +123,13 @@ public class Calendar {
 		for (int i = 0; i <= (days.length - 1); i++) {
 			Output.printColorln(Ansi.Color.WHITE, days[i]);
 		}
+
+		// If display holidays is enabled, display the list after the calendar
+		if (Holidays.queryHolidaysEnabled() == true) {
+			StringBuilder sb = Holidays.queryHolidayListMonth(month);
+			Output.printColorln(Ansi.Color.CYAN, sb.toString());
+		}
+
 	}
 
 	/**
@@ -177,56 +183,7 @@ public class Calendar {
 		// If display holidays is enabled, display the list after the calendar
 		if (Holidays.queryHolidaysEnabled() == true) {
 			int displayWidth = (CALENDARWIDTH + SPACESBETWEENCALS) * calsPerRow;
-			Output.debugPrintln("Width of calendar display for centering: " + displayWidth);
-
-			// Display the holiday display header
-			String header = year + " holidays for " + Holidays.queryCountry();
-			try {
-				Output.printColorln(Ansi.Color.YELLOW, Format.CenterText(displayWidth, header));
-			} catch (Exception ex) {
-				Output.printColorln(Ansi.Color.YELLOW, header);
-			}
-
-			// List the holidays
-			Object[] keySet = holidayList.keySet().toArray();
-			String keyLeft = "";
-			String keyRight = "";
-			for (int l = 0; l < ((holidayList.size() + 1) / 2); l++) {
-				try {
-					keyLeft = keySet[l].toString();
-
-					// Process odd numbers and even numbers differently
-					if ((holidayList.size() % 2) == 0) {
-						keyRight = keySet[keySet.length / 2 + l].toString();
-					} else {
-						keyRight = keySet[(keySet.length + 1) / 2 + l].toString();
-					}
-
-					// Build output data removing the year as it's redundant
-					String outputLeft = keyLeft.substring(5) + "|" + holidayList.get(keyLeft);
-					String outputRight = keyRight.substring(5) + "|" + holidayList.get(keyRight);
-
-					// Shorten the holiday name if it's longer than 1/2 the display width
-					if (outputLeft.length() > (displayWidth / 2 - 1)) {
-						outputLeft = outputLeft.substring(0, displayWidth / 2 - 5);
-						outputLeft = outputLeft + "..>";
-					}
-
-					// Display the left item and the spacer
-					Output.printColor(Ansi.Color.CYAN, outputLeft);
-					Output.print(" ".repeat((displayWidth / 2) - outputLeft.length()));
-
-					// Display the Right column item
-					Output.printColorln(Ansi.Color.CYAN, outputRight);
-
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					// Display the left side and nothing on the right for odd number of holidays
-					Output.printColor(Ansi.Color.CYAN, keyLeft.substring(5) + "|" + holidayList.get(keyLeft));
-
-				} catch (IllegalArgumentException ex) {
-					Output.printColorln(Ansi.Color.RED, "ERROR: Could not display holiday list correctly");
-				}
-			}
+			Holidays.printHolidayListYear(year, displayWidth);
 		}
 	}
 
@@ -277,7 +234,7 @@ public class Calendar {
 		if (Holidays.queryHolidaysEnabled() == true) {
 			holidayList = Holidays.getHolidays(year);
 		}
-		
+
 		// Determine the which day of the week the 1st fall upon
 		int firstDayOfMon = getDayOfWeek(month, 1, year);
 		Output.debugPrintln("Firstday for " + month + "/" + year + ": " + firstDayOfMon);

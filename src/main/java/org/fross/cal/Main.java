@@ -26,6 +26,7 @@ package org.fross.cal;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.fross.library.Debug;
@@ -67,6 +68,7 @@ public class Main {
 
 		// Display some useful information about the environment if in Debug Mode
 		Debug.displaySysInfo();
+		Output.debugPrintln("Current locale set to: " + Locale.getDefault().getDisplayCountry());
 		Output.debugPrintln("Command Line Options");
 		Output.debugPrintln("  -D:  " + Debug.query());
 		Output.debugPrintln("  -n:  " + Calendar.queryCalsPerRow());
@@ -88,6 +90,10 @@ public class Main {
 				// Ensure no negative value is provided for the month and/or year
 				if (monthAndOrYear <= 0) {
 					Output.fatalError("Month & Year values must be greater than zero", 6);
+
+					// Validate the month is between 1 and 12
+				} else if (CommandLineArgs.queryMonthToUse() < 1 || CommandLineArgs.queryMonthToUse() > 12) {
+					Output.fatalError(String.format("'%d' is not a valid month number", CommandLineArgs.queryMonthToUse()), 7);
 				}
 
 			} catch (Exception ex) {
@@ -117,9 +123,6 @@ public class Main {
 		case 2:
 			Calendar.printMonth(CommandLineArgs.queryMonthToUse(), CommandLineArgs.queryYearToUse());
 			break;
-
 		}
-
 	}
-
 }
