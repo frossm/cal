@@ -86,7 +86,7 @@ public class Holidays {
 		} catch (Exception ex) {
 			// Couldn't retrieve the holidays - turn off holiday display
 			Holidays.setDisplayHolidays(false);
-			Output.printColorln(Ansi.Color.RED, "Unable to retrieve the " + year + " holidays for " + locale.getDisplayCountry() + "\n");
+			Output.printColorln(Ansi.Color.RED, "Unable to retrieve holidays for the year '" + year + "' in " + locale.getDisplayCountry() + "\n");
 			return null;
 		}
 
@@ -175,23 +175,35 @@ public class Holidays {
 	}
 
 	/**
+	 * queryHolidayListMonth(): If a year is provided, pull those holidays before returning the monthly list. Mostly used for
+	 * testing I would assume
+	 * 
+	 * @param month
+	 * @param year
+	 * @return
+	 */
+	public static StringBuilder queryHolidayListMonth(int month, int year) {
+		// Empty the current holiday list
+		holidays.clear();
+		
+		// Pull the holidays for the year provided
+		holidays = Holidays.getHolidays(year);
+
+		// Return the holidays for that month and year
+		return queryHolidayListMonth(month);
+	}
+
+	/**
 	 * queryHolidayListMonth(): Return the holidays for the month provided
 	 * 
 	 * @param month
 	 */
-	public static StringBuilder queryHolidayListMonth(int mon) {
-		String month = "";
+	public static StringBuilder queryHolidayListMonth(int month) {
 		StringBuilder sb = new StringBuilder();
-
-		// Convert the month integer to a string
-		month = String.valueOf(mon);
-
-		Output.printColorln(Ansi.Color.YELLOW, "\nHolidays");
 
 		// Loop through the holidays for the current year, printing those in the given month
 		for (String key : holidays.keySet()) {
-			if (key.split("-")[1].compareTo(month) == 0) {
-				// Output.printColorln(Ansi.Color.CYAN, key + " | " + holidays.get(key));
+			if (key.split("-")[1].compareTo(String.format("%02d", month)) == 0) {
 				sb.append(key + " | " + holidays.get(key));
 				sb.append("\n");
 			}

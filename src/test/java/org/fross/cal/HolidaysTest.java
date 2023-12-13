@@ -63,6 +63,21 @@ class HolidaysTest {
 			i = i + 1;
 		}
 		Output.println("...Holiday Test Complete");
+	}
+
+	// Test US month holidays for April 2025
+	@Test
+	void monthHolidayListTestUS() {
+		// ------------------------------------------------------------------------
+		// For now, skip this test if the JVM does not report it's in the US
+		// ------------------------------------------------------------------------
+		if (Locale.getDefault().getDisplayCountry().toString().compareTo("United States") != 0) {
+			Output.println("Current locale set to: '" + Locale.getDefault().getDisplayCountry() + "'  --  Skipping Test");
+			return;
+		}
+		
+		StringBuilder sb = Holidays.queryHolidayListMonth(4, 2025);
+		assertEquals("2025-04-18 | Good Friday", sb.toString().trim());
 
 	}
 

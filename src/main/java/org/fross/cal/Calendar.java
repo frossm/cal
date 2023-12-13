@@ -112,11 +112,17 @@ public class Calendar {
 	 * @param args
 	 */
 	public static void printMonth(int month, int year) {
-		String[] days = getCalDays(month, year);
-
 		Output.debugPrintln(" 1         2         3         4         5         6         7         8         9         1\n"
 				+ "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 
+		// If Display Holidays is enabled get the information
+		if (Holidays.queryHolidaysEnabled() == true) {
+			holidayList = Holidays.getHolidays(year);
+		}
+
+		// Get the holidays for the month and year provided
+		String[] days = getCalDays(month, year);
+		
 		Output.printColorln(Ansi.Color.CYAN, getCalHeader(month, year));
 		Output.printColorln(Ansi.Color.YELLOW, "Su Mo Tu We Th Fr Sa");
 
@@ -126,6 +132,7 @@ public class Calendar {
 
 		// If display holidays is enabled, display the list after the calendar
 		if (Holidays.queryHolidaysEnabled() == true) {
+			Output.printColorln(Ansi.Color.YELLOW, "\nHolidays");
 			StringBuilder sb = Holidays.queryHolidayListMonth(month);
 			Output.printColorln(Ansi.Color.CYAN, sb.toString());
 		}
@@ -144,6 +151,11 @@ public class Calendar {
 
 		Output.debugPrintln(" 1         2         3         4         5         6         7         8         9         1\n"
 				+ "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+
+		// If Display Holidays is enabled get the information
+		if (Holidays.queryHolidaysEnabled() == true) {
+			holidayList = Holidays.getHolidays(year);
+		}
 
 		// Loop through the calendar rows
 		for (i = 0; i < 12; i = i + calsPerRow) {
@@ -230,11 +242,6 @@ public class Calendar {
 			daysInMonth[2] = 29;
 		}
 
-		// If Display Holidays is enabled get the information
-		if (Holidays.queryHolidaysEnabled() == true) {
-			holidayList = Holidays.getHolidays(year);
-		}
-
 		// Determine the which day of the week the 1st fall upon
 		int firstDayOfMon = getDayOfWeek(month, 1, year);
 		Output.debugPrintln("Firstday for " + month + "/" + year + ": " + firstDayOfMon);
@@ -257,8 +264,8 @@ public class Calendar {
 				colorizedDay = ColorizeDay(day, TODAYHIGHLIGHT_FG, TODAYHIGHLIGHT_BG);
 				returnString[row] += String.format("%s ", colorizedDay);
 
-				// If holiday display is on, check to see if the current day we're processing is one
-			} else if (Holidays.queryHolidaysEnabled() == true
+				// If holiday display is on, and it's not null, check to see if the current day we're processing is one
+			} else if (Holidays.queryHolidaysEnabled() == true && holidayList != null
 					&& holidayList.get(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day)) != null) {
 				colorizedDay = ColorizeDay(day, 179);
 				returnString[row] += String.format("%s ", colorizedDay);
