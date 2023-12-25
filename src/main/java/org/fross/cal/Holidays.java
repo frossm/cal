@@ -26,6 +26,8 @@ package org.fross.cal;
 
 import java.util.Locale;
 import java.util.TreeMap;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 import org.fross.library.Format;
 import org.fross.library.Output;
@@ -54,6 +56,7 @@ public class Holidays {
 	 */
 	public static TreeMap<String, String> getHolidays(int year) {
 		String URL = "https://date.nager.at/api/v3/publicholidays/";
+		String holidayRawData = "";
 
 		// Build the ISO3 to ISO2 Country Map
 		buildCountryCodeMap();
@@ -72,43 +75,68 @@ public class Holidays {
 		} catch (Exception Ex) {
 			// Couldn't retrieve the holidays - turn off holiday display
 			Holidays.setDisplayHolidays(false);
-			Output.printColorln(Ansi.Color.RED, "It doesn't look like the following country is supported: '" + locale.getDisplayCountry() + "'\n");
+			Output.printColorln(Ansi.Color.RED, "It doesn't look like the following country's holidays are supported: '" + locale.getDisplayCountry() + "'\n");
 			return null;
 		}
 
 		Output.debugPrintln("URL to use: " + URL);
 
-		// Pull the JSON holidays from the website
-		String holidayRawData = "";
-		try {
-			holidayRawData = URLOperations.ReadURL(URL);
+		// Determine if we have a holiday cache in the preferences system for the year and country
+		Preferences prefHolidayCache = Preferences.userRoot().node("/org/fross/cal/holidays/" + countryMap.get(locale.getISO3Country()) + "/" + year);
 
-		} catch (Exception ex) {
-			// Couldn't retrieve the holidays - turn off holiday display
-			Holidays.setDisplayHolidays(false);
-			Output.printColorln(Ansi.Color.RED, "Unable to retrieve holidays for the year '" + year + "' in " + locale.getDisplayCountry() + "\n");
-			return null;
+		// Loop through the cached dates (keys), if they exist and build the holidays map
+		String[] cacheKeys = {};
+		try {
+			cacheKeys = prefHolidayCache.keys();
+		} catch (BackingStoreException ex) {
+			// Having issues getting to the holiday cache. Display an error and continue to getting them from the Internet
+			Output.printColorln(Ansi.Color.RED, "Unable to access the holiday cache - getting holidays from internet" + "\n");
 		}
 
-		try {
-			// Convert the JSON into a TreeMap
-			GsonBuilder builder = new GsonBuilder();
-			Gson gson = builder.create();
-
-			// In Gson, convert the JSON into a map
-			@SuppressWarnings("unchecked")
-			TreeMap<String, Object>[] gsonMap = gson.fromJson(holidayRawData, TreeMap[].class);
-
-			// Loop through the <String,Object> map and convert it to a <String, String> TreeMap
-			for (int holidayEntry = 0; holidayEntry < gsonMap.length; holidayEntry++) {
-				holidays.put(gsonMap[holidayEntry].get("date").toString(), gsonMap[holidayEntry].get("localName").toString());
+		// If we have cached holidays, process them into the holidays map
+		if (cacheKeys.length > 0) {
+			Output.debugPrintln("Holiday cache exists - reading from cache...");
+			for (int i = 0; i < cacheKeys.length; i++) {
+				holidays.put(cacheKeys[i], prefHolidayCache.get(cacheKeys[i], "Error"));
 			}
 
-		} catch (Exception ex) {
-			// Couldn't retrieve the holidays - turn off holiday display
-			Holidays.setDisplayHolidays(false);
-			Output.printColorln(Ansi.Color.RED, "Unable to process the " + year + " holidays for " + locale.getDisplayCountry() + "\n");
-			return null;
+		} else {
+			// We don't have a cache, so get holidays from the Internet (and build the cache)
+			// Pull the JSON holidays from the website
+			Output.debugPrintln("Holiday cache does not exist - reading from internet and building cache...");
+			try {
+				holidayRawData = URLOperations.ReadURL(URL);
+
+			} catch (Exception ex) {
+				// Couldn't retrieve the holidays - turn off holiday display
+				Holidays.setDisplayHolidays(false);
+				Output.printColorln(Ansi.Color.RED, "Unable to retrieve holidays for the year '" + year + "' in " + locale.getDisplayCountry() + "\n");
+				return null;
+			}
+
+			try {
+				// Convert the JSON into a TreeMap
+				GsonBuilder builder = new GsonBuilder();
+				Gson gson = builder.create();
+
+				// In Gson, convert the JSON into a map
+				@SuppressWarnings("unchecked")
+				TreeMap<String, Object>[] gsonMap = gson.fromJson(holidayRawData, TreeMap[].class);
+
+				// Loop through the <String,Object> map and convert it to a <String, String> TreeMap
+				for (int holidayEntry = 0; holidayEntry < gsonMap.length; holidayEntry++) {
+					holidays.put(gsonMap[holidayEntry].get("date").toString(), gsonMap[holidayEntry].get("localName").toString());
+
+					// Save the holiday information into the preferences cache
+					prefHolidayCache.put(gsonMap[holidayEntry].get("date").toString(), gsonMap[holidayEntry].get("localName").toString());
+				}
+
+			} catch (Exception ex) {
+				// Couldn't retrieve the holidays - turn off holiday display
+				Holidays.setDisplayHolidays(false);
+				Output.printColorln(Ansi.Color.RED, "Unable to process the " + year + " holidays for " + locale.getDisplayCountry() + "\n");
+				return null;
+			}
 		}
 
 		return holidays;
@@ -185,7 +213,7 @@ public class Holidays {
 	public static StringBuilder queryHolidayListMonth(int month, int year) {
 		// Empty the current holiday list
 		holidays.clear();
-		
+
 		// Pull the holidays for the year provided
 		holidays = Holidays.getHolidays(year);
 
