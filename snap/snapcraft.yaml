@@ -1,39 +1,67 @@
 name: fcal
-version: '2.6.0'
+version: '2.7.0'
 summary: Command line calendar display
 description: |
   fCal is a command line calendar utility.  It will display a
   calendar on the command line with any month/year requested.  Defaults 
-  to the current year.
+  to the current year. fCal can also display local holidays. See help.
 
 grade: stable
 confinement: strict
-base: core18
+base: core22
+
+title: fCal
+website: https://github.com/frossm/cal
+issues: https://github.com/frossm/cal/issues
+license: MIT
 
 # Enable faszter LZO compression
 compression: lzo
 
+# Ignore useless library warnings
+lint:
+  ignore:
+    - library
+    
 apps:
   fcal:
-    command: bin/java -Djava.util.prefs.userRoot="$SNAP_USER_DATA" -jar $SNAP/jar/cal.jar
+    command: cal-wrapper
     plugs:
        - network
 
 parts:
+  wrapper:
+    plugin: dump
+    source: snap/local
+    source-type: local
+
   library:
     plugin: maven
     source: https://github.com/frossm/library.git
     source-type: git
     source-tag: 'v2023.12.03'
-    maven-options: [install]
+    maven-parameters:
+       - install
+       
+    build-packages:
+      - maven
+      - openjdk-11-jdk-headless
 
   cal:
     plugin: maven
     source: https://github.com/frossm/cal.git
     source-branch: master
     source-type: git
-    after: [library]
-    
+    after:
+       - library
+       
+    build-packages:
+      - maven
+      - openjdk-11-jdk-headless
+
+    stage-packages:
+      - openjdk-11-jre-headless
+        
     override-prime: |
       snapcraftctl prime
       rm -vf usr/lib/jvm/java-11-openjdk-*/lib/security/blacklisted.certs
