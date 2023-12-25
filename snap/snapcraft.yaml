@@ -15,7 +15,7 @@ compression: lzo
 
 apps:
   fcal:
-    command: bin/java -jar $SNAP/jar/cal.jar
+    command: bin/java -Djava.util.prefs.userRoot="$SNAP_USER_DATA" -jar $SNAP/jar/cal.jar
     plugs:
        - network
 
