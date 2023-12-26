@@ -51,6 +51,7 @@ public class Help {
 		Output.printColorln(Ansi.Color.YELLOW, "\nCommand Line Options:");
 		Output.printColorln(Ansi.Color.WHITE, " -n #        Number of calendars per row in Year view.  Default: " + Calendar.DEFAULT_CALS_PER_ROW);
 		Output.printColorln(Ansi.Color.WHITE, " -d          Display local county holidays in the calendar");
+		Output.printColorln(Ansi.Color.WHITE, " -c          Clear the holiday cache on the local computer and exit");
 		Output.printColorln(Ansi.Color.WHITE, " -D          Start in debug mode");
 		Output.printColorln(Ansi.Color.WHITE, " -v          Display the program version and latest GitHub Cal release");
 		Output.printColorln(Ansi.Color.WHITE, " -z          Disable colorized output");

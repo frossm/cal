@@ -26,6 +26,8 @@ package org.fross.cal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 import org.fross.library.Debug;
 import org.fross.library.GitHub;
@@ -60,6 +62,9 @@ public class CommandLineArgs {
 
 	@Parameter(names = { "-d", "--display-holidays" }, description = "Display local country holidays in the calendar")
 	protected boolean clDisplayHolidays = false;
+
+	@Parameter(names = { "-c", "--clear-cache" }, description = "Clear the holiday cache from the local computer")
+	protected boolean clClearCache = false;
 
 	@Parameter(names = { "-n", "--num" }, description = "Number of calendar months to display per row")
 	protected int clNum = Calendar.DEFAULT_CALS_PER_ROW;
@@ -119,6 +124,11 @@ public class CommandLineArgs {
 		// Display local county holidays in the calendar
 		if (cli.clDisplayHolidays == true) {
 			Holidays.setDisplayHolidays(true);
+		}
+
+		// Clear the holiday cache in the Java preferences system
+		if (cli.clClearCache == true) {
+			clearCache();
 		}
 
 		// Show Help and Exit
@@ -187,5 +197,21 @@ public class CommandLineArgs {
 	 */
 	public static int queryYearToUse() {
 		return yearToUse;
+	}
+
+	/**
+	 * clearCache(): Clear the holiday preferences cache
+	 * 
+	 */
+	public static void clearCache() {
+		Preferences prefHolidayCache = Preferences.userRoot().node("/org/fross/cal/holidays");
+		try {
+			prefHolidayCache.removeNode();
+			Output.printColorln(Ansi.Color.CYAN, "Clearing the local holiday cache");
+			System.exit(0);
+
+		} catch (BackingStoreException ex) {
+			Output.printColorln(Ansi.Color.RED, "ERROR: Could not clear the holiday cache");
+		}
 	}
 }

@@ -40,7 +40,7 @@ import com.google.gson.GsonBuilder;
 public class Holidays {
 	private static boolean holidaysAreEnabled = false;
 	private static Locale locale = Locale.getDefault();
-	private static TreeMap<String, String> countryMap = new TreeMap<>();
+	protected static TreeMap<String, String> countryMap = new TreeMap<>();
 	protected static TreeMap<String, String> holidays = new TreeMap<>();
 
 	/**
@@ -65,11 +65,10 @@ public class Holidays {
 			// Debug
 			Output.debugPrintln("Locale Information: ");
 			Output.debugPrintln("  - ISO3 Code: " + locale.getISO3Country());
-			Output.debugPrintln("  - ISO2 Code: " + countryMap.get(locale.getISO3Country()));
+			Output.debugPrintln("  - ISO2 Code: " + queryISO2CountryCode());
 			Output.debugPrintln("  - Name: " + locale.getDisplayCountry());
 
 			// Build the URL and fetch the data
-			// https://date.nager.at/api/v3/publicholidays/2023/US
 			URL = URL + year + "/" + countryMap.get(locale.getISO3Country());
 
 		} catch (Exception Ex) {
@@ -266,21 +265,15 @@ public class Holidays {
 		return holidaysAreEnabled;
 	}
 
-	public static int queryLengthOfLongestHolidayName() {
-		int longestHolidayLength = 0;
-		try {
-			for (String key : holidays.keySet()) {
-				if (holidays.get(key).length() > longestHolidayLength) {
-					longestHolidayLength = holidays.get(key).length();
-				}
-			}
-		} catch (Exception ex) {
-
-		}
-
-		return longestHolidayLength;
+	/**
+	 * queryISO2CountryCode(): Return the 2 character local country code
+	 * 
+	 * @return
+	 */
+	public static String queryISO2CountryCode() {
+		return countryMap.get(locale.getISO3Country());
 	}
-
+	
 	/**
 	 * buildCountryCodedMap(): Build a simple map with the ISO3 county code mapped to it's ISO2 value
 	 * 

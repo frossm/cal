@@ -33,6 +33,40 @@ import org.fross.library.Output;
 import org.junit.jupiter.api.Test;
 
 class HolidaysTest {
+//	// Testing clearing the local holiday cache
+//	@Test
+//	void clearHolidayCacheTest() {
+//		int year = org.fross.library.Date.getCurrentYear();
+//
+//		// Firstly, ensure we have something in the cache
+//		Holidays.getHolidays(year);
+//
+//		// Get the 2 character country code
+//		String ISO2 = Holidays.queryISO2CountryCode();
+//
+//		// Make sure the cached items are present
+//		Preferences prefHolidayCache = Preferences.userRoot().node("/org/fross/cal/holidays/" + ISO2 + "/" + year);
+//
+//		String[] cacheKeys = {};
+//		try {
+//			// Verify that we have something in the cache
+//			cacheKeys = prefHolidayCache.keys();
+//			assertTrue(cacheKeys.length > 0);
+//
+//			// Clear the cache
+//			CommandLineArgs.clearCache();
+//
+//			// Verify the cache is empty
+//			cacheKeys = prefHolidayCache.keys();
+//			assertFalse(cacheKeys.length > 0);
+//
+//		} catch (BackingStoreException ex) {
+//			// Having issues getting to the holiday cache. Display an error and continue to getting them from the Internet
+//			Output.printColorln(Ansi.Color.RED, "Unable to access the holiday cache");
+//			fail();
+//		}
+//
+//	}
 
 	// Test holiday list - US
 	@Test
@@ -75,7 +109,7 @@ class HolidaysTest {
 			Output.println("Current locale set to: '" + Locale.getDefault().getDisplayCountry() + "'  --  Skipping Test");
 			return;
 		}
-		
+
 		StringBuilder sb = Holidays.queryHolidayListMonth(4, 2025);
 		assertEquals("2025-04-18 | Good Friday", sb.toString().trim());
 

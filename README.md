@@ -15,6 +15,7 @@ Option   | Description
 -n #     | Set the number of calendars per row when displaying a year.  The default is 3.
 -D       | Start in Debug Mode which will display additional debugging data. Normally not used.
 -d       | Display local county holidays in the calendar
+-c       | Clear the holiday cache on the local computer and exit.  The next time they are needed they will be downloaded from the Internet
 -v       | Display the current version and copyright of the program and exit.  `-v` will also query GitHub and display the latest release version.
 -z       | Disable colored output
 -h or -? | Display the help page
