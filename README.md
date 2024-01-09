@@ -8,6 +8,8 @@
 
 By default, Cal will display the current year.  You can provide a month and year, a month, or just a year.  You can also change the number of calendars per row in your display with the `-n` switch.  See the examples below for a more through description.
 
+Cal also will show local holidays for many countries.  It's activated via the `-d` switch.  A list of supported countries can be found at [https://date.nager.at/Country](https://date.nager.at/Country)
+
 ## Command Line Options
 
 Option   | Description
