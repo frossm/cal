@@ -3,12 +3,12 @@
 
 	<groupId>org.fross</groupId>
 	<artifactId>cal</artifactId>
-	<version>2.7.1</version>
+	<version>2.7.2</version>
 	<packaging>jar</packaging>
 
 	<name>cal</name>
 
-	<url>http://fross.org/cal</url>
+	<url>https://fross.org/cal</url>
 	<description>Display a console based calendar</description>
 
 	<developers>
@@ -36,7 +36,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>11</maven.compiler.release>
-		<maven.version.minimum>3.2.5</maven.version.minimum>
+		<maven.version.minimum>3.6.3</maven.version.minimum>
 	</properties>
 
 	<build>
@@ -55,7 +55,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.4.1</version>
+				<version>3.5.0</version>
 				<executions>
 					<execution>
 						<id>enforce-maven</id>
@@ -79,7 +79,7 @@
 			<plugin>
 	   	   <groupId>org.codehaus.mojo</groupId>
    	   	<artifactId>versions-maven-plugin</artifactId>
-      		<version>2.16.2</version>
+      		<version>2.17.1</version>
     		</plugin>
     
     		<plugin>
@@ -100,7 +100,7 @@
 			<!-- ========================================================================================== -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.12.1</version>
+				<version>3.13.0</version>
 				<configuration>
 					<release>${maven.compiler.release}</release>
 				</configuration>
@@ -113,7 +113,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.2.3</version>
+				<version>3.5.2</version>
 			</plugin>
 
 			<!-- ========================================================================================== -->
@@ -123,7 +123,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>3.6.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -212,7 +212,7 @@
 		</plugins>
 	</build>
 
-	<!-- Define my custom Github repository where Library lives -->
+	<!-- Define my custom GitHub repository where Library lives -->
 	<repositories>
 		<repository>
 			<id>github</id>
@@ -244,7 +244,7 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.10.1</version>
+			<version>5.11.3</version>
 			<scope>test</scope>
 		</dependency>
 		
@@ -252,14 +252,14 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.10.1</version>
+			<version>2.11.0</version>
 		</dependency>
 
 		<!-- Fross library functions: https://github.com/frossm/library -->
 		<dependency>
 			<groupId>org.fross</groupId>
 			<artifactId>library</artifactId>
-			<version>2023.12.03</version>
+			<version>2024.01.22</version>
 		</dependency>
 		
 	</dependencies>
