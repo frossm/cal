@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Cal - A command line calendar utility
  *
- *  Copyright (c) 2019-2024 Michael Fross
+ *  Copyright (c) 2019-2025 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,7 @@ public class Help {
 
       Output.printColorln(Ansi.Color.YELLOW, "\nCommand Line Options:");
       Output.printColorln(Ansi.Color.WHITE, " -n #        Number of calendars per row in Year view.  Default: " + Calendar.DEFAULT_CALS_PER_ROW);
-      Output.printColorln(Ansi.Color.WHITE, " -d          Display local county holidays in the calendar");
+      Output.printColorln(Ansi.Color.WHITE, " -d          Display local country holidays in the calendar");
       Output.printColorln(Ansi.Color.WHITE, " -c          Clear the holiday cache on the local computer and exit");
       Output.printColorln(Ansi.Color.WHITE, " -D          Start in debug mode");
       Output.printColorln(Ansi.Color.WHITE, " -v          Display the program version and latest GitHub Cal release");

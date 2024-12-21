@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Cal - A command line calendar utility
  *
- *  Copyright (c) 2019-2024 Michael Fross
+ *  Copyright (c) 2019-2025 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -94,7 +94,7 @@ public class CommandLineArgs {
          Debug.enable();
       }
 
-      // Set the stack name and restore stack from Preferences
+      // Set the number of months to display per row
       if (cli.clNum != Calendar.DEFAULT_CALS_PER_ROW) {
          try {
             if (cli.clNum <= 0) {
@@ -136,7 +136,7 @@ public class CommandLineArgs {
          System.exit(0);
       }
 
-      // Process any month/year parameters that are given and set monthToUse and yeareToUse
+      // Process any month/year parameters that are given and set monthToUse and yearToUse
       try {
          switch (cli.clMonthAndOrYear.size()) {
 

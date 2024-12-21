@@ -1,7 +1,7 @@
 /******************************************************************************
  *  Cal - A command line calendar utility
  *
- *  Copyright (c) 2019-2024 Michael Fross
+ *  Copyright (c) 2019-2025 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -88,7 +88,7 @@ public class Main {
 
             // Ensure no negative value is provided for the month and/or year
             if (monthAndOrYear <= 0) {
-               Output.fatalError("Month & Year values must be greater than zero", 6);
+               Output.fatalError("Month and/or Year values must be greater than zero", 6);
 
                // Validate the month is between 1 and 12
             } else if (CommandLineArgs.queryMonthToUse() < 1 || CommandLineArgs.queryMonthToUse() > 12) {
@@ -96,7 +96,7 @@ public class Main {
             }
 
          } catch (Exception ex) {
-            Output.fatalError("Invalid Month and/or Year: '" + monthAndOrYear + "'", 6);
+            Output.fatalError("Invalid Month and/or Year provided: '" + monthAndOrYear + "'", 6);
          }
       }
 
