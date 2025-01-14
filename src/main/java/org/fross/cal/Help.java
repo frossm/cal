@@ -48,7 +48,7 @@ public class Help {
       Output.printColorln(Ansi.Color.CYAN, Format.CenterText(HELPWIDTH, "https://github.com/frossm/cal"));
 
       Output.printColorln(Ansi.Color.YELLOW, "\nCommand Line Options:");
-      Output.printColorln(Ansi.Color.WHITE, " -n #        Number of calendars per row in Year view.  Default: " + Calendar.DEFAULT_CALS_PER_ROW);
+      Output.printColorln(Ansi.Color.WHITE, " -n #        Number of calendars per row in Year view.  The default is " + Calendar.DEFAULT_CALS_PER_ROW);
       Output.printColorln(Ansi.Color.WHITE, " -d          Display local country holidays in the calendar");
       Output.printColorln(Ansi.Color.WHITE, " -c          Clear the holiday cache on the local computer and exit");
       Output.printColorln(Ansi.Color.WHITE, " -D          Start in debug mode");
@@ -70,6 +70,12 @@ public class Help {
       Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 9 2022  Display only September of 2022");
       Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -D 6    Display June of current year in debug mode");
       Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -h      Show this help information");
+      Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -v      Show current version and latest GitHub Cal release");
+
+      Output.printColorln(Ansi.Color.YELLOW, "\nSnap Examples:");
+      Output.printColorln(Ansi.Color.WHITE, "  The examples above work exactly the same, but just call 'fcal' directly");
+      Output.printColorln(Ansi.Color.WHITE, "  The 'java -jar' is not needed as you are not asking java to run the jar file");
+
 
       Output.printColorln(Ansi.Color.YELLOW, "\nNotes:");
       Output.printColorln(Ansi.Color.WHITE, "  For a list of supported countries for use with 'Display Holidays' option see:");

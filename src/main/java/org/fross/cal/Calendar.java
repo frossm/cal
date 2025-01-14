@@ -112,8 +112,7 @@ public class Calendar {
     * @param args
     */
    public static void printMonth(int month, int year) {
-      Output.debugPrintln(" 1         2         3         4         5         6         7         8         9         1\n"
-            + "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+      Output.debugPrintln(ReturnRuler());
 
       // If Display Holidays is enabled get the information
       if (Holidays.queryHolidaysEnabled() == true) {
@@ -149,8 +148,7 @@ public class Calendar {
       String[] dayrows = new String[6];
       int i, j, k;
 
-      Output.debugPrintln(" 1         2         3         4         5         6         7         8         9         1\n"
-            + "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+      Output.debugPrintln(ReturnRuler());
 
       // If Display Holidays is enabled get the information
       if (Holidays.queryHolidaysEnabled() == true) {
@@ -358,6 +356,16 @@ public class Calendar {
       } else {
          return String.valueOf(day);
       }
+   }
+
+   /**
+    * ReturnRuler(): Simple return a string with the ruler for debugging purposes. Meant to be printed with DebugPrint()
+    *
+    * @return
+    */
+   public static String ReturnRuler() {
+      return " 1         2         3         4         5         6         7         8         9         1\n"
+            + "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890";
    }
 
 }
