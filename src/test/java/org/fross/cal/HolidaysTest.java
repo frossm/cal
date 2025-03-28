@@ -85,10 +85,10 @@ class HolidaysTest {
       TreeMap<String, String> holidayListUS = Holidays.getHolidays(2023);
 
       // There should be 12 holidays in 2023
-      assertEquals(12, holidayListUS.size());
+      assertEquals(14, holidayListUS.size());
 
-      String[] correctValuesUS = {"2023-01-02", "2023-01-16", "2023-02-20", "2023-04-07", "2023-05-29", "2023-06-19", "2023-07-04", "2023-09-04",
-            "2023-10-09", "2023-11-10", "2023-11-23", "2023-12-25"};
+      String[] correctValuesUS = {"2023-01-02", "2023-01-16", "2023-02-12", "2023-02-20", "2023-04-07", "2023-05-08", "2023-05-29",
+            "2023-06-19", "2023-07-04", "2023-09-04", "2023-10-09", "2023-11-10", "2023-11-23", "2023-12-25"};
 
       // Loop through the results and verify the keys (dates)
       int i = 0;

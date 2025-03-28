@@ -74,11 +74,13 @@ public class Help {
 
       Output.printColorln(Ansi.Color.YELLOW, "\nSnap Examples:");
       Output.printColorln(Ansi.Color.WHITE, "  The examples above work exactly the same, but just call 'fcal' directly");
-      Output.printColorln(Ansi.Color.WHITE, "  The 'java -jar' is not needed as you are not asking java to run the jar file");
+      Output.printColorln(Ansi.Color.WHITE, "   fcal -n 4 -d   Display the current year with 4 months per row with holidays");
+      Output.printColorln(Ansi.Color.WHITE, "   fcal 2022      Display the entire year 2022");
+      Output.printColorln(Ansi.Color.WHITE, "   fcal 9 2022    Display only September of 2022");
 
 
       Output.printColorln(Ansi.Color.YELLOW, "\nNotes:");
-      Output.printColorln(Ansi.Color.WHITE, "  For a list of supported countries for use with 'Display Holidays' option see:");
+      Output.printColorln(Ansi.Color.WHITE, "  For a list of supported countries for use with the 'Display Holidays' option (-d) see:");
       Output.printColorln(Ansi.Color.WHITE, "     - https://date.nager.at/Country");
 
    }

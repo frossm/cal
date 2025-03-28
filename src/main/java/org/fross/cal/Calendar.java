@@ -109,7 +109,7 @@ public class Calendar {
    /**
     * printMonth(): Print the month given the provided month number and year
     *
-    * @param args
+    * @param month, year
     */
    public static void printMonth(int month, int year) {
       Output.debugPrintln(ReturnRuler());
@@ -234,7 +234,7 @@ public class Calendar {
       // Initialize the array
       Arrays.fill(returnString, "");
 
-      // Lets see if the year provided is a leap year
+      // Determine if the year provided is a leap year
       if (month == 2 && isLeapYear(year)) {
          // It's a leap year - set February to have 29 days
          daysInMonth[2] = 29;
