@@ -128,6 +128,7 @@ public class CommandLineArgs {
       // Clear the holiday cache in the Java preferences system
       if (cli.clClearCache == true) {
          clearCache();
+         System.exit(0);
       }
 
       // Show Help and Exit
@@ -206,7 +207,6 @@ public class CommandLineArgs {
       try {
          prefHolidayCache.removeNode();
          Output.printColorln(Ansi.Color.CYAN, "Clearing the local holiday cache");
-         System.exit(0);
 
       } catch (BackingStoreException ex) {
          Output.printColorln(Ansi.Color.RED, "ERROR: Could not clear the holiday cache");

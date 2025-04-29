@@ -122,11 +122,16 @@ public class Holidays {
             TreeMap<String, Object>[] gsonMap = gson.fromJson(holidayRawData, TreeMap[].class);
 
             // Loop through the <String,Object> map and convert it to a <String, String> TreeMap
+            // Note, only use holidays that are listed as "global: true" as others are not national holidays
             for (int holidayEntry = 0; holidayEntry < gsonMap.length; holidayEntry++) {
-               holidays.put(gsonMap[holidayEntry].get("date").toString(), gsonMap[holidayEntry].get("localName").toString());
+               if (gsonMap[holidayEntry].get("global").toString().equals("true")) {
+                  holidays.put(gsonMap[holidayEntry].get("date").toString(), gsonMap[holidayEntry].get("localName").toString());
 
-               // Save the holiday information into the preferences cache
-               prefHolidayCache.put(gsonMap[holidayEntry].get("date").toString(), gsonMap[holidayEntry].get("localName").toString());
+                  // Save the holiday information into the preferences cache
+                  prefHolidayCache.put(gsonMap[holidayEntry].get("date").toString(), gsonMap[holidayEntry].get("localName").toString());
+               } else {
+                  Output.debugPrintln("Skipping non-global holiday: " + gsonMap[holidayEntry].get("localName"));
+               }
             }
 
          } catch (Exception ex) {
