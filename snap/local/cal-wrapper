@@ -1,5 +1,5 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Script is a wrapper which runs application in a bash script with the needed options
 #
-exec $SNAP/bin/java -Djava.util.prefs.userRoot="$SNAP_USER_DATA" -jar $SNAP/jar/cal.jar "$@"
+exec java -Djava.util.prefs.userRoot="$SNAP_USER_DATA" -jar "$SNAP"/jar/cal.jar "$@"

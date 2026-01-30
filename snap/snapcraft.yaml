@@ -1,67 +1,67 @@
 name: fcal
-version: '3.0.0'
+title: fCal
+version: '3.0.1'
 summary: Command line calendar display
 description: |
   fCal is a command line calendar utility.  It will display a
   calendar on the command line with any month/year requested.  Defaults 
   to the current year. fCal can also display local holidays. See help.
 
+  Homepage:  https://github.com/frossm/cal
+
 grade: stable
 confinement: strict
-base: core22
+base: core24
+type: app
 
-title: fCal
 website: https://github.com/frossm/cal
+contact: cal@fross.org
 issues: https://github.com/frossm/cal/issues
 license: MIT
 
-# Enable faszter LZO compression
+platforms:
+  amd64:
+  arm64:
+
+# Enable faster LZO compression
 compression: lzo
 
-# Ignore useless library warnings
-lint:
-  ignore:
-    - library
-    
 apps:
   fcal:
     command: cal-wrapper
+    environment:
+      PATH: $SNAP/usr/lib/jvm/java-21-openjdk-amd64/bin:$PATH
+      JAVA_HOME: $SNAP/usr/lib/jvm/java-21-openjdk-amd64
+
     plugs:
        - network
+       - home
 
 parts:
-  wrapper:
-    plugin: dump
-    source: snap/local
-    source-type: local
+  fcal:
+    plugin: nil
+    source: .
+    build-attributes: [network]
 
-  library:
-    plugin: maven
-    source: https://github.com/frossm/library.git
-    source-type: git
-    source-tag: 'v2024.01.22'
-    maven-parameters:
-       - install
-       
-    build-packages:
-      - maven
-      - openjdk-11-jdk-headless
+    override-build: |
+      # Ensure that gradlew is executable
+      chmod +x gradlew
+      
+      # Build the application. Testing happened locally, so skip it here
+      ./gradlew shadowJar -x test --console=plain
+      
+      # Move the shadowJar to the right place
+      mkdir -p $SNAPCRAFT_PART_INSTALL/jar
+      cp build/libs/*.jar $SNAPCRAFT_PART_INSTALL/jar/cal.jar
+      
+      # Move the wrapper and ensure it's executable
+      cp $SNAPCRAFT_PROJECT_DIR/snap/local/cal-wrapper $SNAPCRAFT_PART_INSTALL/
+      chmod +x $SNAPCRAFT_PART_INSTALL/cal-wrapper
 
-  cal:
-    plugin: maven
-    source: https://github.com/frossm/cal.git
-    source-branch: master
-    source-type: git
-    after:
-       - library
-       
     build-packages:
-      - maven
-      - openjdk-11-jdk-headless
+      - gradle
+      - openjdk-21-jdk-headless
 
     stage-packages:
-      - openjdk-11-jre-headless
-        
-    override-prime: |
-      snapcraftctl prime
-      rm -vf usr/lib/jvm/java-11-openjdk-*/lib/security/blacklisted.certs
+      - openjdk-21-jre-headless
+
