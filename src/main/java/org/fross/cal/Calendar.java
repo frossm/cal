@@ -1,7 +1,7 @@
-/******************************************************************************
+/*--------------------------------------------------------------------------------------
  *  Cal - A command line calendar utility
  *
- *  Copyright (c) 2019-2026 Michael Fross
+ *  Copyright (c) 2018-2026 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -20,20 +20,14 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
- ******************************************************************************/
+ * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
 import org.fross.library.Date;
 import org.fross.library.Output;
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.Ansi.Attribute;
-import org.fusesource.jansi.Ansi.Color;
 
 import java.util.Arrays;
 import java.util.TreeMap;
-
-import static org.fusesource.jansi.Ansi.ansi;
 
 public class Calendar {
    // Class Constants
@@ -42,8 +36,8 @@ public class Calendar {
    static protected final int SPACESBETWEENCALS = 2;
    static protected final String[] MONTHLIST = {"", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
          "November", "December"};
-   static protected final Color TODAYHIGHLIGHT_FG = Ansi.Color.WHITE;
-   static protected final Color TODAYHIGHLIGHT_BG = Ansi.Color.BLUE;
+   static protected final int TODAYHIGHLIGHT_FG = Output.WHITE;
+   static protected final int TODAYHIGHLIGHT_BG = Output.BLUE;
 
    // Class Variables
    static int calsPerRow = DEFAULT_CALS_PER_ROW;
@@ -59,7 +53,7 @@ public class Calendar {
       if (12 % cpr == 0 && cpr > 0) {
          calsPerRow = cpr;
       } else {
-         Output.printColorln(Ansi.Color.RED, "Error:  Number of calendars per row given ('" + cpr + "') must be evenly divisable into 12");
+         Output.printColorln(Output.RED, "Error:  Number of calendars per row given ('" + cpr + "') must be evenly divisable into 12");
       }
    }
 
@@ -75,7 +69,9 @@ public class Calendar {
    /**
     * getDayOfWeek(): Given the month, day, and year, return which day of the week that dates falls
     * <p>
-    * Reference: https://www.tondering.dk/claus/cal/chrweek.php#calcdow & http://www.cplusplus.com/forum/general/174165/
+    * Reference:
+    * <a href="https://www.tondering.dk/claus/cal/chrweek.php#calcdow">...</a>
+    * <a href="http://www.cplusplus.com/forum/general/174165/">...</a>
     *
     * @param month
     * @param day
@@ -93,7 +89,8 @@ public class Calendar {
    /**
     * isLeapYear(): Return true if provided year is a leap year. Calculation:
     * <p>
-    * Reference: https://www.wikihow.com/Calculate-Leap-Years
+    * Reference:
+    * <a href="https://www.wikihow.com/Calculate-Leap-Years">...</a>
     *
     * @param year
     * @return
@@ -115,25 +112,25 @@ public class Calendar {
       Output.debugPrintln(ReturnRuler());
 
       // If Display Holidays is enabled get the information
-      if (Holidays.queryHolidaysEnabled() == true) {
+      if (Holidays.queryHolidaysEnabled()) {
          holidayList = Holidays.getHolidays(year);
       }
 
       // Get the holidays for the month and year provided
       String[] days = getCalDays(month, year);
 
-      Output.printColorln(Ansi.Color.CYAN, getCalHeader(month, year));
-      Output.printColorln(Ansi.Color.YELLOW, "Su Mo Tu We Th Fr Sa");
+      Output.printColorln(Output.CYAN, getCalHeader(month, year));
+      Output.printColorln(Output.YELLOW, "Su Mo Tu We Th Fr Sa");
 
       for (int i = 0; i <= (days.length - 1); i++) {
-         Output.printColorln(Ansi.Color.WHITE, days[i]);
+         Output.printColorln(Output.WHITE, days[i]);
       }
 
       // If display holidays is enabled, display the list after the calendar
-      if (Holidays.queryHolidaysEnabled() == true) {
-         Output.printColorln(Ansi.Color.YELLOW, "\nHolidays");
+      if (Holidays.queryHolidaysEnabled()) {
+         Output.printColorln(Output.YELLOW, "\nHolidays");
          StringBuilder sb = Holidays.queryHolidayListMonth(month);
-         Output.printColorln(Ansi.Color.CYAN, sb.toString());
+         Output.printColorln(Output.CYAN, sb.toString());
       }
 
    }
@@ -151,7 +148,7 @@ public class Calendar {
       Output.debugPrintln(ReturnRuler());
 
       // If Display Holidays is enabled get the information
-      if (Holidays.queryHolidaysEnabled() == true) {
+      if (Holidays.queryHolidaysEnabled()) {
          holidayList = Holidays.getHolidays(year);
       }
 
@@ -164,13 +161,13 @@ public class Calendar {
          // Print Centered Month & Year
          for (j = 1; j <= calsPerRow; j++) {
             String header = getCalHeader((i + j), year);
-            Output.printColor(Ansi.Color.CYAN, header + " ".repeat(CALENDARWIDTH - header.length() + 1) + " ".repeat(SPACESBETWEENCALS));
+            Output.printColor(Output.CYAN, header + " ".repeat(CALENDARWIDTH - header.length() + 1) + " ".repeat(SPACESBETWEENCALS));
          }
 
          // Print The Day Labels
          String labelString = ("Su Mo Tu We Th Fr Sa " + " ".repeat(SPACESBETWEENCALS)).repeat(calsPerRow);
          Output.println("");
-         Output.printColor(Ansi.Color.YELLOW, labelString);
+         Output.printColor(Output.YELLOW, labelString);
          Output.println("");
 
          // Loop through each calendar in the row and build an output string
@@ -183,7 +180,7 @@ public class Calendar {
 
          // Print out the result
          for (j = 0; j < dayrows.length; j++) {
-            Output.printColorln(Ansi.Color.WHITE, dayrows[j]);
+            Output.printColorln(Output.WHITE, dayrows[j]);
          }
 
          // Put a new line between calendar rows
@@ -191,7 +188,7 @@ public class Calendar {
       }
 
       // If display holidays is enabled, display the list after the calendar
-      if (Holidays.queryHolidaysEnabled() == true) {
+      if (Holidays.queryHolidaysEnabled()) {
          int displayWidth = (CALENDARWIDTH + SPACESBETWEENCALS) * calsPerRow;
          Holidays.printHolidayListYear(year, displayWidth);
       }
@@ -205,7 +202,7 @@ public class Calendar {
     * @return
     */
    public static String getCalHeader(int month, int year) {
-      String returnString = "";
+      String returnString;
       String strToCenter = MONTHLIST[month] + " " + year;
 
       // Add the correct number of spaces to center name
@@ -255,7 +252,7 @@ public class Calendar {
       // Create the day strings. After 7 days start a new line.
       for (int day = 1; day <= daysInMonth[month]; day++) {
          // Build the colorized days
-         String colorizedDay = "";
+         String colorizedDay;
 
          // Colorize Today
          if (month == Date.getCurrentMonth() && year == Date.getCurrentYear() && day == Date.getCurrentDay()) {
@@ -263,7 +260,7 @@ public class Calendar {
             returnString[row] += String.format("%s ", colorizedDay);
 
             // If holiday display is on, and it's not null, check to see if the current day we're processing is one
-         } else if (Holidays.queryHolidaysEnabled() == true && holidayList != null
+         } else if (Holidays.queryHolidaysEnabled() && holidayList != null
                && holidayList.get(year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day)) != null) {
             colorizedDay = ColorizeDay(day, 179);
             returnString[row] += String.format("%s ", colorizedDay);
@@ -304,12 +301,8 @@ public class Calendar {
     * @param fg
     * @return
     */
-   public static String ColorizeDay(int day, Ansi.Color fg) {
-      if (Output.queryColorEnabled() == true) {
-         return ansi().a(Attribute.INTENSITY_BOLD).fg(fg).a(String.format("%2d", day)).reset().toString();
-      } else {
-         return String.valueOf(day);
-      }
+   public static String ColorizeDay(int day, int fg) {
+      return Output.returnColorString(fg, -1, String.format("%2d", day));
    }
 
    /**
@@ -320,42 +313,8 @@ public class Calendar {
     * @param bg
     * @return
     */
-   public static String ColorizeDay(int day, Ansi.Color fg, Ansi.Color bg) {
-      if (Output.queryColorEnabled() == true) {
-         return ansi().a(Attribute.INTENSITY_BOLD).fg(fg).bg(bg).a(String.format("%2d", day)).reset().toString();
-      } else {
-         return String.valueOf(day);
-      }
-   }
-
-   /**
-    * ColorizeDay(): Returned a colorized day with a 256 color index number provided for the foreground
-    *
-    * @param day
-    * @param colorIndexFG
-    * @return
-    */
-   public static String ColorizeDay(int day, int colorIndexFG) {
-      if (Output.queryColorEnabled() == true) {
-         return ansi().fg(colorIndexFG).a(String.format("%2d", day)).reset().toString();
-      } else {
-         return String.valueOf(day);
-      }
-   }
-
-   /**
-    * ColorizeDay(): Returned a colorized day with a 256 color index number provided for both FG and BG
-    *
-    * @param day
-    * @param colorIndexFG
-    * @return
-    */
-   public static String ColorizeDay(int day, int colorIndexFG, int colorIndexBG) {
-      if (Output.queryColorEnabled() == true) {
-         return ansi().fg(colorIndexFG).bg(colorIndexBG).a(String.format("%2d", day)).reset().toString();
-      } else {
-         return String.valueOf(day);
-      }
+   public static String ColorizeDay(int day, int fg, int bg) {
+      return Output.returnColorString(fg, bg, String.format("%2d", day));
    }
 
    /**

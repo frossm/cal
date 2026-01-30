@@ -1,7 +1,7 @@
-/******************************************************************************
+/*--------------------------------------------------------------------------------------
  *  Cal - A command line calendar utility
  *
- *  Copyright (c) 2019-2026 Michael Fross
+ *  Copyright (c) 2018-2026 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
- ******************************************************************************/
+ * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
 import com.google.gson.Gson;
@@ -29,7 +28,6 @@ import com.google.gson.GsonBuilder;
 import org.fross.library.Format;
 import org.fross.library.Output;
 import org.fross.library.URLOperations;
-import org.fusesource.jansi.Ansi;
 
 import java.util.Locale;
 import java.util.TreeMap;
@@ -38,7 +36,7 @@ import java.util.prefs.Preferences;
 
 public class Holidays {
    private static boolean holidaysAreEnabled = false;
-   private static Locale locale = Locale.getDefault();
+   private static final Locale locale = Locale.getDefault();
    protected static TreeMap<String, String> countryMap = new TreeMap<>();
    protected static TreeMap<String, String> holidays = new TreeMap<>();
 
@@ -47,7 +45,7 @@ public class Holidays {
     * <p>
     * Date is in the format 'yyyy-mm-dd'
     * <p>
-    * Can test via command line with "java -Duser.country=MX -jar target\cal.jar -d" or adding -Duser.country=MX to the
+    * Can test via command line with "java -Duser.country=MX -jar build/libs/cal.jar -d" or adding -Duser.country=MX to the
     * debug/run configuration
     *
     * @param year
@@ -55,7 +53,7 @@ public class Holidays {
     */
    public static TreeMap<String, String> getHolidays(int year) {
       String URL = "https://date.nager.at/api/v3/publicholidays/";
-      String holidayRawData = "";
+      String holidayRawData;
 
       // Build the ISO3 to ISO2 Country Map
       buildCountryCodeMap();
@@ -73,7 +71,7 @@ public class Holidays {
       } catch (Exception Ex) {
          // Couldn't retrieve the holidays - turn off holiday display
          Holidays.setDisplayHolidays(false);
-         Output.printColorln(Ansi.Color.RED, "It doesn't look like the following country's holidays are supported: '" + locale.getDisplayCountry() + "'\n");
+         Output.printColorln(Output.RED, "It doesn't look like the following country's holidays are supported: '" + locale.getDisplayCountry() + "'\n");
          return null;
       }
 
@@ -88,7 +86,7 @@ public class Holidays {
          cacheKeys = prefHolidayCache.keys();
       } catch (BackingStoreException ex) {
          // Having issues getting to the holiday cache. Display an error and continue to getting them from the Internet
-         Output.printColorln(Ansi.Color.RED, "Unable to access the holiday cache - getting holidays from internet" + "\n");
+         Output.printColorln(Output.RED, "Unable to access the holiday cache - getting holidays from internet" + "\n");
       }
 
       // If we have cached holidays, process them into the holidays map
@@ -108,7 +106,7 @@ public class Holidays {
          } catch (Exception ex) {
             // Couldn't retrieve the holidays - turn off holiday display
             Holidays.setDisplayHolidays(false);
-            Output.printColorln(Ansi.Color.RED, "Unable to retrieve holidays for the year '" + year + "' in " + locale.getDisplayCountry() + "\n");
+            Output.printColorln(Output.RED, "Unable to retrieve holidays for the year '" + year + "' in " + locale.getDisplayCountry() + "\n");
             return null;
          }
 
@@ -137,7 +135,7 @@ public class Holidays {
          } catch (Exception ex) {
             // Couldn't retrieve the holidays - turn off holiday display
             Holidays.setDisplayHolidays(false);
-            Output.printColorln(Ansi.Color.RED, "Unable to process the " + year + " holidays for " + locale.getDisplayCountry() + "\n");
+            Output.printColorln(Output.RED, "Unable to process the " + year + " holidays for " + locale.getDisplayCountry() + "\n");
             return null;
          }
       }
@@ -158,15 +156,15 @@ public class Holidays {
       // Display the holiday display header
       String header = year + " holidays for " + Holidays.queryCountry();
       try {
-         Output.printColorln(Ansi.Color.YELLOW, Format.CenterText(displayWidth, header));
+         Output.printColorln(Output.YELLOW, Format.CenterText(displayWidth, header));
       } catch (Exception ex) {
-         Output.printColorln(Ansi.Color.YELLOW, header);
+         Output.printColorln(Output.YELLOW, header);
       }
 
       // List the holidays
       Object[] keySet = holidays.keySet().toArray();
       String keyLeft = "";
-      String keyRight = "";
+      String keyRight;
       for (int l = 0; l < ((holidays.size() + 1) / 2); l++) {
          try {
             keyLeft = keySet[l].toString();
@@ -189,18 +187,18 @@ public class Holidays {
             }
 
             // Display the left item and the spacer
-            Output.printColor(Ansi.Color.CYAN, outputLeft);
+            Output.printColor(Output.CYAN, outputLeft);
             Output.print(" ".repeat((displayWidth / 2) - outputLeft.length()));
 
             // Display the Right column item
-            Output.printColorln(Ansi.Color.CYAN, outputRight);
+            Output.printColorln(Output.CYAN, outputRight);
 
          } catch (ArrayIndexOutOfBoundsException ex) {
             // Display the left side and nothing on the right for odd number of holidays
-            Output.printColor(Ansi.Color.CYAN, keyLeft.substring(5) + "|" + holidays.get(keyLeft));
+            Output.printColor(Output.CYAN, keyLeft.substring(5) + "|" + holidays.get(keyLeft));
 
          } catch (IllegalArgumentException ex) {
-            Output.printColorln(Ansi.Color.RED, "ERROR: Could not display holiday list correctly");
+            Output.printColorln(Output.RED, "ERROR: Could not display holiday list correctly");
          }
       }
    }

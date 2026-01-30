@@ -1,7 +1,7 @@
-/******************************************************************************
+/*--------------------------------------------------------------------------------------
  *  Cal - A command line calendar utility
  *
- *  Copyright (c) 2019-2026 Michael Fross
+ *  Copyright (c) 2018-2026 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -20,12 +20,13 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
- ******************************************************************************/
+ * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
 import org.fross.library.Debug;
 import org.fross.library.Output;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +43,7 @@ public class Main {
    public static String VERSION;
    public static String COPYRIGHT;
    public static final String PROPERTIES_FILE = "app.properties";
+   public static Terminal terminal = null;
 
    /**
     * Main(): Start of program and holds main command loop
@@ -60,6 +62,27 @@ public class Main {
          COPYRIGHT = "Copyright " + prop.getProperty("Application.inceptionYear") + "-" + org.fross.library.Date.getCurrentYear() + " by Michael Fross";
       } catch (IOException ex) {
          Output.fatalError("Unable to read property file '" + PROPERTIES_FILE + "'", 3);
+      }
+
+      // Force JLine to assume the terminal supports ANSI color and movement
+      System.setProperty("org.jline.terminal.type", "xterm-256color");
+
+      // Create a terminal used for output with JLine
+      try {
+         // This will print the actual reason (like "Missing library" or "Access Denied") to the console
+         // For Debugging: System.setProperty("org.jline.terminal.debug", "true");
+
+         // Create the terminal
+         terminal = TerminalBuilder.builder()
+               .system(true)
+               .build();
+
+         // Let Output and Input classes know which terminal to use
+         Output.setTerminal(terminal);
+
+      } catch (IOException ex) {
+         // Note: Since terminal failed, we use System.out as a fallback
+         Output.println("Unable to create a terminal. Visuals will be impacted");
       }
 
       // Process the command line arguments and switches
@@ -111,7 +134,7 @@ public class Main {
 
          // A month or year was given. Assume it's a month if it's 1-12
          case 1:
-            if (Integer.parseInt(CommandLineArgs.cli.clMonthAndOrYear.get(0)) > 12) {
+            if (Integer.parseInt(CommandLineArgs.cli.clMonthAndOrYear.getFirst()) > 12) {
                Calendar.printYear(CommandLineArgs.queryYearToUse());
             } else {
                Calendar.printMonth(CommandLineArgs.queryMonthToUse(), CommandLineArgs.queryYearToUse());

@@ -1,7 +1,7 @@
-/******************************************************************************
+/*--------------------------------------------------------------------------------------
  *  Cal - A command line calendar utility
  *
- *  Copyright (c) 2019-2026 Michael Fross
+ *  Copyright (c) 2018-2026 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
- ******************************************************************************/
+ * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
 import com.beust.jcommander.JCommander;
@@ -30,7 +29,6 @@ import com.beust.jcommander.ParameterException;
 import org.fross.library.Debug;
 import org.fross.library.GitHub;
 import org.fross.library.Output;
-import org.fusesource.jansi.Ansi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +88,7 @@ public class CommandLineArgs {
       // Process the parsed command line options
       // ---------------------------------------------------------------------------------------------
       // Debug Switch
-      if (cli.clDebug == true) {
+      if (cli.clDebug) {
          Debug.enable();
       }
 
@@ -107,32 +105,32 @@ public class CommandLineArgs {
       }
 
       // Version Switch
-      if (cli.clVersion == true) {
-         Output.printColorln(Ansi.Color.WHITE, "Cal Version: v" + Main.VERSION);
-         Output.printColorln(Ansi.Color.CYAN, Main.COPYRIGHT);
-         Output.printColorln(Ansi.Color.WHITE, "\nLatest Release on GitHub: " + GitHub.updateCheck("cal"));
-         Output.printColorln(Ansi.Color.CYAN, "HomePage: https://github.com/frossm/cal");
+      if (cli.clVersion) {
+         Output.printColorln(Output.WHITE, "Cal Version: v" + Main.VERSION);
+         Output.printColorln(Output.CYAN, Main.COPYRIGHT);
+         Output.printColorln(Output.WHITE, "\nLatest Release on GitHub: " + GitHub.updateCheck("cal"));
+         Output.printColorln(Output.CYAN, "HomePage: https://github.com/frossm/cal");
          System.exit(0);
       }
 
       // Disable Colorized Output Switch
-      if (cli.clNoColor == true) {
+      if (cli.clNoColor) {
          Output.enableColor(false);
       }
 
       // Display local county holidays in the calendar
-      if (cli.clDisplayHolidays == true) {
+      if (cli.clDisplayHolidays) {
          Holidays.setDisplayHolidays(true);
       }
 
       // Clear the holiday cache in the Java preferences system
-      if (cli.clClearCache == true) {
+      if (cli.clClearCache) {
          clearCache();
          System.exit(0);
       }
 
       // Show Help and Exit
-      if (cli.clHelp == true) {
+      if (cli.clHelp) {
          Help.display();
          System.exit(0);
       }
@@ -174,9 +172,7 @@ public class CommandLineArgs {
          Output.fatalError("Parameters can only be numbers.  Usage '-h' for options", 99);
 
       } catch (Exception ex) {
-         ex.getMessage();
-         ex.printStackTrace();
-         Output.fatalError("Something went very wrong.  You shouldn't really see this.  Eeek!", 99);
+         Output.fatalError("Something went very wrong.  You shouldn't really see this.  Eeek!\n" + ex.getMessage(), 99);
       }
 
    }
@@ -206,10 +202,10 @@ public class CommandLineArgs {
       Preferences prefHolidayCache = Preferences.userRoot().node("/org/fross/cal/holidays");
       try {
          prefHolidayCache.removeNode();
-         Output.printColorln(Ansi.Color.CYAN, "Clearing the local holiday cache");
+         Output.printColorln(Output.CYAN, "Clearing the local holiday cache");
 
       } catch (BackingStoreException ex) {
-         Output.printColorln(Ansi.Color.RED, "ERROR: Could not clear the holiday cache");
+         Output.printColorln(Output.RED, "ERROR: Could not clear the holiday cache");
       }
    }
 }

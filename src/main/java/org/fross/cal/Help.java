@@ -1,7 +1,7 @@
-/******************************************************************************
+/*--------------------------------------------------------------------------------------
  *  Cal - A command line calendar utility
  *
- *  Copyright (c) 2019-2026 Michael Fross
+ *  Copyright (c) 2018-2026 Michael Fross
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,11 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
- ******************************************************************************/
+ * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
 import org.fross.library.Format;
 import org.fross.library.Output;
-import org.fusesource.jansi.Ansi;
 
 /**
  * Help(): Display the help page when users enters 'h' or '?' command.
@@ -40,48 +38,48 @@ public class Help {
     * display(): Prints help in color using the JCDP library in the output module.
     */
    public static void display() {
-      Output.printColorln(Ansi.Color.CYAN, "\n+" + "-".repeat(HELPWIDTH) + "+");
-      Output.printColorln(Ansi.Color.WHITE, "+" + Format.CenterText(HELPWIDTH, "Cal - The Console Calendar Generator") + "+");
-      Output.printColorln(Ansi.Color.WHITE, "+" + Format.CenterText(HELPWIDTH, "Version v" + Main.VERSION) + "+");
-      Output.printColorln(Ansi.Color.WHITE, "+" + Format.CenterText(HELPWIDTH, Main.COPYRIGHT) + "+");
-      Output.printColorln(Ansi.Color.CYAN, "+" + "-".repeat(HELPWIDTH) + "+");
-      Output.printColorln(Ansi.Color.CYAN, Format.CenterText(HELPWIDTH, "https://github.com/frossm/cal"));
+      Output.printColorln(Output.CYAN, "\n+" + "-".repeat(HELPWIDTH) + "+");
+      Output.printColorln(Output.WHITE, "+" + Format.CenterText(HELPWIDTH, "Cal - The Console Calendar Generator") + "+");
+      Output.printColorln(Output.WHITE, "+" + Format.CenterText(HELPWIDTH, "Version v" + Main.VERSION) + "+");
+      Output.printColorln(Output.WHITE, "+" + Format.CenterText(HELPWIDTH, Main.COPYRIGHT) + "+");
+      Output.printColorln(Output.CYAN, "+" + "-".repeat(HELPWIDTH) + "+");
+      Output.printColorln(Output.CYAN, Format.CenterText(HELPWIDTH, "https://github.com/frossm/cal"));
 
-      Output.printColorln(Ansi.Color.YELLOW, "\nCommand Line Options:");
-      Output.printColorln(Ansi.Color.WHITE, " -n #        Number of calendars per row in Year view.  The default is " + Calendar.DEFAULT_CALS_PER_ROW);
-      Output.printColorln(Ansi.Color.WHITE, " -d          Display local country holidays in the calendar");
-      Output.printColorln(Ansi.Color.WHITE, " -c          Clear the holiday cache on the local computer and exit");
-      Output.printColorln(Ansi.Color.WHITE, " -D          Start in debug mode");
-      Output.printColorln(Ansi.Color.WHITE, " -v          Display the program version and latest GitHub Cal release");
-      Output.printColorln(Ansi.Color.WHITE, " -z          Disable colorized output");
-      Output.printColorln(Ansi.Color.WHITE, " -h or -?    Display this help information");
+      Output.printColorln(Output.YELLOW, "\nCommand Line Options:");
+      Output.printColorln(Output.WHITE, " -n #        Number of calendars per row in Year view.  The default is " + Calendar.DEFAULT_CALS_PER_ROW);
+      Output.printColorln(Output.WHITE, " -d          Display local country holidays in the calendar");
+      Output.printColorln(Output.WHITE, " -c          Clear the holiday cache on the local computer and exit");
+      Output.printColorln(Output.WHITE, " -D          Start in debug mode");
+      Output.printColorln(Output.WHITE, " -v          Display the program version and latest GitHub Cal release");
+      Output.printColorln(Output.WHITE, " -z          Disable colorized output");
+      Output.printColorln(Output.WHITE, " -h or -?    Display this help information");
 
-      Output.printColorln(Ansi.Color.YELLOW, "\nParameters:");
-      Output.printColorln(Ansi.Color.WHITE, "<None>       Display the current year");
-      Output.printColorln(Ansi.Color.WHITE, "YEAR         Display the entire YEAR");
-      Output.printColorln(Ansi.Color.WHITE, "MONTH        Display the MONTH in the current year");
-      Output.printColorln(Ansi.Color.WHITE, "MONTH YEAR   Display the MONTH and YEAR provided");
+      Output.printColorln(Output.YELLOW, "\nParameters:");
+      Output.printColorln(Output.WHITE, "<None>       Display the current year");
+      Output.printColorln(Output.WHITE, "YEAR         Display the entire YEAR");
+      Output.printColorln(Output.WHITE, "MONTH        Display the MONTH in the current year");
+      Output.printColorln(Output.WHITE, "MONTH YEAR   Display the MONTH and YEAR provided");
 
-      Output.printColorln(Ansi.Color.YELLOW, "\nExamples:");
-      Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar         Display the current year");
-      Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -n 4 -d Display the current year with 4 months per row with holidays");
-      Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 9       Display September of the current year");
-      Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 2022    Display the entire year 2022");
-      Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar 9 2022  Display only September of 2022");
-      Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -D 6    Display June of current year in debug mode");
-      Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -h      Show this help information");
-      Output.printColorln(Ansi.Color.WHITE, "  java -jar cal.jar -v      Show current version and latest GitHub Cal release");
+      Output.printColorln(Output.YELLOW, "\nExamples:");
+      Output.printColorln(Output.WHITE, "  java -jar cal.jar         Display the current year");
+      Output.printColorln(Output.WHITE, "  java -jar cal.jar -n 4 -d Display the current year with 4 months per row with holidays");
+      Output.printColorln(Output.WHITE, "  java -jar cal.jar 9       Display September of the current year");
+      Output.printColorln(Output.WHITE, "  java -jar cal.jar 2022    Display the entire year 2022");
+      Output.printColorln(Output.WHITE, "  java -jar cal.jar 9 2022  Display only September of 2022");
+      Output.printColorln(Output.WHITE, "  java -jar cal.jar -D 6    Display June of current year in debug mode");
+      Output.printColorln(Output.WHITE, "  java -jar cal.jar -h      Show this help information");
+      Output.printColorln(Output.WHITE, "  java -jar cal.jar -v      Show current version and latest GitHub Cal release");
 
-      Output.printColorln(Ansi.Color.YELLOW, "\nSnap Examples:");
-      Output.printColorln(Ansi.Color.WHITE, "  The examples above work exactly the same, but just call 'fcal' directly");
-      Output.printColorln(Ansi.Color.WHITE, "   fcal -n 4 -d   Display the current year with 4 months per row with holidays");
-      Output.printColorln(Ansi.Color.WHITE, "   fcal 2022      Display the entire year 2022");
-      Output.printColorln(Ansi.Color.WHITE, "   fcal 9 2022    Display only September of 2022");
+      Output.printColorln(Output.YELLOW, "\nSnap Examples:");
+      Output.printColorln(Output.WHITE, "  The examples above work exactly the same, but just call 'fcal' directly");
+      Output.printColorln(Output.WHITE, "   fcal -n 4 -d   Display the current year with 4 months per row with holidays");
+      Output.printColorln(Output.WHITE, "   fcal 2022      Display the entire year 2022");
+      Output.printColorln(Output.WHITE, "   fcal 9 2022    Display only September of 2022");
 
 
-      Output.printColorln(Ansi.Color.YELLOW, "\nNotes:");
-      Output.printColorln(Ansi.Color.WHITE, "  For a list of supported countries for use with the 'Display Holidays' option (-d) see:");
-      Output.printColorln(Ansi.Color.WHITE, "     - https://date.nager.at/Country");
+      Output.printColorln(Output.YELLOW, "\nNotes:");
+      Output.printColorln(Output.WHITE, "  For a list of supported countries for use with the 'Display Holidays' option (-d) see:");
+      Output.printColorln(Output.WHITE, "     - https://date.nager.at/Country");
 
    }
 }
