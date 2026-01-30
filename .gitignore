@@ -1,11 +1,42 @@
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
+# Gradle
+build/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# IntelliJ - ignore most, keep useful configs
+.idea/
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+!.idea/runConfigurations/
+!.idea/vcs.xml
+!.idea/compiler.xml
+
+# Eclipse (if you ever use it)
+.classpath
+.project
+.settings/
+bin/
+
+# VS Code
+.vscode/
+
+# Python
+.pydevproject
+
+# Snapcraft
+*.snap
+
+# Misc
+*.md.backup
+*.md.html
 release.properties
-dependency-reduced-pom.xml
 buildNumber.properties
-.mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
-.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+*.log
+
+# Temporary files
+*~
+*.swp
+*.tmp
