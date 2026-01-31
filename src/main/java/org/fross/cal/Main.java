@@ -51,21 +51,15 @@ public class Main {
     * @param args
     */
    public static void main(String[] args) {
-      // Process application level properties file
-      // Update properties from Maven at build time:
-      // https://stackoverflow.com/questions/3697449/retrieve-version-from-maven-pom-xml-in-code
-      try {
-         InputStream iStream = Main.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE);
-         Properties prop = new Properties();
-         prop.load(iStream);
-         VERSION = prop.getProperty("Application.version");
-         COPYRIGHT = "Copyright " + prop.getProperty("Application.inceptionYear") + "-" + org.fross.library.Date.getCurrentYear() + " by Michael Fross";
-      } catch (IOException ex) {
-         Output.fatalError("Unable to read property file '" + PROPERTIES_FILE + "'", 3);
-      }
-
       // Force JLine to assume the terminal supports ANSI color and movement
       System.setProperty("org.jline.terminal.type", "xterm-256color");
+      
+      // Suppress JLine warnings when running in confined environments (like snaps)
+      // JLine can't access /dev/tty in strict confinement, so it falls back to dumb terminal
+      // Colors still work fine via ANSI codes, so just suppress the warning
+      if (System.getenv("SNAP") != null || System.getenv("SNAP_NAME") != null) {
+        java.util.logging.Logger.getLogger("org.jline").setLevel(java.util.logging.Level.SEVERE);
+      }
 
       // Create a terminal used for output with JLine
       try {
@@ -82,7 +76,18 @@ public class Main {
 
       } catch (IOException ex) {
          // Note: Since terminal failed, we use System.out as a fallback
-         Output.println("Unable to create a terminal. Visuals will be impacted");
+         Output.println("Unable to create a terminal. Visuals may be impacted");
+      }
+
+      // Process application level properties file
+      try {
+         InputStream iStream = Main.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE);
+         Properties prop = new Properties();
+         prop.load(iStream);
+         VERSION = prop.getProperty("Application.version");
+         COPYRIGHT = "Copyright " + prop.getProperty("Application.inceptionYear") + "-" + org.fross.library.Date.getCurrentYear() + " by Michael Fross";
+      } catch (IOException ex) {
+         Output.fatalError("Unable to read property file '" + PROPERTIES_FILE + "'", 3);
       }
 
       // Process the command line arguments and switches
