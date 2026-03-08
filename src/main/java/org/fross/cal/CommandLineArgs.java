@@ -144,11 +144,11 @@ public class CommandLineArgs {
                Output.debugPrintln("No Month or Year provided on command line. Showing current year: " + yearToUse);
                break;
 
-            // Just a date or month provided
+            // Just a Year or Month provided
             case 1:
-               int d = Integer.parseInt(cli.clMonthAndOrYear.get(0));
+               int d = Integer.parseInt(cli.clMonthAndOrYear.getFirst());
 
-               // Number must be a year if it's greater than 12
+               // If the entered number is greater than 12 then it must be a year
                if (d > 12) {
                   yearToUse = d;
                   Output.debugPrintln("Commandline Year provided. Showing Year: " + yearToUse);
@@ -180,7 +180,7 @@ public class CommandLineArgs {
    /**
     * Return the month to use after processing the command line
     *
-    * @return
+    * @return Selected Month
     */
    public static int queryMonthToUse() {
       return monthToUse;
@@ -189,7 +189,7 @@ public class CommandLineArgs {
    /**
     * Return the year to use after processing the command line
     *
-    * @return
+    * @return Selected Year
     */
    public static int queryYearToUse() {
       return yearToUse;

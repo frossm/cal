@@ -34,8 +34,7 @@ public class Calendar {
    static protected final int DEFAULT_CALS_PER_ROW = 3;
    static protected final int CALENDARWIDTH = 20;
    static protected final int SPACESBETWEENCALS = 2;
-   static protected final String[] MONTHLIST = {"", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
-         "November", "December"};
+   static protected final String[] MONTHLIST = {"", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
    static protected final int TODAYHIGHLIGHT_FG = Output.WHITE;
    static protected final int TODAYHIGHLIGHT_BG = Output.BLUE;
 
@@ -96,10 +95,12 @@ public class Calendar {
     * @return
     */
    public static boolean isLeapYear(int year) {
-      if ((year % 4 == 0) && (year % 100 != 0))
+      if ((year % 4 == 0) && (year % 100 != 0)) {
          return true;
-      if (year % 400 == 0)
+      } else if (year % 400 == 0) {
          return true;
+      }
+
       return false;
    }
 
@@ -244,9 +245,9 @@ public class Calendar {
       // Insert spaces until we get to first day of the month in the calendar
       returnString[row] += "   ".repeat(firstDayOfMon);
 
-      // Initialize the length of the each row
+      // Initialize the length of each row
       // I can't just use the length of returnString[row] because the ANSI colored characters take up more room and that won't be
-      // printed. Therefore I'll keep the length of the returnString in a separate variable
+      // printed. Therefore, I'll keep the length of the returnString in a separate variable
       returnStringLen[row] = returnString[row].length();
 
       // Create the day strings. After 7 days start a new line.
@@ -277,12 +278,19 @@ public class Calendar {
          if (((day + firstDayOfMon) % 7 == 0) || (day == daysInMonth[month])) {
             // Ensure that the array element is padded with space characters
             if (returnStringLen[row] < CALENDARWIDTH) {
+               // Pad the return string for this row with spaces
                returnString[row] += " ".repeat(CALENDARWIDTH - returnStringLen[row] + 1);
             }
 
             // Move to the next row in the calendar
             row++;
          }
+      }
+
+      // Ensure the 5th row (row=4) is padded.
+      // Fixed bug where 2/28 ended on Sunday, and we didn't have anything in row=4
+      if (returnStringLen[4] == 0) {
+         returnString[4] = " ".repeat(CALENDARWIDTH + 1);
       }
 
       // Ensure last row / array element is CALENDARWIDTH characters. Pad with spaces.

@@ -29,6 +29,7 @@ import org.fross.library.Format;
 import org.fross.library.Output;
 import org.fross.library.URLOperations;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.TreeMap;
 import java.util.prefs.BackingStoreException;

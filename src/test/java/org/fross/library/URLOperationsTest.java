@@ -27,6 +27,7 @@
 package org.fross.library;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +36,6 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.io.TempDir;
 
 public class URLOperationsTest {
    final String URL_ADDRESS = "https://greenwoodsoftware.com/less";
@@ -59,6 +59,21 @@ public class URLOperationsTest {
          fail(ex.getMessage());
       }
 
+   }
+
+   /**
+    * Test IO Error with Server
+    */
+   @Test
+   void ReadURLServerErrorTest() {
+      String result;
+      try {
+         result = URLOperations.ReadURL("https://nonexistent.website.fross.org");
+         fail("Unreachable website didn't trigger exception. That's a big fail.");
+
+      } catch (Exception ex) {
+         // Test passed, just continue on...
+      }
    }
 
    /**
@@ -93,6 +108,20 @@ public class URLOperationsTest {
          fail("Unable to delete test file: " + tempFile.getAbsolutePath());
       }
 
+   }
+
+   /**
+    * Test IO Error with Server
+    */
+   @Test
+   void DownloadURLServerErrorTest() {
+      try {
+         URLOperations.DownloadURLToFile("https://nonexistent.website.fross.org","DownlURLTestFile.txt");
+         fail("Unreachable website didn't trigger exception. That's a big fail.");
+
+      } catch (Exception ex) {
+         // Test passed, just continue on...
+      }
    }
 
 }

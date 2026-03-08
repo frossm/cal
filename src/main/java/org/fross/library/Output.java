@@ -236,7 +236,7 @@ public class Output {
          Output.printColor(index, String.format("%d", index));
       }
 
-      System.out.println("\n");
+      Output.println("\n");
 
       // Test Backgrounds
       for (int index = 0; index < 256; index++) {

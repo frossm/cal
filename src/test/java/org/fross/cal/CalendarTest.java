@@ -26,6 +26,7 @@ package org.fross.cal;
 import org.fross.library.Output;
 import org.junit.jupiter.api.Test;
 
+import static org.fross.cal.Calendar.calsPerRow;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -38,19 +39,19 @@ class CalendarTest {
    @Test
    void testSetCalsPerRow() {
       // Successful
-      assertEquals(3, Calendar.calsPerRow);
+      assertEquals(3, calsPerRow);
       Calendar.setCalsPerRow(4);
-      assertEquals(4, Calendar.calsPerRow);
+      assertEquals(4, calsPerRow);
       Calendar.setCalsPerRow(6);
-      assertEquals(6, Calendar.calsPerRow);
+      assertEquals(6, calsPerRow);
 
       // Failures
       Calendar.setCalsPerRow(-1);
-      assertEquals(6, Calendar.calsPerRow);
+      assertEquals(6, calsPerRow);
       Calendar.setCalsPerRow(7);
-      assertEquals(6, Calendar.calsPerRow);
+      assertEquals(6, calsPerRow);
       Calendar.setCalsPerRow(101);
-      assertEquals(6, Calendar.calsPerRow);
+      assertEquals(6, calsPerRow);
    }
 
    /**
@@ -108,13 +109,13 @@ class CalendarTest {
    void testGetCalDays() {
       Output.enableColor(false);
 
-      // Lets evaluate a month in the future
+      // Let's evaluate a month in the future
       String[] calDays = Calendar.getCalDays(2, 2099);
       assertEquals(" 1  2  3  4  5  6  7 ", calDays[0]);
       assertEquals(" 8  9 10 11 12 13 14 ", calDays[1]);
       assertEquals("15 16 17 18 19 20 21 ", calDays[2]);
       assertEquals("22 23 24 25 26 27 28 ", calDays[3]);
-      assertEquals("", calDays[4]);
+      assertEquals("                     ", calDays[4]);
       assertEquals("                     ", calDays[5]);
 
       // Test output for a November 2027

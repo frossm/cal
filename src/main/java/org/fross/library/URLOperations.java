@@ -54,7 +54,7 @@ public class URLOperations {
          }
 
       } catch (Exception ex) {
-         Output.printColorln(Output.RED, "ERROR: An IO Error Occurred\n" + ex.getMessage());
+         throw new IOException(ex.getMessage());
       } finally {
          if (reader != null) {
             reader.close();
@@ -83,7 +83,8 @@ public class URLOperations {
          fos = new FileOutputStream(file);
 
       } catch (Exception ex) {
-         Output.printColorln(Output.RED, "ERROR: An error occurred opening the URL\n" + ex.getMessage());
+         //Output.printColorln(Output.RED, "ERROR: An error occurred opening the URL\n" + ex.getMessage());
+         throw new IOException(ex.getMessage());
       }
 
       // Download chunks of the file and write them out
@@ -98,9 +99,13 @@ public class URLOperations {
          Output.printColorln(Output.RED, "ERROR: An error occurred reading from the URL\n" + ex.getMessage());
       }
 
-      // Cleanup by closing the streams
-      fos.close();
-      bis.close();
+      // Cleanup by closing the streams.
+      if (fos != null) {
+         fos.close();
+      }
+      if (bis != null) {
+         bis.close();
+      }
    }
 
    /**

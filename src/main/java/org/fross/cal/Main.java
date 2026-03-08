@@ -48,7 +48,7 @@ public class Main {
    /**
     * Main(): Start of program and holds main command loop
     *
-    * @param args
+    * @param args Command Line Arguments
     */
    public static void main(String[] args) {
       // Force JLine to assume the terminal supports ANSI color and movement
@@ -63,23 +63,23 @@ public class Main {
 
       // Create a terminal used for output with JLine
       try {
-         // This will print the actual reason (like "Missing library" or "Access Denied") to the console
-         // For Debugging: System.setProperty("org.jline.terminal.debug", "true");
+         // Print any jline issues to the console for debugging
+         // System.setProperty("org.jline.terminal.debug", "true");
 
          // Create the terminal
          terminal = TerminalBuilder.builder()
                .system(true)
                .build();
 
-         // Let Output and Input classes know which terminal to use
+         // Let the Output classes know which terminal to use
          Output.setTerminal(terminal);
 
       } catch (IOException ex) {
-         // Note: Since terminal failed, we use System.out as a fallback
+         // Note: Since terminal failed, Output will use System.out as a fallback
          Output.println("Unable to create a terminal. Visuals may be impacted");
       }
 
-      // Process application level properties file
+      // Process application level properties file. The values are updated via the Gradle processResources task
       try {
          InputStream iStream = Main.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE);
          Properties prop = new Properties();
@@ -108,7 +108,7 @@ public class Main {
          Output.fatalError("There can not be more than 2 dates given on the commandline.\nPlease see Help (-h)", 6);
       }
 
-      // Ensure the month / year is a valid integer
+      // Ensure the Month / Year is a valid integer
       for (int i = 0; i < CommandLineArgs.cli.clMonthAndOrYear.size(); i++) {
          int monthAndOrYear = 0;
          try {
