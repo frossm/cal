@@ -26,6 +26,10 @@ platforms:
 # Enable faster LZO compression
 compression: lzo
 
+lint:
+  ignore:
+    - library
+
 apps:
   fcal:
     command: cal-wrapper
