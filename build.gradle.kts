@@ -70,8 +70,8 @@ dependencies {
    implementation("com.google.code.gson:gson:2.13.2")
 
    // --- JLine Terminal Access for Colorized Output---
-   implementation("org.jline:jline-terminal:4.0.0")
-   implementation("org.jline:jline-terminal-ffm:4.0.0")
+   implementation("org.jline:jline-terminal:4.0.4")
+   implementation("org.jline:jline-terminal-ffm:4.0.4")
 
    // --- JUnit Testing ---
    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.0-M1")
