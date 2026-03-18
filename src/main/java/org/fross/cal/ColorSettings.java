@@ -23,55 +23,104 @@
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import org.jline.utils.AttributedStyle;
 
+/**
+ * ColorSettings manages the visual theme of the calendar.
+ * It uses Java Preferences to persist user choices and provides
+ * JLine AttributedStyles for rendering.
+ */
 public class ColorSettings {
-   private static final Preferences prefs = Preferences.userRoot().node("/org/fross/cal/colors");
+   // Path to the preference node for this user
+   // Changed to protected so the Test can access it without a getter
+   protected static final Preferences prefs = Preferences.userRoot().node("/org/fross/cal/colors");
 
    /**
-    * getStyle: Returns the JLine style and heals missing keys
+    * getStyle: Returns a JLine AttributedStyle for the requested component.
+    * If keys are missing, it "heals" the system by writing defaults.
+    *
+    * @param component The UI element (month, dayofweek, day, today)
+    * @return The styled JLine object
     */
-   public static AttributedStyle getStyle(String key) {
-      // Normalize to lowercase so "DayOfWeek" or "dayofweek" both work
-      key = key.toLowerCase();
+   public static AttributedStyle getStyle(String component) {
+      String key = component.toLowerCase();
 
-      String defaultValue = switch (key) {
-         case "month"      -> "CYAN";
-         case "dayofweek"  -> "YELLOW";
-         case "day"        -> "WHITE";
-         default           -> "WHITE";
-      };
+      // 1. SPECIAL CASE: "today" is a composite of two other keys
+      if (key.equals("today")) {
+         boolean changed = false;
 
-      if (prefs.get(key, null) == null) {
-         prefs.put(key, defaultValue);
+         if (prefs.get("todayfg", null) == null) {
+            prefs.put("todayfg", "WHITE");
+            changed = true;
+         }
+         if (prefs.get("todaybg", null) == null) {
+            prefs.put("todaybg", "BLUE");
+            changed = true;
+         }
+
+         // Flush changes to the OS registry/plist if we healed anything
+         if (changed) {
+            try { prefs.flush(); } catch (BackingStoreException e) { /* Ignore */ }
+         }
+
+         return AttributedStyle.DEFAULT
+               .foreground(getRawColor(prefs.get("todayfg", "WHITE")))
+               .background(getRawColor(prefs.get("todaybg", "BLUE")))
+               .bold();
       }
 
-      return lookupStyle(prefs.get(key, defaultValue));
+      // 2. STANDARD CASE: Single-key components
+      if (prefs.get(key, null) == null) {
+         String defaultValue = switch (key) {
+            case "month"     -> "CYAN";
+            case "dayofweek" -> "YELLOW";
+            case "day"       -> "WHITE";
+            case "todayfg"   -> "WHITE";
+            case "todaybg"   -> "BLUE";
+            default          -> "WHITE";
+         };
+
+         prefs.put(key, defaultValue);
+         try { prefs.flush(); } catch (BackingStoreException e) { /* Ignore */ }
+      }
+
+      return lookupStyle(prefs.get(key, "WHITE"));
    }
 
    /**
-    * lookupStyle: Internal mapping from String to JLine constant
-    */
-   private static AttributedStyle lookupStyle(String color) {
-      return switch (color.toUpperCase()) {
-         case "BLACK"   -> AttributedStyle.DEFAULT.foreground(AttributedStyle.BLACK);
-         case "RED"     -> AttributedStyle.DEFAULT.foreground(AttributedStyle.RED);
-         case "GREEN"   -> AttributedStyle.DEFAULT.foreground(AttributedStyle.GREEN);
-         case "YELLOW"  -> AttributedStyle.DEFAULT.foreground(AttributedStyle.YELLOW).bold();
-         case "BLUE"    -> AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE);
-         case "MAGENTA" -> AttributedStyle.DEFAULT.foreground(AttributedStyle.MAGENTA);
-         case "CYAN"    -> AttributedStyle.DEFAULT.foreground(AttributedStyle.CYAN).bold();
-         default        -> AttributedStyle.DEFAULT.foreground(AttributedStyle.WHITE).bold();
-      };
-   }
-
-   /**
-    * setColor: Manually update a preference
+    * setColor: Updates a specific component color in the preferences.
     */
    public static void setColor(String component, String colorName) {
-      String key = component.toLowerCase();
-      if (key.equals("dow")) key = "dayofweek";
-      prefs.put(key, colorName.toUpperCase());
+      prefs.put(component.toLowerCase(), colorName.toUpperCase());
+      try { 
+      	prefs.flush();
+      } catch (BackingStoreException e) {
+      	 /* Ignore */
+      }
+   }
+
+   /**
+    * lookupStyle: Private helper to map color names to JLine constants.
+    */
+   private static AttributedStyle lookupStyle(String color) {
+      return AttributedStyle.DEFAULT.bold().foreground(getRawColor(color));
+   }
+
+   /**
+    * getRawColor: Maps a color string to the JLine integer constant.
+    */
+   private static int getRawColor(String color) {
+      return switch (color.toUpperCase()) {
+         case "BLACK"   -> AttributedStyle.BLACK;
+         case "RED"     -> AttributedStyle.RED;
+         case "GREEN"   -> AttributedStyle.GREEN;
+         case "YELLOW"  -> AttributedStyle.YELLOW;
+         case "BLUE"    -> AttributedStyle.BLUE;
+         case "MAGENTA" -> AttributedStyle.MAGENTA;
+         case "CYAN"    -> AttributedStyle.CYAN;
+         default        -> AttributedStyle.WHITE;
+      };
    }
 }

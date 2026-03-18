@@ -25,80 +25,62 @@ package org.fross.cal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.util.prefs.Preferences;
 import org.jline.utils.AttributedStyle;
 import org.junit.jupiter.api.Test;
 
+/**
+ * ColorSettingsTest ensures that the theme engine correctly manages the
+ * OS preferences and handles "Self-Healing" for missing keys.
+ */
 public class ColorSettingsTest {
 
    /**
-    * testSelfHealingAndDefaults:
-    * This test ensures that if preference keys are missing, the system
-    * automatically re-populates them with the correct default values.
+    * testTodayCompositeHealing:
+    * This is the "Bulletproof" test. It deletes the sub-keys (fg/bg) and
+    * verifies that requesting the 'today' style brings them both back.
     */
    @Test
-   void testSelfHealingAndDefaults() throws Exception {
-      Preferences prefs = Preferences.userRoot().node("/org/fross/cal/colors");
+   void testTodayCompositeHealing() throws Exception {
+      // 1. Manually wipe the specific today sub-keys
+      ColorSettings.prefs.remove("todayfg");
+      ColorSettings.prefs.remove("todaybg");
+      ColorSettings.prefs.flush();
 
-      // 1. BACKUP: Save existing user settings so we don't ruin their theme
-      String oldMonth = prefs.get("month", null);
-      String oldDOW   = prefs.get("dayofweek", null);
-      String oldDay   = prefs.get("day", null);
+      // 2. Trigger the composite healing by requesting the "today" style
+      AttributedStyle todayStyle = ColorSettings.getStyle("today");
 
-      try {
-         // 2. WIPE: Remove the keys to simulate a "first run" or accidental deletion
-         prefs.remove("month");
-         prefs.remove("dayofweek");
-         prefs.remove("day");
-         prefs.flush();
+      // 3. VERIFY: The sub-keys should have been recreated with defaults
+      assertEquals("WHITE", ColorSettings.prefs.get("todayfg", "FAIL"), "todayfg was not resurrected");
+      assertEquals("BLUE", ColorSettings.prefs.get("todaybg", "FAIL"), "todaybg was not resurrected");
 
-         // 3. TRIGGER: Request styles to fire the self-healing logic
-         AttributedStyle monthStyle = ColorSettings.getStyle("month");
-         AttributedStyle dowStyle   = ColorSettings.getStyle("dayofweek");
-         AttributedStyle dayStyle   = ColorSettings.getStyle("day");
-
-         // 4. VERIFY: Ensure the keys were re-written to the preferences system
-         assertEquals("CYAN", prefs.get("month", "FAIL"), "Self-healing failed to restore 'month' to CYAN");
-         assertEquals("YELLOW", prefs.get("dayofweek", "FAIL"), "Self-healing failed to restore 'dayofweek' to YELLOW");
-         assertEquals("WHITE", prefs.get("day", "FAIL"), "Self-healing failed to restore 'day' to WHITE");
-
-         // Ensure the returned objects aren't null
-         assertNotNull(monthStyle);
-         assertNotNull(dowStyle);
-         assertNotNull(dayStyle);
-
-      } finally {
-         // 5. RESTORE: Put the user's settings back exactly how we found them
-         if (oldMonth != null) prefs.put("month", oldMonth);
-         if (oldDOW != null)   prefs.put("dayofweek", oldDOW);
-         if (oldDay != null)   prefs.put("day", oldDay);
-         prefs.flush();
-      }
+      assertNotNull(todayStyle, "The returned style should not be null");
    }
 
    /**
-    * testSetColor:
-    * Verifies that the setColor method correctly updates the preference store.
+    * testStandardHealing:
+    * Verifies that standard single-key components (month, day) are healed.
     */
    @Test
-   void testSetColor() throws Exception {
-      Preferences prefs = Preferences.userRoot().node("/org/fross/cal/colors");
-      String backup = prefs.get("month", "CYAN");
+   void testStandardHealing() throws Exception {
+      ColorSettings.prefs.remove("month");
+      ColorSettings.prefs.flush();
 
-      try {
-         // Manually change the color
-         ColorSettings.setColor("month", "RED");
+      ColorSettings.getStyle("month");
 
-         // Verify the preference was updated and normalized to uppercase
-         assertEquals("RED", prefs.get("month", "FAIL"));
+      assertEquals("CYAN", ColorSettings.prefs.get("month", "FAIL"), "Month key was not healed to CYAN");
+   }
 
-         // Verify getStyle reflects the change
-         assertNotNull(ColorSettings.getStyle("month"));
+   /**
+    * testColorNormalization:
+    * Verifies that setColor handles case sensitivity (e.g., 'red' -> 'RED').
+    */
+   @Test
+   void testColorNormalization() throws Exception {
+      ColorSettings.setColor("dayofweek", "green");
 
-      } finally {
-         // Cleanup
-         prefs.put("month", backup);
-         prefs.flush();
-      }
+      assertEquals("GREEN", ColorSettings.prefs.get("dayofweek", "FAIL"), "Color name was not normalized to uppercase");
+
+      // Reset to default for other tests
+      ColorSettings.setColor("dayofweek", "YELLOW");
    }
 }

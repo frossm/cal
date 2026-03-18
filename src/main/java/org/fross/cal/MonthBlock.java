@@ -23,6 +23,10 @@
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
+import org.jline.utils.AttributedString;
+import org.jline.utils.AttributedStringBuilder;
+import org.jline.utils.AttributedStyle;
+
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
@@ -30,9 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
-import org.jline.utils.AttributedString;
-import org.jline.utils.AttributedStringBuilder;
-import org.jline.utils.AttributedStyle;
 
 /**
  * MonthBlock generates a formatted 8-line calendar grid for a single month.
@@ -47,6 +48,7 @@ public class MonthBlock {
 
    /**
     * Constructor for MonthBlock
+    *
     * @param year       The year to render
     * @param month      The month to render (1-12)
     * @param today      Current date for highlighting
@@ -62,6 +64,7 @@ public class MonthBlock {
    /**
     * getLines: Returns exactly 8 AttributedStrings, each 20 characters wide.
     * This fixed height and width allows for clean horizontal stitching in CalendarView.
+    *
     * @return List of 8 formatted lines
     */
    public List<AttributedString> getLines() {
@@ -89,13 +92,16 @@ public class MonthBlock {
 
             // --- Apply Style ---
             if (date.equals(this.today)) {
-               // Today: Keep your Blue background highlight
-               asb.style(AttributedStyle.DEFAULT.background(AttributedStyle.BLUE).foreground(AttributedStyle.WHITE).bold());
+               // This calls the "today" case we added to ColorSettings.getStyle()
+               // It handles the FG, BG, and Bold all in one shot.
+               asb.style(ColorSettings.getStyle("today"));
+
             } else if (holidayMap != null && holidayMap.containsKey(dateKey)) {
-               // Holiday: Keep Red highlight
-               asb.style(AttributedStyle.DEFAULT.foreground(AttributedStyle.RED).bold());
+               // Handle holidays (if you have them)
+               asb.style(ColorSettings.getStyle("holiday"));
+
             } else {
-               // Regular day: Use your new "day" color from ColorSettings
+               // Standard day color
                asb.style(ColorSettings.getStyle("day"));
             }
 
