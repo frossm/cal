@@ -26,6 +26,7 @@ package org.fross.cal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.jline.utils.AttributedStyle;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,6 +34,15 @@ import org.junit.jupiter.api.Test;
  * OS preferences and handles "Self-Healing" for missing keys.
  */
 public class ColorSettingsTest {
+   /**
+    * Test Setup:
+    * Before each run setup the test environment so each test is not impacted by others
+    */
+   @BeforeEach
+   void setup() {
+      // Ensure every test starts with color ON
+      ColorSettings.setColorEnabled(true);
+   }
 
    /**
     * testTodayCompositeHealing:
@@ -82,5 +92,28 @@ public class ColorSettingsTest {
 
       // Reset to default for other tests
       ColorSettings.setColor("dayofweek", "YELLOW");
+   }
+
+   /**
+    * testDisableColorSwitch:
+    * Checks to see the style returned if we disable the color
+    */
+   @Test
+   void testDisableColorSwitch() {
+      // 1. Enable color and verify we get "something" (not default)
+      ColorSettings.setColorEnabled(true);
+      AttributedStyle colorStyle = ColorSettings.getStyle("holiday");
+
+      // 2. Disable color (the -z switch simulation)
+      ColorSettings.setColorEnabled(false);
+      AttributedStyle noColorStyle = ColorSettings.getStyle("holiday");
+      AttributedStyle todayNoColor = ColorSettings.getStyle("today");
+
+      // 3. Verify that despite asking for "holiday" or "today", we get plain text
+      assertEquals(AttributedStyle.DEFAULT, noColorStyle, "Holiday should be plain when color is disabled");
+      assertEquals(AttributedStyle.DEFAULT, todayNoColor, "Today should be plain when color is disabled");
+
+      // 4. Reset for other tests
+      ColorSettings.setColorEnabled(true);
    }
 }

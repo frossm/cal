@@ -132,7 +132,7 @@ public class CommandLineArgs {
 
       // Disable Colorized Output Switch
       if (cli.clNoColor) {
-         Output.enableColor(false);
+         ColorSettings.setColorEnabled(false);
       }
 
       // Display local county holidays in the calendar

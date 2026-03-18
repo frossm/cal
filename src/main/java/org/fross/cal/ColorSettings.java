@@ -23,9 +23,10 @@
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
+import org.jline.utils.AttributedStyle;
+
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import org.jline.utils.AttributedStyle;
 
 /**
  * ColorSettings manages the visual theme of the calendar.
@@ -36,6 +37,12 @@ public class ColorSettings {
    // Path to the preference node for this user
    // Changed to protected so the Test can access it without a getter
    protected static final Preferences prefs = Preferences.userRoot().node("/org/fross/cal/colors");
+   private static boolean colorEnabled = true;
+
+   // Add a setter for your -z switch to call
+   public static void setColorEnabled(boolean value) {
+      colorEnabled = value;
+   }
 
    /**
     * getStyle: Returns a JLine AttributedStyle for the requested component.
@@ -46,6 +53,11 @@ public class ColorSettings {
     */
    public static AttributedStyle getStyle(String component) {
       String key = component.toLowerCase();
+
+      // Return if we don't have color enabled
+      if (!colorEnabled) {
+         return AttributedStyle.DEFAULT;
+      }
 
       // 1. SPECIAL CASE: "today" is a composite of two other keys
       if (key.equals("today")) {
@@ -62,31 +74,34 @@ public class ColorSettings {
 
          // Flush changes to the OS registry/plist if we healed anything
          if (changed) {
-            try { prefs.flush(); } catch (BackingStoreException e) { /* Ignore */ }
+            try {
+               prefs.flush();
+            } catch (BackingStoreException e) { /* Ignore */ }
          }
 
-         return AttributedStyle.DEFAULT
-               .foreground(getRawColor(prefs.get("todayfg", "WHITE")))
-               .background(getRawColor(prefs.get("todaybg", "BLUE")))
-               .bold();
+         return AttributedStyle.DEFAULT.foreground(getRawColor(prefs.get("todayfg", "WHITE"))).background(getRawColor(prefs.get("todaybg", "BLUE"))).bold();
       }
 
       // 2. STANDARD CASE: Single-key components
       if (prefs.get(key, null) == null) {
          String defaultValue = switch (key) {
-            case "month"     -> "CYAN";
+            case "month" -> "CYAN";
             case "dayofweek" -> "YELLOW";
-            case "day"       -> "WHITE";
-            case "todayfg"   -> "WHITE";
-            case "todaybg"   -> "BLUE";
-            default          -> "WHITE";
+            case "day" -> "WHITE";
+            case "holiday" -> "RED";
+            case "todayfg" -> "WHITE";
+            case "todaybg" -> "BLUE";
+            default -> "WHITE";
          };
 
          prefs.put(key, defaultValue);
-         try { prefs.flush(); } catch (BackingStoreException e) { /* Ignore */ }
+         try {
+            prefs.flush();
+         } catch (BackingStoreException e) { /* Ignore */ }
       }
 
-      return lookupStyle(prefs.get(key, "WHITE"));
+      String defaultColor = key.equals("holiday") ? "RED" : "WHITE";
+      return lookupStyle(prefs.get(key, defaultColor));
    }
 
    /**
@@ -94,10 +109,10 @@ public class ColorSettings {
     */
    public static void setColor(String component, String colorName) {
       prefs.put(component.toLowerCase(), colorName.toUpperCase());
-      try { 
-      	prefs.flush();
+      try {
+         prefs.flush();
       } catch (BackingStoreException e) {
-      	 /* Ignore */
+         /* Ignore */
       }
    }
 
@@ -112,6 +127,7 @@ public class ColorSettings {
     * getRawColor: Maps a color string to the JLine integer constant.
     */
    private static int getRawColor(String color) {
+      // Force to uppercase so the switch doesn't fail on lowercase registry values
       return switch (color.toUpperCase()) {
          case "BLACK"   -> AttributedStyle.BLACK;
          case "RED"     -> AttributedStyle.RED;
