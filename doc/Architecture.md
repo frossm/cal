@@ -31,7 +31,7 @@ This is the "Stitching" engine that handles the multi-column year view.
 ---
 
 ## 3. The Rendering Pipeline
-When a user requests a full year view (`cal -y`), the data flows through the following pipeline:
+When a user requests a full year view (`the default`), the data flows through the following pipeline:
 
 1.  **Request:** `Main` identifies the year and column count (default 3).
 2.  **Creation:** `CalendarView` instantiates 12 `MonthBlocks`.
