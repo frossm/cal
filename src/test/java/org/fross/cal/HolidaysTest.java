@@ -14,147 +14,117 @@
  *  copies or substantial portions of the Software.
  *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *--------------------------------------------------------------------------------------*/
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
+ * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
-import org.fross.library.Output;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.fross.library.Output;
+import org.junit.jupiter.api.Test;
 import java.util.Locale;
 import java.util.TreeMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+/**
+ * HolidaysTest: Validates the holiday data layer, ensuring accurate date
+ * retrieval, correct key formatting, and proper cache management.
+ */
 class HolidaysTest {
-//	// Testing clearing the local holiday cache
-//	@Test
-//	void clearHolidayCacheTest() {
-//		int year = org.fross.library.Date.getCurrentYear();
-//
-//		// Firstly, ensure we have something in the cache
-//		Holidays.getHolidays(year);
-//
-//		// Get the 2 character country code
-//		String ISO2 = Holidays.queryISO2CountryCode();
-//
-//		// Make sure the cached items are present
-//		Preferences prefHolidayCache = Preferences.userRoot().node("/org/fross/cal/holidays/" + ISO2 + "/" + year);
-//
-//		String[] cacheKeys = {};
-//		try {
-//			// Verify that we have something in the cache
-//			cacheKeys = prefHolidayCache.keys();
-//			assertTrue(cacheKeys.length > 0);
-//
-//			// Clear the cache
-//			CommandLineArgs.clearCache();
-//
-//			// Verify the cache is empty
-//			cacheKeys = prefHolidayCache.keys();
-//			assertFalse(cacheKeys.length > 0);
-//
-//		} catch (BackingStoreException ex) {
-//			// Having issues getting to the holiday cache. Display an error and continue to getting them from the Internet
-//			Output.printColorln(Output.RED, "Unable to access the holiday cache");
-//			fail();
-//		}
-//
-//	}
 
-   // Test holiday list - US 2023
+   /**
+    * Test holiday list for the United States in 2023.
+    * This confirms the API/Cache returns the exact expected set of dates.
+    */
    @Test
    void holidayListTestUS() {
+      // 1. Setup: Save current locale and force US for testing
+      Locale originalLocale = Locale.getDefault();
       Locale.setDefault(Locale.US);
-      Output.println("Current locale set to: " + Locale.getDefault().getDisplayCountry());
 
-      // ------------------------------------------------------------------------
-      // For now, skip this test if the JVM does not report it's in the US
-      // ------------------------------------------------------------------------
-      if (Locale.getDefault().getDisplayCountry().compareTo("United States") != 0) {
-         Output.println("Current locale set to: '" + Locale.getDefault().getDisplayCountry() + "'  --  Skipping Test");
-         return;
+      try {
+         // 2. Safety Check: Ensure the JVM actually switched to US Locale
+         // Using .getCountry() is more reliable than comparing Display Names
+         if (!Locale.getDefault().getCountry().equalsIgnoreCase("US")) {
+            Output.printColorln(Output.YELLOW, "System Locale is not US. Skipping holidayListTestUS.");
+            return;
+         }
+
+         // 3. Logic Check: Clear the holiday cache to force a fresh data fetch
+         CommandLineArgs.clearCache();
+         Output.print("Executing holidayListTestUS...");
+
+         // 4. Data Fetch: Retrieve the 2023 US holiday map
+         TreeMap<String, String> holidayListUS = Holidays.getHolidays(2023);
+
+         // 5. Validation: Basic null check and count
+         assertNotNull(holidayListUS, "Holiday Map should not be null");
+         assertEquals(10, holidayListUS.size(), "US 2023 should have exactly 10 standard holidays");
+
+         // 6. Formatting Check: Ensure the first key follows the yyyy-MM-dd format
+         // This is critical for MonthBlock to match dates for highlighting
+         String firstKey = holidayListUS.firstKey();
+         assertTrue(firstKey.matches("\\d{4}-\\d{2}-\\d{2}"),
+               "Holiday keys must be yyyy-MM-dd. Found: " + firstKey);
+
+         // 7. Data Accuracy: Verify the specific dates match the 2023 Federal Calendar
+         String[] expectedDates = {
+               "2023-01-02", "2023-01-16", "2023-02-20", "2023-05-29",
+               "2023-06-19", "2023-07-04", "2023-09-04", "2023-11-10",
+               "2023-11-23", "2023-12-25"
+         };
+
+         // assertArrayEquals checks both content and alphabetical order (TreeMap order)
+         assertArrayEquals(expectedDates, holidayListUS.keySet().toArray(),
+               "Holiday dates do not match the expected 2023 US sequence.");
+
+         Output.println("...Success!");
+
+      } finally {
+         // 8. Cleanup: Always restore the user's original locale
+         Locale.setDefault(originalLocale);
       }
-
-      // Clear the cache before the test
-      CommandLineArgs.clearCache();
-
-      Output.print("Current locale set to: '" + Locale.getDefault().getDisplayCountry() + "'");
-
-      // Get the holiday list for the US in 2023
-      TreeMap<String, String> holidayListUS = Holidays.getHolidays(2023);
-
-      // There should be 12 holidays in 2023
-      Assertions.assertNotNull(holidayListUS);
-      assertEquals(10, holidayListUS.size());
-
-      String[] correctValuesUS = {"2023-01-02", "2023-01-16", "2023-02-20", "2023-05-29", "2023-06-19", "2023-07-04", "2023-09-04", "2023-11-10", "2023-11-23", "2023-12-25"};
-
-      // Loop through the results and verify the keys (dates)
-      int i = 0;
-      for (String key : holidayListUS.keySet()) {
-         assertEquals(correctValuesUS[i], key);
-         i = i + 1;
-      }
-      Output.println("...Holiday Test Complete");
    }
 
-   // Test US month holidays for April 2025
+   /**
+    * Test month-specific holiday queries for December and July 2025.
+    * Verifies that the queryHolidayListMonth method returns correctly formatted strings.
+    */
    @Test
    void monthHolidayListTestUS() {
-      Output.println("Current locale set to: " + Locale.getDefault().getDisplayCountry());
-
-      // ------------------------------------------------------------------------
-      // For this test, skip this test if the JVM does not report it's in the US
-      // ------------------------------------------------------------------------
-      if (Locale.getDefault().getDisplayCountry().toString().compareTo("United States") != 0) {
-         Output.println("Current locale set to: '" + Locale.getDefault().getDisplayCountry() + "'  --  Skipping Test");
+      // Use the ISO country code check (US) to avoid display name mismatches
+      if (!Locale.getDefault().getCountry().equalsIgnoreCase("US")) {
+         Output.printColorln(Output.YELLOW, "System Locale is not US. Skipping monthHolidayListTestUS.");
          return;
       }
 
-      StringBuilder sb = Holidays.queryHolidayListMonth(12, 2025);
-      assertEquals("2025-12-25 | Christmas Day", sb.toString().trim());
+      // Check December 2025 (Christmas)
+      StringBuilder sbDec = Holidays.queryHolidayListMonth(12, 2025);
+      assertEquals("2025-12-25 | Christmas Day", sbDec.toString().trim());
 
-      sb = Holidays.queryHolidayListMonth(7, 2025);
-      assertEquals("2025-07-04 | Independence Day", sb.toString().trim());
-
+      // Check July 2025 (Independence Day)
+      StringBuilder sbJuly = Holidays.queryHolidayListMonth(7, 2025);
+      assertEquals("2025-07-04 | Independence Day", sbJuly.toString().trim());
    }
 
-// Test holiday list - CA
-//	@Test
-//	void holidayListTestCA() {
-//      Output.println("\nExecuting holidayListTestCA()");
-//		// ------------------------------------------------------------------------
-//		// Set the default country to Canada
-//		// ------------------------------------------------------------------------
-//		Locale.setDefault(Locale.CANADA);
-//		Output.println("Current locale set to: " + Locale.getDefault().getDisplayCountry());
-//
-//      // Clear the cache before the test
-//      CommandLineArgs.clearCache();
-//
-//		// Get the holiday list for the 2023 Canadian holidays
-//		TreeMap<String, String> holidayListCA = Holidays.getHolidays(2024);
-//
-//		// There should be 8 holidays in 2024
-//      Assertions.assertNotNull(holidayListCA);
-//      assertEquals(8, holidayListCA.size());
-//
-//		String[] correctValuesCA = { "2024-01-01", "2024-03-29", "2024-05-20", "2024-07-01", "2024-09-02", "2024-09-30", "2024-10-14", "2024-12-25" };
-//
-//		// Loop through the results and verify the keys (dates)
-//		int i = 0;
-//		for (String key : holidayListCA.keySet()) {
-//			assertEquals(correctValuesCA[i], key);
-//			i = i + 1;
-//		}
-//
-//		Output.println("Canada Holiday Test Complete");
-//	}
+   /**
+    * Test the Canada (CA) holiday list for 2024.
+    * Ensures the system can switch contexts and retrieve data for other regions.
+    */
+   @Test
+   void holidayListTestCA() {
+      CommandLineArgs.clearCache();
+
+      // This now explicitly calls the version that pulls Canada
+      java.util.TreeMap<String, String> holidayListCA = Holidays.getHolidays("CA", 2024);
+
+      assertEquals(8, holidayListCA.size(), "Canada 2024 should have 8 global holidays.");
+   }
 }

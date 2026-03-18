@@ -14,12 +14,12 @@
  *  copies or substantial portions of the Software.
  *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
@@ -27,9 +27,13 @@ import org.fross.library.Debug;
 import org.fross.library.Output;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.AttributedString;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -91,21 +95,21 @@ public class Main {
       }
 
       // Process the command line arguments and switches
-      CommandLineArgs.ProcessCommandLine(args);
+      CommandLineArgs.ProcessCommandLine(args, terminal);
 
       // Display some useful information about the environment if in Debug Mode
       Debug.displaySysInfo();
       Output.debugPrintln("Current locale set to: " + Locale.getDefault().getDisplayCountry());
       Output.debugPrintln("Command Line Options");
       Output.debugPrintln("  -D:  " + Debug.query());
-      Output.debugPrintln("  -n:  " + Calendar.queryCalsPerRow());
+      Output.debugPrintln("  -n:  " + CommandLineArgs.queryNumToUse());
       Output.debugPrintln("  -z:  " + Output.queryColorEnabled());
       Output.debugPrintln("  -d:  " + Holidays.queryHolidaysEnabled());
       Output.debugPrintln("Number of command line arguments:  " + args.length);
 
       // Ensure there are not more than 2 parameters given
       if (CommandLineArgs.cli.clMonthAndOrYear.size() > 2) {
-         Output.fatalError("There can not be more than 2 dates given on the commandline.\nPlease see Help (-h)", 6);
+         Output.fatalError("There can not be more than 2 parameters given on the commandline.\nPlease see Help (-h)", 6);
       }
 
       // Ensure the Month / Year is a valid integer
@@ -128,28 +132,24 @@ public class Main {
          }
       }
 
-      // Display the calendars
+      // Start with a blank line to give cal some elbow room
       Output.println("");
-      switch (CommandLineArgs.cli.clMonthAndOrYear.size()) {
 
-         // No month or year provided
-         case 0:
-            Calendar.printYear(CommandLineArgs.queryYearToUse());
-            break;
+      // Logic variables for the display
+      int year = CommandLineArgs.queryYearToUse();
+      int month = CommandLineArgs.queryMonthToUse();
+      int cols = CommandLineArgs.queryNumToUse();
+      LocalDate today = LocalDate.now();
 
-         // A month or year was given. Assume it's a month if it's 1-12
-         case 1:
-            if (Integer.parseInt(CommandLineArgs.cli.clMonthAndOrYear.getFirst()) > 12) {
-               Calendar.printYear(CommandLineArgs.queryYearToUse());
-            } else {
-               Calendar.printMonth(CommandLineArgs.queryMonthToUse(), CommandLineArgs.queryYearToUse());
-            }
-            break;
+      CalendarView view = new CalendarView(terminal, today);
 
-         // A month and a year was provided
-         case 2:
-            Calendar.printMonth(CommandLineArgs.queryMonthToUse(), CommandLineArgs.queryYearToUse());
-            break;
+      // Decide which view to show
+      if (CommandLineArgs.cli.clMonthAndOrYear.size() == 2) {
+         view.printMonth(year, month);
+      } else if (month <= 12 && !CommandLineArgs.cli.clMonthAndOrYear.isEmpty()) {
+         view.printMonth(year, month);
+      } else {
+         view.printFullYear(year, cols);
       }
    }
 }

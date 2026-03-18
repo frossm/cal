@@ -1,19 +1,19 @@
 /*--------------------------------------------------------------------------------------
- *  Cal - A command line calendar utility
+ * Cal - A command line calendar utility
  *
- *  Copyright (c) 2018-2026 Michael Fross
+ * Copyright (c) 2018-2026 Michael Fross
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -29,6 +29,7 @@ import com.beust.jcommander.ParameterException;
 import org.fross.library.Debug;
 import org.fross.library.GitHub;
 import org.fross.library.Output;
+import org.jline.terminal.Terminal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +65,7 @@ public class CommandLineArgs {
    protected boolean clClearCache = false;
 
    @Parameter(names = {"-n", "--num"}, description = "Number of calendar months to display per row")
-   protected int clNum = Calendar.DEFAULT_CALS_PER_ROW;
+   protected int clNum = 0;
 
    @Parameter(description = "Month and/or Year")
    protected List<String> clMonthAndOrYear = new ArrayList<>();
@@ -72,7 +73,7 @@ public class CommandLineArgs {
    // ---------------------------------------------------------------------------------------------
    // Process command line parameters with the following methods
    // ---------------------------------------------------------------------------------------------
-   public static void ProcessCommandLine(String[] argv) {
+   public static void ProcessCommandLine(String[] argv, Terminal terminal) {
       // JCommander parses the command line
       try {
          jc.setProgramName("cal");
@@ -93,15 +94,31 @@ public class CommandLineArgs {
       }
 
       // Set the number of months to display per row
-      if (cli.clNum != Calendar.DEFAULT_CALS_PER_ROW) {
-         try {
-            if (cli.clNum <= 0) {
-               throw new UnsupportedOperationException();
-            }
-         } catch (Exception Ex) {
-            Output.fatalError("Invalid option for -n switch: '" + cli.clNum + "'", 0);
+      if (cli.clNum == 0) {
+         // USER DID NOT PROVIDE -n: Perform Auto-Fit based on terminal width
+         // Check for null terminal to avoid NullPointerException in tests
+         int width = (terminal != null) ? terminal.getWidth() : 80;
+
+         // Sanitize width: If JLine returns 0 or something weird, default to 80
+         if (width <= 0 || width > 500) {
+            width = 80;
          }
-         Calendar.setCalsPerRow(cli.clNum);
+
+         // Calculate: (Width + Gap) / (MonthWidth + Gap)
+         int autoFit = (width + 3) / 23;
+
+         // Apply the caps we discussed
+         if (autoFit < 1) autoFit = 1;
+         if (autoFit > 6) autoFit = 6;
+
+         cli.clNum = autoFit;
+         Output.debugPrintln("Auto-fitting months per row based on width " + width + ": " + cli.clNum);
+
+      } else {
+         // USER PROVIDED -n: Just validate it's within a sane range (1-12)
+         if (cli.clNum < 1) cli.clNum = 1;
+         if (cli.clNum > 12) cli.clNum = 12;
+         Output.debugPrintln("Using user-defined months per row: " + cli.clNum);
       }
 
       // Version Switch
@@ -196,6 +213,15 @@ public class CommandLineArgs {
    }
 
    /**
+    * Return the number of months per row to display
+    *
+    * @return int
+    */
+   public static int queryNumToUse() {
+      return cli.clNum;
+   }
+
+   /**
     * clearCache(): Clear the holiday preferences cache
     */
    public static void clearCache() {
@@ -207,5 +233,16 @@ public class CommandLineArgs {
       } catch (BackingStoreException ex) {
          Output.printColorln(Output.RED, "ERROR: Could not clear the holiday cache");
       }
+   }
+
+   /**
+    * reset: Reset the static variables to their defaults.
+    * This is primarily used for unit testing to ensure a clean state.
+    */
+   public static void reset() {
+      cli = new CommandLineArgs();
+      monthToUse = org.fross.library.Date.getCurrentMonth();
+      yearToUse = org.fross.library.Date.getCurrentYear();
+      // Note: jc doesn't strictly need a reset as it's rebuilt in ProcessCommandLine
    }
 }

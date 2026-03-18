@@ -14,12 +14,12 @@
  *  copies or substantial portions of the Software.
  *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
@@ -46,7 +46,7 @@ public class Help {
       Output.printColorln(Output.CYAN, Format.CenterText(HELPWIDTH, "https://github.com/frossm/cal"));
 
       Output.printColorln(Output.YELLOW, "\nCommand Line Options:");
-      Output.printColorln(Output.WHITE, " -n #        Number of calendars per row in Year view.  The default is " + Calendar.DEFAULT_CALS_PER_ROW);
+      Output.printColorln(Output.WHITE, " -n #        Number of calendars per row in Year view. Will autoscale to your term");
       Output.printColorln(Output.WHITE, " -d          Display local country holidays in the calendar");
       Output.printColorln(Output.WHITE, " -c          Clear the holiday cache on the local computer and exit");
       Output.printColorln(Output.WHITE, " -D          Start in debug mode");
