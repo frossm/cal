@@ -30,7 +30,7 @@ plugins {
    java
    application
    id("com.github.ben-manes.versions") version "0.53.0"
-   id("com.gradleup.shadow") version "9.4.0"
+   id("com.gradleup.shadow") version "9.4.1"
 }
 
 group = "org.fross"
@@ -69,11 +69,11 @@ dependencies {
    implementation("org.apache.commons:commons-math3:3.6.1")
    implementation("com.google.code.gson:gson:2.13.2")
 
-   // --- JLine Terminal Access for Colorized Output---
-   implementation("org.jline:jline-terminal:4.0.9")
-   implementation("org.jline:jline-terminal-ffm:4.0.9")
+   // --- JLine Terminal Access for Colorized Output
+   implementation("org.jline:jline-terminal:4.0.10")
+   implementation("org.jline:jline-terminal-ffm:4.0.10")
 
-   // --- JUnit Testing ---
+   // --- JUnit Testing
    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.0-M1")
    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.0-M1")
    testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.0-M1")
