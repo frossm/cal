@@ -26,9 +26,10 @@
  ***************************************************************************************************************/
 package org.fross.library;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Michael Fross (michael@fross.org)

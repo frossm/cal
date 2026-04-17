@@ -70,8 +70,8 @@ dependencies {
    implementation("com.google.code.gson:gson:2.13.2")
 
    // --- JLine Terminal Access for Colorized Output
-   implementation("org.jline:jline-terminal:4.0.10")
-   implementation("org.jline:jline-terminal-ffm:4.0.10")
+   implementation("org.jline:jline-terminal:4.0.12")
+   implementation("org.jline:jline-terminal-ffm:4.0.12")
 
    // --- JUnit Testing
    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.0-M1")
@@ -175,7 +175,8 @@ tasks.register<Copy>("install") {
    val shadowTask = tasks.named<ShadowJar>("shadowJar")
    dependsOn(shadowTask)
 
-   from(tasks.named("shadowJar"))
+   // FIX: Point specifically to the shadowJar's archiveFile to ensure the FatJar is copied
+   from(shadowTask.map { it.archiveFile })
    into(installDirectory)
 
    // Force Gradle to ignore the cache and copy the file every time

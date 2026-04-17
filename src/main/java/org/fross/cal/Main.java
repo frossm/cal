@@ -27,13 +27,10 @@ import org.fross.library.Debug;
 import org.fross.library.Output;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
-import org.jline.utils.AttributedString;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -57,12 +54,12 @@ public class Main {
    public static void main(String[] args) {
       // Force JLine to assume the terminal supports ANSI color and movement
       System.setProperty("org.jline.terminal.type", "xterm-256color");
-      
+
       // Suppress JLine warnings when running in confined environments (like snaps)
       // JLine can't access /dev/tty in strict confinement, so it falls back to dumb terminal
       // Colors still work fine via ANSI codes, so just suppress the warning
       if (System.getenv("SNAP") != null || System.getenv("SNAP_NAME") != null) {
-        java.util.logging.Logger.getLogger("org.jline").setLevel(java.util.logging.Level.SEVERE);
+         java.util.logging.Logger.getLogger("org.jline").setLevel(java.util.logging.Level.SEVERE);
       }
 
       // Create a terminal used for output with JLine
@@ -71,9 +68,7 @@ public class Main {
          // System.setProperty("org.jline.terminal.debug", "true");
 
          // Create the terminal
-         terminal = TerminalBuilder.builder()
-               .system(true)
-               .build();
+         terminal = TerminalBuilder.builder().system(true).build();
 
          // Let the Output classes know which terminal to use
          Output.setTerminal(terminal);
@@ -144,11 +139,12 @@ public class Main {
       CalendarView view = new CalendarView(terminal, today);
 
       // Decide which view to show
-      if (CommandLineArgs.cli.clMonthAndOrYear.size() == 2) {
+      if (CommandLineArgs.isMonthSpecified()) {
+         // Month was provided (either "cal 12" or "cal 12 2028")
          view.printMonth(year, month);
-      } else if (month <= 12 && !CommandLineArgs.cli.clMonthAndOrYear.isEmpty()) {
-         view.printMonth(year, month);
+
       } else {
+         // No month provided (either "cal" or "cal 2028")
          view.printFullYear(year, cols);
       }
    }

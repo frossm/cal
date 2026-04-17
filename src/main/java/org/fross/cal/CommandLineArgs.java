@@ -41,6 +41,7 @@ public class CommandLineArgs {
    static JCommander jc = new JCommander();
    static int monthToUse = org.fross.library.Date.getCurrentMonth();
    static int yearToUse = org.fross.library.Date.getCurrentYear();
+   static boolean monthSpecified = false;
 
    // ---------------------------------------------------------------------------------------------
    // Define command line options that can be used
@@ -173,6 +174,7 @@ public class CommandLineArgs {
                   // If number is <= 12, assume it's a month
                } else {
                   monthToUse = d;
+                  monthSpecified = true;
                   Output.debugPrintln("Commandline Month provided. Using Month: " + monthToUse + "  Year:" + yearToUse);
                }
                break;
@@ -181,6 +183,7 @@ public class CommandLineArgs {
             case 2:
                monthToUse = Integer.parseInt(cli.clMonthAndOrYear.get(0));
                yearToUse = Integer.parseInt(cli.clMonthAndOrYear.get(1));
+               monthSpecified = true;
                Output.debugPrintln("Commandline Month & Year provided. Month: " + monthToUse + "  Year: " + yearToUse);
                break;
          }
@@ -192,6 +195,11 @@ public class CommandLineArgs {
          Output.fatalError("Something went very wrong.  You shouldn't really see this.  Eeek!\n" + ex.getMessage(), 99);
       }
 
+   }
+
+   // Determine if user entered a month on the command line
+   public static boolean isMonthSpecified() {
+      return monthSpecified;
    }
 
    /**
@@ -243,6 +251,7 @@ public class CommandLineArgs {
       cli = new CommandLineArgs();
       monthToUse = org.fross.library.Date.getCurrentMonth();
       yearToUse = org.fross.library.Date.getCurrentYear();
+      monthSpecified = false;
       // Note: jc doesn't strictly need a reset as it's rebuilt in ProcessCommandLine
    }
 }

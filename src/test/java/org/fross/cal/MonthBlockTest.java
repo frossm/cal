@@ -23,14 +23,15 @@
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.jline.utils.AttributedString;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.TreeMap;
-import org.jline.utils.AttributedString;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MonthBlockTest {
 

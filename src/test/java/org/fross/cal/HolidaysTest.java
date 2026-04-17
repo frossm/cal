@@ -23,15 +23,13 @@
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.fross.library.Output;
 import org.junit.jupiter.api.Test;
+
 import java.util.Locale;
 import java.util.TreeMap;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * HolidaysTest: Validates the holiday data layer, ensuring accurate date

@@ -23,15 +23,14 @@
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * CommandLineArgsTest: Comprehensive testing of command line parsing,
@@ -102,30 +101,39 @@ class CommandLineArgsTest {
    }
 
    /**
-    * testDateParameters: Validates the logic for processing Month and Year arguments.
+    * testDateParameters: Validates logic for Month/Year arguments and ensures
+    * the monthSpecified flag correctly captures the user's intent.
     */
    @Test
    void testDateParameters() {
       int currentMonth = org.fross.library.Date.getCurrentMonth();
       int currentYear = org.fross.library.Date.getCurrentYear();
 
-      // Case 1: Single argument <= 12 is a Month
+      // --- RULE 1: No Arguments (Just "cal") -> Show Current Year ---
+      CommandLineArgs.reset();
+      CommandLineArgs.ProcessCommandLine(new String[]{}, testTerminal);
+      assertEquals(currentYear, CommandLineArgs.queryYearToUse());
+      assertFalse(CommandLineArgs.isMonthSpecified(), "Default 'cal' must be false to trigger Year View");
+
+      // --- RULE 2: Month provided (e.g., "cal 6") -> Show Month in Current Year ---
       CommandLineArgs.reset();
       CommandLineArgs.ProcessCommandLine(new String[]{"6"}, testTerminal);
       assertEquals(6, CommandLineArgs.queryMonthToUse());
       assertEquals(currentYear, CommandLineArgs.queryYearToUse());
+      assertTrue(CommandLineArgs.isMonthSpecified(), "Month-only input must be true to trigger Month View");
 
-      // Case 2: Single argument > 12 is a Year
+      // --- RULE 3: Year provided (e.g., "cal 2028") -> Show Full Year 2028 ---
       CommandLineArgs.reset();
       CommandLineArgs.ProcessCommandLine(new String[]{"2028"}, testTerminal);
-      assertEquals(currentMonth, CommandLineArgs.queryMonthToUse());
       assertEquals(2028, CommandLineArgs.queryYearToUse());
+      assertFalse(CommandLineArgs.isMonthSpecified(), "Year-only input must be false to trigger Year View");
 
-      // Case 3: Two arguments are Month and Year
+      // --- RULE 4: Month & Year provided (e.g., "cal 12 2030") -> Show Dec 2030 ---
       CommandLineArgs.reset();
       CommandLineArgs.ProcessCommandLine(new String[]{"12", "2030"}, testTerminal);
       assertEquals(12, CommandLineArgs.queryMonthToUse());
       assertEquals(2030, CommandLineArgs.queryYearToUse());
+      assertTrue(CommandLineArgs.isMonthSpecified(), "Full date input must be true to trigger Month View");
    }
 
    /**

@@ -23,13 +23,14 @@
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
+import org.jline.terminal.Terminal;
+import org.jline.utils.AttributedString;
+import org.jline.utils.AttributedStringBuilder;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-import org.jline.terminal.Terminal;
-import org.jline.utils.AttributedString;
-import org.jline.utils.AttributedStringBuilder;
 
 /**
  * CalendarView manages the high-level layout of the calendar.

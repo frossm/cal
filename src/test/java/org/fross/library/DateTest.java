@@ -3,9 +3,9 @@
  */
 package org.fross.library;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Michael Fross (michael@fross.org)

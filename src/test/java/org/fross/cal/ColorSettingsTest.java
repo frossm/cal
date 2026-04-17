@@ -23,11 +23,12 @@
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.jline.utils.AttributedStyle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * ColorSettingsTest ensures that the theme engine correctly manages the

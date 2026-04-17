@@ -23,12 +23,14 @@
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.io.ByteArrayOutputStream;
-import java.time.LocalDate;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.impl.DumbTerminal;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * CalendarViewTest ensures the visual layout of the calendar is generated correctly.
