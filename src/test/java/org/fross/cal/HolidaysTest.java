@@ -64,7 +64,7 @@ class HolidaysTest {
 
          // 5. Validation: Basic null check and count
          assertNotNull(holidayListUS, "Holiday Map should not be null");
-         assertEquals(10, holidayListUS.size(), "US 2023 should have exactly 10 standard holidays");
+         assertEquals(11, holidayListUS.size(), "US 2023 should have exactly 11 standard holidays");
 
          // 6. Formatting Check: Ensure the first key follows the yyyy-MM-dd format
          // This is critical for MonthBlock to match dates for highlighting
@@ -75,8 +75,8 @@ class HolidaysTest {
          // 7. Data Accuracy: Verify the specific dates match the 2023 Federal Calendar
          String[] expectedDates = {
                "2023-01-02", "2023-01-16", "2023-02-20", "2023-05-29",
-               "2023-06-19", "2023-07-04", "2023-09-04", "2023-11-10",
-               "2023-11-23", "2023-12-25"
+               "2023-06-19", "2023-07-04", "2023-09-04", "2023-10-09",
+               "2023-11-10", "2023-11-23", "2023-12-25"
          };
 
          // assertArrayEquals checks both content and alphabetical order (TreeMap order)

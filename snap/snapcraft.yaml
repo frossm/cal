@@ -1,6 +1,6 @@
 name: fcal
 title: fCal
-version: '4.0.7'
+version: '4.0.8'
 summary: Command line calendar display
 description: |
   fCal is a command line calendar utility.  It will display a
