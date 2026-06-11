@@ -1,21 +1,21 @@
 /*--------------------------------------------------------------------------------------
- *  Cal - A command line calendar utility
+ * Cal - A command line calendar utility
  *
- *  Copyright (c) 2018-2026 Michael Fross
+ * Copyright (c) 2018-2026 Michael Fross
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.    IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -30,7 +30,7 @@ plugins {
    java
    application
    id("com.github.ben-manes.versions") version "0.54.0"
-   id("com.gradleup.shadow") version "9.4.1"
+   id("com.gradleup.shadow") version "9.4.2"
 }
 
 group = "org.fross"
@@ -55,6 +55,15 @@ tasks.withType<Test> {
 }
 
 // --------------------------------------------------------------------------------------------------------
+// JavaExec Tasks: Apply native access flags to all Java execution tasks
+// --------------------------------------------------------------------------------------------------------
+tasks.withType<JavaExec> {
+   // CLARIFICATION: Grants permission for JLine 4.1.3+ to use Java's Foreign Function & Memory (FFM)
+   // API to manage terminal windows directly without triggering illegal native access warnings on the JVM.
+   jvmArgs("--enable-native-access=ALL-UNNAMED")
+}
+
+// --------------------------------------------------------------------------------------------------------
 // Define repositories used in the app
 // --------------------------------------------------------------------------------------------------------
 repositories {
@@ -70,13 +79,13 @@ dependencies {
    implementation("com.google.code.gson:gson:2.14.0")
 
    // --- JLine Terminal Access for Colorized Output
-   implementation("org.jline:jline-terminal:4.1.0")
-   implementation("org.jline:jline-terminal-ffm:4.1.0")
+   implementation("org.jline:jline-terminal:4.1.3")
+   implementation("org.jline:jline-terminal-ffm:4.1.3")
 
    // --- JUnit Testing
-   testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.0-RC1")
-   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.0-RC1")
-   testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.0-RC1")
+   testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.0")
+   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.0")
+   testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.0")
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -153,6 +162,10 @@ tasks.named<ShadowJar>("shadowJar") {
 // --------------------------------------------------------------------------------------------------------
 tasks.test {
    useJUnitPlatform()
+
+   // CLARIFICATION: Supplies native access arguments to the testing worker forks so that JLine providers
+   // run silently during JUnit execution routines without logging memory segment restrictions.
+   jvmArgs("--enable-native-access=ALL-UNNAMED")
 
    // This makes the console output much more useful
    testLogging {
