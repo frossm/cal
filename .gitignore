@@ -40,3 +40,4 @@ buildNumber.properties
 *~
 *.swp
 *.tmp
+out
