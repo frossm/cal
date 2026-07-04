@@ -28,56 +28,60 @@ package org.fross.library;
 
 /**
  * Debug contains static methods to maintain the debug state and display messages when enabled.
- * 
+ *
  * @author michael.d.fross
  *
  */
 public class Debug {
-	// Class Variables
-	private static boolean clDebug = false;
+   // Class Variables
+   private static boolean clDebug = false;
 
-	/**
-	 * Query(): Query current state of this object's debug setting
-	 * 
-	 * @return
-	 */
-	public static boolean query() {
-		return clDebug;
-	}
+   /**
+    * Query(): Query current state of this object's debug setting
+    *
+    * @return
+    */
+   public static boolean query() {
+      return clDebug;
+   }
 
-	/**
-	 * Enable(): Turn debugging on for this object
-	 */
-	public static void enable() {
-		clDebug = true;
-	}
+   /**
+    * Enable(): Turn debugging on for this object
+    */
+   public static void enable() {
+      clDebug = true;
+   }
 
-	/**
-	 * Disable(): Disable debugging for this object
-	 */
-	public static void disable() {
-		clDebug = false;
-	}
+   /**
+    * Disable(): Disable debugging for this object
+    */
+   public static void disable() {
+      clDebug = false;
+   }
 
-	/**
-	 * displaySysInfo(): Display some system level information used in Debug Mode
-	 */
-	public static void displaySysInfo() {
-		Output.debugPrintln("------------------------------------------------------------");
-		Output.debugPrintln("System Information:");
-		Output.debugPrintln("  - class.path:     " + System.getProperty("java.class.path"));
-		Output.debugPrintln("  - java.home:      " + System.getProperty("java.home"));
-		Output.debugPrintln("  - java.vendor:    " + System.getProperty("java.vendor"));
-		Output.debugPrintln("  - java.version:   " + System.getProperty("java.version"));
-		Output.debugPrintln("  - os.name:        " + System.getProperty("os.name"));
-		Output.debugPrintln("  - os.version:     " + System.getProperty("os.version"));
-		Output.debugPrintln("  - os.arch:        " + System.getProperty("os.arch"));
-		Output.debugPrintln("  - user.name:      " + System.getProperty("user.name"));
-		Output.debugPrintln("  - user.home:      " + System.getProperty("user.home"));
-		Output.debugPrintln("  - user.dir:       " + System.getProperty("user.dir"));
-		Output.debugPrintln("  - file.separator: " + System.getProperty("file.separator"));
-		Output.debugPrintln("  - library.path:   " + System.getProperty("java.library.path"));
-		Output.debugPrintln("------------------------------------------------------------");
-	}
+   /**
+    * displaySysInfo(): Display some system level information used in Debug Mode
+    */
+   public static void displaySysInfo() {
+      // Display Colors
+      if (query()) Output.Ansi256Test();
+
+      // Display System Information
+      Output.debugPrintln("------------------------------------------------------------");
+      Output.debugPrintln("System Information:");
+      Output.debugPrintln("  - class.path:     " + System.getProperty("java.class.path"));
+      Output.debugPrintln("  - java.home:      " + System.getProperty("java.home"));
+      Output.debugPrintln("  - java.vendor:    " + System.getProperty("java.vendor"));
+      Output.debugPrintln("  - java.version:   " + System.getProperty("java.version"));
+      Output.debugPrintln("  - os.name:        " + System.getProperty("os.name"));
+      Output.debugPrintln("  - os.version:     " + System.getProperty("os.version"));
+      Output.debugPrintln("  - os.arch:        " + System.getProperty("os.arch"));
+      Output.debugPrintln("  - user.name:      " + System.getProperty("user.name"));
+      Output.debugPrintln("  - user.home:      " + System.getProperty("user.home"));
+      Output.debugPrintln("  - user.dir:       " + System.getProperty("user.dir"));
+      Output.debugPrintln("  - file.separator: " + System.getProperty("file.separator"));
+      Output.debugPrintln("  - library.path:   " + System.getProperty("java.library.path"));
+      Output.debugPrintln("------------------------------------------------------------");
+   }
 
 }

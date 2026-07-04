@@ -111,21 +111,26 @@ public class Holidays {
     * printHolidayListYear: Prints a 2-column holiday legend that matches the calendar width
     */
    public static void printHolidayListYear(int year, int displayWidth) {
-      String header = year + " holidays for " + Holidays.queryCountry();
-      Output.printColorln(Output.YELLOW, "\n" + center(header, displayWidth));
-
       Object[] keySet = holidays.keySet().toArray();
       int totalHolidays = holidays.size();
       int rowsNeeded = (totalHolidays + 1) / 2;
       int colWidth = displayWidth / 2;
+      String header = year + " holidays for " + Holidays.queryCountry();
+
+      // DYNAMIC: Use holtitle style for the header line
+      org.jline.utils.AttributedString styledHeader = new org.jline.utils.AttributedString("\n" + center(header, displayWidth), ColorSettings.getStyle("holtitle"));
+      System.out.println(styledHeader.toAnsi());
 
       for (int i = 0; i < rowsNeeded; i++) {
          // Left Column
          String keyLeft = keySet[i].toString();
          String outLeft = keyLeft.substring(5) + "|" + holidays.get(keyLeft);
          if (outLeft.length() > colWidth - 2) outLeft = outLeft.substring(0, colWidth - 5) + "..>";
-         Output.printColor(Output.CYAN, outLeft);
-         Output.print(" ".repeat(Math.max(0, colWidth - outLeft.length())));
+
+         // DYNAMIC: Use holtext style for the left column holiday item
+         org.jline.utils.AttributedString styledLeft = new org.jline.utils.AttributedString(outLeft, ColorSettings.getStyle("holtext"));
+         System.out.print(styledLeft.toAnsi());
+         System.out.print(" ".repeat(Math.max(0, colWidth - outLeft.length())));
 
          // Right Column
          int rightIdx = i + rowsNeeded;
@@ -133,7 +138,10 @@ public class Holidays {
             String keyRight = keySet[rightIdx].toString();
             String outRight = keyRight.substring(5) + "|" + holidays.get(keyRight);
             if (outRight.length() > colWidth - 2) outRight = outRight.substring(0, colWidth - 5) + "..>";
-            Output.printColorln(Output.CYAN, outRight);
+
+            // DYNAMIC: Use holtext style for the right column holiday item
+            org.jline.utils.AttributedString styledRight = new org.jline.utils.AttributedString(outRight, ColorSettings.getStyle("holtext"));
+            System.out.println(styledRight.toAnsi());
          } else {
             Output.println("");
          }

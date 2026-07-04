@@ -13,7 +13,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- * The SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -23,6 +23,7 @@
  * --------------------------------------------------------------------------------------*/
 package org.fross.cal;
 
+import org.fross.library.Output;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.impl.DumbTerminal;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,9 @@ public class CalendarViewTest {
 
       // Use JLine's DumbTerminal to simulate a console environment in a headless test
       Terminal terminal = new DumbTerminal(System.in, out);
+
+      // Tell the Output library to route text to our test stream via the DumbTerminal
+      Output.setTerminal(terminal);
 
       // Initialize the view with a specific date to test highlighting logic
       LocalDate testDate = LocalDate.of(2025, 12, 25);
@@ -81,6 +85,10 @@ public class CalendarViewTest {
    void testFullYearLayout() throws Exception {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       Terminal terminal = new DumbTerminal(System.in, out);
+
+      // Tell the Output library to route text to our test stream via the DumbTerminal
+      Output.setTerminal(terminal);
+
       CalendarView cv = new CalendarView(terminal, LocalDate.now());
 
       // Render a full year using a 3-column layout

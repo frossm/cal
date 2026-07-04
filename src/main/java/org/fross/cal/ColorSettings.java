@@ -48,95 +48,141 @@ public class ColorSettings {
     * getStyle: Returns a JLine AttributedStyle for the requested component.
     * If keys are missing, it "heals" the system by writing defaults.
     *
-    * @param component The UI element (month, dayofweek, day, today)
+    * @param key The UI element (month, dayofweek, day, today)
     * @return The styled JLine object
     */
-   public static AttributedStyle getStyle(String component) {
-      String key = component.toLowerCase();
+   public static AttributedStyle getStyle(String key) {
+      // Normalize the incoming key right away
+      key = key.toLowerCase().trim();
 
-      // Return if we don't have color enabled
+      // 1. ABSOLUTE FIRST GATE: Check your internal colorEnabled toggle
       if (!colorEnabled) {
          return AttributedStyle.DEFAULT;
       }
 
-      // 1. SPECIAL CASE: "today" is a composite of two other keys
+      // Define 'today' defaults
+      String defaultTodayFG = "232";
+      String defaultTodayBG = "154";
+
+      // 2. SPECIAL CASE: "today" is a composite of two other keys
       if (key.equals("today")) {
          boolean changed = false;
 
-         if (prefs.get("todayfg", null) == null) {
-            prefs.put("todayfg", "WHITE");
+         // Read the preference values safely
+         String currentFG = prefs.get("todayfg", null);
+         String currentBG = prefs.get("todaybg", null);
+
+         if (currentFG == null) {
+            prefs.put("todayfg", defaultTodayFG);
+            currentFG = defaultTodayFG;
             changed = true;
          }
-         if (prefs.get("todaybg", null) == null) {
-            prefs.put("todaybg", "BLUE");
+         if (currentBG == null) {
+            prefs.put("todaybg", defaultTodayBG);
+            currentBG = defaultTodayBG;
             changed = true;
          }
 
-         // Flush changes to the OS registry/plist if we healed anything
+         // Flush changes to the OS registry if we healed anything
          if (changed) {
             try {
                prefs.flush();
             } catch (BackingStoreException e) { /* Ignore */ }
          }
 
-         return AttributedStyle.DEFAULT.foreground(getRawColor(prefs.get("todayfg", "WHITE"))).background(getRawColor(prefs.get("todaybg", "BLUE"))).bold();
+         // Build the style directly using our verified variables
+         AttributedStyle todayStyle = AttributedStyle.DEFAULT
+               .foreground(getRawColor(currentFG))
+               .background(getRawColor(currentBG));
+
+         if (org.fross.library.Output.boldOutput) {
+            todayStyle = todayStyle.bold();
+         }
+
+         return todayStyle;
       }
 
-      // 2. STANDARD CASE: Single-key components
-      if (prefs.get(key, null) == null) {
-         String defaultValue = switch (key) {
-            case "month" -> "CYAN";
-            case "dayofweek" -> "YELLOW";
-            case "day" -> "WHITE";
-            case "holiday" -> "RED";
-            case "todayfg" -> "WHITE";
-            case "todaybg" -> "BLUE";
-            default -> "WHITE";
+      // 3. STANDARD CASE: Single-key components
+      String colorValue = prefs.get(key, null);
+
+      if (colorValue == null) {
+         colorValue = switch (key) {
+            case "todayfg"      -> defaultTodayFG;
+            case "todaybg"      -> defaultTodayBG;
+            case "month"        -> "73";
+            case "dayofweek"    -> "229";
+            case "day"          -> "231";
+            case "holtitle"     -> "73";
+            case "holtext"      -> "244";
+            case "holhighlight" -> "63";
+            default             -> "231"; // This is the defaultColor
          };
 
-         prefs.put(key, defaultValue);
+         prefs.put(key, colorValue);
          try {
             prefs.flush();
          } catch (BackingStoreException e) { /* Ignore */ }
       }
 
-      String defaultColor = key.equals("holiday") ? "RED" : "WHITE";
-      return lookupStyle(prefs.get(key, defaultColor));
+      // 4. RETURN STYLE: Pass the exact value we resolved above
+      return lookupStyle(colorValue);
    }
 
    /**
     * setColor: Updates a specific component color in the preferences.
     */
    public static void setColor(String component, String colorName) {
-      prefs.put(component.toLowerCase(), colorName.toUpperCase());
+      // Force BOTH the key and the value string to lowercase
+      prefs.put(component.toLowerCase(), colorName.toLowerCase());
       try {
          prefs.flush();
-      } catch (BackingStoreException e) {
-         /* Ignore */
-      }
+      } catch (BackingStoreException e) { /* Ignore */ }
    }
 
    /**
     * lookupStyle: Private helper to map color names to JLine constants.
     */
    private static AttributedStyle lookupStyle(String color) {
-      return AttributedStyle.DEFAULT.bold().foreground(getRawColor(color));
+      // Dynamic Bold Update: Apply .bold() only if the master gatekeeper preference is true
+      AttributedStyle style = AttributedStyle.DEFAULT.foreground(getRawColor(color));
+
+      if (org.fross.library.Output.boldOutput) {
+         style = style.bold();
+      }
+
+      return style;
    }
 
    /**
     * getRawColor: Maps a color string to the JLine integer constant.
     */
-   private static int getRawColor(String color) {
-      // Force to uppercase so the switch doesn't fail on lowercase registry values
-      return switch (color.toUpperCase()) {
-         case "BLACK"   -> AttributedStyle.BLACK;
-         case "RED"     -> AttributedStyle.RED;
-         case "GREEN"   -> AttributedStyle.GREEN;
-         case "YELLOW"  -> AttributedStyle.YELLOW;
-         case "BLUE"    -> AttributedStyle.BLUE;
-         case "MAGENTA" -> AttributedStyle.MAGENTA;
-         case "CYAN"    -> AttributedStyle.CYAN;
-         default        -> AttributedStyle.WHITE;
-      };
+   private static int getRawColor(String colorName) {
+      // Normalize the input string
+      String normalized = colorName.toUpperCase().trim();
+
+      // 1. If it's a raw number (e.g., "208"), parse it directly
+      if (normalized.matches("\\d+")) {
+         try {
+            int colorIndex = Integer.parseInt(normalized);
+            if (colorIndex >= 0 && colorIndex <= 255) {
+               return colorIndex;
+            }
+         } catch (NumberFormatException e) { /* Fall through to name lookup */ }
+      }
+
+      // 2. Otherwise, treat it as a named color and look it up via reflection
+      try {
+         if (normalized.startsWith("GREY_")) {
+            normalized = normalized.replace("GREY_", "GRAY_");
+         }
+
+         Class<?> outputClass = org.fross.library.Output.class;
+         java.lang.reflect.Field field = outputClass.getField(normalized);
+         return field.getInt(null);
+
+      } catch (Exception e) {
+         // If it's neither a valid number nor a valid name, default to white
+         return org.fross.library.Output.WHITE;
+      }
    }
 }

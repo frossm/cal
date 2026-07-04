@@ -1,4 +1,4 @@
-/**************************************************************************************************************
+/* ------------------------------------------------------------------------------
  * Library Project
  *
  *  Library holds methods and classes frequently used by my programs.
@@ -23,7 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- ***************************************************************************************************************/
+ * ------------------------------------------------------------------------------*/
 package org.fross.library;
 
 import org.junit.jupiter.api.Test;
