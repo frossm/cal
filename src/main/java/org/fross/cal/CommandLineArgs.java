@@ -38,7 +38,7 @@ import java.util.prefs.Preferences;
 
 public class CommandLineArgs {
    static CommandLineArgs cli = new CommandLineArgs();
-   static JCommander jc = new JCommander();
+   static JCommander jc = JCommander.newBuilder().build(); // Use the builder instead of new JCommander()
    static int monthToUse = org.fross.library.Date.getCurrentMonth();
    static int yearToUse = org.fross.library.Date.getCurrentYear();
    static boolean monthSpecified = false;
@@ -77,8 +77,7 @@ public class CommandLineArgs {
    public static void ProcessCommandLine(String[] argv, Terminal terminal) {
       // JCommander parses the command line
       try {
-         jc.setProgramName("cal");
-         jc = JCommander.newBuilder().addObject(cli).build();
+         jc = JCommander.newBuilder().programName("cal").addObject(cli).build();
          jc.parse(argv);
       } catch (ParameterException ex) {
          System.out.println(ex.getMessage());
@@ -98,7 +97,7 @@ public class CommandLineArgs {
       if (cli.clNum == 0) {
          // USER DID NOT PROVIDE -n: Perform Auto-Fit based on terminal width
          // Check for null terminal to avoid NullPointerException in tests
-         int width = (terminal != null) ? terminal.getWidth() : 80;
+         int width = (terminal != null) ? terminal.getSize().getColumns() : 80;
 
          // Sanitize width: If JLine returns 0 or something weird, default to 80
          if (width <= 0 || width > 500) {
@@ -164,7 +163,7 @@ public class CommandLineArgs {
 
             // Just a Year or Month provided
             case 1:
-               int d = Integer.parseInt(cli.clMonthAndOrYear.getFirst());
+               int d = Integer.parseInt(cli.clMonthAndOrYear.get(0));
 
                // If the entered number is greater than 12 then it must be a year
                if (d > 12) {

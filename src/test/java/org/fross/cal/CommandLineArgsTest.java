@@ -46,10 +46,12 @@ class CommandLineArgsTest {
     */
    @BeforeEach
    void setUp() throws IOException {
-      CommandLineArgs.reset(); // Reset statics before every test!
+      CommandLineArgs.reset(); // Reset statics before every test
+
       testTerminal = TerminalBuilder.builder()
-            .dumb(true)
-            .size(new org.jline.terminal.Size(80, 24))
+            .system(false)                // Explicitly tell JLine not to attach to the real OS terminal
+            .type(Terminal.TYPE_DUMB)     // Replace deprecated .dumb(true) with the official type string
+            .size(org.jline.terminal.Size.of(80, 24))
             .build();
    }
 

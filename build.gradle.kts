@@ -249,7 +249,7 @@ tasks.register("updateSnapVersion") {
 // --------------------------------------------------------------------------------------------------------
 // generateChecksums:  Generate Checksums automatically during builds in the build/libs directory
 // --------------------------------------------------------------------------------------------------------
-val generateChecksums by tasks.registering {
+val generateChecksums = tasks.register("generateChecksums") {
    group = "distribution"
    description = "Generates MD5, SHA-1, and SHA-256 checksums for the shadow JAR"
 
@@ -290,4 +290,9 @@ val generateChecksums by tasks.registering {
          println("Generated $outName in build/libs")
       }
    }
+}
+
+// Add compliler options here
+tasks.withType<JavaCompile> {
+   options.compilerArgs.add("-Xlint:deprecation")
 }
