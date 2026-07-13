@@ -51,6 +51,9 @@ class CommandLineArgsTest {
       testTerminal = TerminalBuilder.builder()
             .system(false)                // Explicitly tell JLine not to attach to the real OS terminal
             .type(Terminal.TYPE_DUMB)     // Replace deprecated .dumb(true) with the official type string
+            
+            // Supply dummy streams to prevent the input pump thread from crashing on null inputs
+            .streams(new java.io.ByteArrayInputStream(new byte[0]), new java.io.ByteArrayOutputStream())
             .size(org.jline.terminal.Size.of(80, 24))
             .build();
    }

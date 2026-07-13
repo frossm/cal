@@ -30,7 +30,7 @@ plugins {
    java
    application
    id("com.github.ben-manes.versions") version "0.54.0"
-   id("com.gradleup.shadow") version "9.4.3"
+   id("com.gradleup.shadow") version "9.5.1"
 }
 
 group = "org.fross"
@@ -83,9 +83,9 @@ dependencies {
    implementation("org.jline:jline-terminal-ffm:4.3.1")
 
    // --- JUnit Testing
-   testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.1")
-   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.1")
-   testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.1")
+   testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.2")
+   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.2")
+   testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.2")
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -136,6 +136,9 @@ tasks.named<ShadowJar>("shadowJar") {
    description = "Creates a 'Fat Jar' file containing all dependencies"
    archiveFileName.set("${project.name}.jar")
 
+   // FIX: Set the duplicates strategy so the ServiceFileTransformer can process everything
+   duplicatesStrategy = DuplicatesStrategy.INCLUDE
+   
    // Ensure we run a test cycle before creating the Shadow Jar
    dependsOn("clean")
    dependsOn("test")
