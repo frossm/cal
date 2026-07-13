@@ -1,0 +1,11 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\JavaSoft\Prefs\org\fross\cal\colors]
+"month"="cyan"
+"dayofweek"="yellow"
+"day"="white"
+"todayfg"="white"
+"todaybg"="blue"
+"holtitle"="red"
+"holtext"="cyan"
+"holhighlight"="blue"
