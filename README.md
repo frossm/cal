@@ -56,7 +56,38 @@ Command|Result
 `java -jar cal.jar -D 6`   | Display June of current year in debug mode
 `java -jar cal.jar -h`     | Show this help information
 
-## SNAP
+## Colors
+Cal has a dynamic color system where colors for different items can be set and they will be picked up during the next execution.  The colors are stored in the Java Preferences system.  This stores the information locally, but the exact location varies by OS.  
+OS|Location
+---|---
+Windows | Computer\HKEY_CURRENT_USER\Software\JavaSoft\Prefs\org\fross\cal\colors
+Linux | ~/.java/.userPrefs/org/fross/cal/prefs.xml
+
+<br>
+
+There are 8 different colors that can be set
+Color Name | Description
+---|---
+day             | The color of the days in the calendar grid
+dayofweek       | The top of each month showing the days of the week
+holhighlight    | Holiday text color
+holtext         | Text of the holidays at the bottom of the display
+holtitle        | Color of the title of the holiday section
+month           | Color of the months above each month in the grid
+todaybg         | Background color of 'today'
+todayfg         | Foreground color of 'today'
+
+You assign the colors via a number.  The numbers for the colors can be shown by running cal with the `-D` debug switch.  Simply find the color you want and set the preferences file / reg entry to that number.
+
+### Themes
+I have also created everl themes for cal. You can find them in the /themes directory in the project.  Currently there are just Windows themes but I'll make Linux version at some point.
+
+To install a Windows theme, run the following command as admin:
+
+```reg import \Path\To\Theme\ThemeName.reg```
+
+<br>
+<br>
 
 [![fcal](https://snapcraft.io//fcal/badge.svg)](https://snapcraft.io/fcal)
 
