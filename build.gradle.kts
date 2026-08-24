@@ -29,8 +29,8 @@ import java.util.*
 plugins {
    java
    application
-   id("com.github.ben-manes.versions") version "0.54.0"
-   id("com.gradleup.shadow") version "9.5.1"
+   id("io.github.ben-manes.versions") version "0.61.0"
+   id("com.gradleup.shadow") version "9.6.1"
 }
 
 group = "org.fross"
@@ -83,9 +83,9 @@ dependencies {
    implementation("org.jline:jline-terminal-ffm:4.3.1")
 
    // --- JUnit Testing
-   testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.2")
-   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.2")
-   testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.2")
+   testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
+   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.3")
+   testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.3")
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -117,18 +117,6 @@ tasks.processResources {
 }
 
 // --------------------------------------------------------------------------------------------------------
-// ProcessResources Tasks: Update the Java resources with project version and inception date
-// --------------------------------------------------------------------------------------------------------
-//tasks.processResources {
-//   dependsOn("updateSnapVersion")
-//
-//   expand(
-//      "project.version" to project.version.toString(),
-//      "project.inceptionYear" to project.property("inceptionYear").toString()
-//   )
-//}
-
-// --------------------------------------------------------------------------------------------------------
 // shadowJar:  Create the fully executable shadowJar (FatJar)
 // --------------------------------------------------------------------------------------------------------
 tasks.named<ShadowJar>("shadowJar") {
@@ -138,7 +126,7 @@ tasks.named<ShadowJar>("shadowJar") {
 
    // FIX: Set the duplicates strategy so the ServiceFileTransformer can process everything
    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-   
+
    // Ensure we run a test cycle before creating the Shadow Jar
    dependsOn("clean")
    dependsOn("test")
@@ -191,7 +179,10 @@ tasks.register<Copy>("install") {
    val shadowTask = tasks.named<ShadowJar>("shadowJar")
    dependsOn(shadowTask)
 
-   // FIX: Point specifically to the shadowJar's archiveFile to ensure the FatJar is copied
+   // Ensure generateChecksums runs first so outputs in build/libs are ready and ordered correctly
+   mustRunAfter(generateChecksums)
+
+   // Point specifically to the shadowJar's archiveFile to ensure the FatJar is copied
    from(shadowTask.map { it.archiveFile })
    into(installDirectory)
 
@@ -209,10 +200,10 @@ tasks.register<Copy>("install") {
       val lastModifiedTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(installedFile.lastModified()))
 
       println("\n-------------------- RELEASE COMPLETE --------------------")
-      println("Installed: $progName.jar -> $installDirectory")
-      println("Version:   $progVersion")
-      println("File Size: ${"%,d".format(sizeInBytes)} bytes")
-      println("File Date: $lastModifiedTime")
+      println("Installed:   $progName.jar -> $installDirectory")
+      println("Version:     $progVersion")
+      println("File Size:   ${"%,d".format(sizeInBytes)} bytes")
+      println("File Date:   $lastModifiedTime")
       println("----------------------------------------------------------")
    }
 }
@@ -260,20 +251,15 @@ val generateChecksums = tasks.register("generateChecksums") {
    val shadowJarTask = tasks.named<ShadowJar>("shadowJar")
    dependsOn(shadowJarTask)
 
-   // Define Inputs/Outputs for Gradle's "Up-To-Date" check
-   val archiveFile = shadowJarTask.get().archiveFile.get().asFile
-   val outputDir = archiveFile.parentFile
-
-   inputs.file(archiveFile)
-
-   // List the specific files we will create as outputs
-   outputs.files(
-      outputDir.resolve("CHECKSUM.MD5"),
-      outputDir.resolve("CHECKSUM.SHA1"),
-      outputDir.resolve("CHECKSUM.SHA256")
-   )
+   // Define Inputs/Outputs using pure Providers to protect lazy configuration rules
+   val shadowJarProvider = shadowJarTask.flatMap { it.archiveFile }
+   inputs.file(shadowJarProvider)
+   outputs.dir(layout.buildDirectory.dir("libs"))
 
    doLast {
+      // Safely read the underlying File location at execution time via variables derived from providers
+      val archiveFile = shadowJarProvider.get().asFile
+      val outputDir = archiveFile.parentFile
       val fileName = archiveFile.name
 
       mapOf(

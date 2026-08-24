@@ -60,6 +60,14 @@ public class Help {
       Output.printColorln(Output.WHITE, "MONTH        Display the MONTH in the current year");
       Output.printColorln(Output.WHITE, "MONTH YEAR   Display the MONTH and YEAR provided");
 
+      Output.printColorln(Output.YELLOW, "\nColors:");
+      Output.printColorln(Output.WHITE, "  Cal uses a dynamic color system and colors can be changed in the Java Prefs location");
+      Output.printColorln(Output.WHITE, "  Run Cal with -D to see available colors and update the preferences accordingly)");
+      Output.printColorln(Output.WHITE, "  \nJava Preferences Location:");
+      Output.printColorln(Output.WHITE, "    - Windows, this is in the registry:  HKCU\\Software\\JavaSoft\\Prefs\\org\\fross\\cal\\colors");
+      Output.printColorln(Output.WHITE, "    - Linux, this is in the home dir:    ~/.java/.userPrefs/org/fross/cal/colors");
+      Output.printColorln(Output.WHITE, "    - If using a snap, you'll have to update that within the snap structure");
+
       Output.printColorln(Output.YELLOW, "\nExamples:");
       Output.printColorln(Output.WHITE, "  java -jar cal.jar         Display the current year");
       Output.printColorln(Output.WHITE, "  java -jar cal.jar -n 4 -d Display the current year with 4 months per row with holidays");
@@ -70,7 +78,7 @@ public class Help {
       Output.printColorln(Output.WHITE, "  java -jar cal.jar -h      Show this help information");
       Output.printColorln(Output.WHITE, "  java -jar cal.jar -v      Show current version and latest GitHub Cal release");
 
-      Output.printColorln(Output.YELLOW, "\nSnap Examples:");
+      Output.printColorln(Output.YELLOW, "\nSNAP Examples:");
       Output.printColorln(Output.WHITE, "  The examples above work exactly the same, but just call 'fcal' directly");
       Output.printColorln(Output.WHITE, "   fcal -n 4 -d   Display the current year with 4 months per row with holidays");
       Output.printColorln(Output.WHITE, "   fcal 2022      Display the entire year 2022");
