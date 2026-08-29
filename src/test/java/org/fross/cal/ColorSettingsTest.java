@@ -118,15 +118,15 @@ public class ColorSettingsTest {
    void testDisableColorSwitch() {
       // 1. Enable color and verify we get "something" (not default)
       ColorSettings.setColorEnabled(true);
-      AttributedStyle colorStyle = ColorSettings.getStyle("holiday");
+      AttributedStyle colorStyle = ColorSettings.getStyle("holhighlight");
 
       // 2. Disable color (the -z switch simulation)
       ColorSettings.setColorEnabled(false);
-      AttributedStyle noColorStyle = ColorSettings.getStyle("holiday");
+      AttributedStyle noColorStyle = ColorSettings.getStyle("holhighlight");
       AttributedStyle todayNoColor = ColorSettings.getStyle("today");
 
-      // 3. Verify that despite asking for "holiday" or "today", we get plain text
-      assertEquals(AttributedStyle.DEFAULT, noColorStyle, "Holiday should be plain when color is disabled");
+      // 3. Verify that despite asking for "holhighlight" or "today", we get plain text
+      assertEquals(AttributedStyle.DEFAULT, noColorStyle, "Holiday highlight should be plain when color is disabled");
       assertEquals(AttributedStyle.DEFAULT, todayNoColor, "Today should be plain when color is disabled");
 
       // 4. Reset for other tests

@@ -79,8 +79,8 @@ dependencies {
    implementation("com.google.code.gson:gson:2.14.0")
 
    // --- JLine Terminal Access for Colorized Output
-   implementation("org.jline:jline-terminal:4.3.1")
-   implementation("org.jline:jline-terminal-ffm:4.3.1")
+   implementation("org.jline:jline-terminal:4.4.0")
+   implementation("org.jline:jline-terminal-ffm:4.4.0")
 
    // --- JUnit Testing
    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
