@@ -24,6 +24,7 @@
 package org.fross.cal;
 
 import org.jline.utils.AttributedStyle;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,9 +40,29 @@ public class ColorSettingsTest {
     * Before each run setup the test environment so each test is not impacted by others
     */
    @BeforeEach
-   void setup() {
+   void setup() throws Exception {
+      // Direct preferences to a test node to avoid contaminating user's production registry
+      ColorSettings.prefs = java.util.prefs.Preferences.userRoot().node("/org/fross/cal/testcolors");
+
+      // Clear out any old test garbage from this node
+      try {
+         ColorSettings.prefs.clear();
+         ColorSettings.prefs.flush();
+      } catch (Exception e) {}
+
       // Ensure every test starts with color ON
       ColorSettings.setColorEnabled(true);
+   }
+
+   @AfterEach
+   void tearDown() throws Exception {
+      try {
+         ColorSettings.prefs.removeNode();
+         ColorSettings.prefs.flush();
+      } catch (Exception e) {}
+
+      // Restore the production path for other non-test operations
+      ColorSettings.prefs = java.util.prefs.Preferences.userRoot().node("/org/fross/cal/colors");
    }
 
    /**

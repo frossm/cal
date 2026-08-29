@@ -36,7 +36,7 @@ import java.util.prefs.Preferences;
 public class ColorSettings {
    // Path to the preference node for this user
    // Changed to protected so the Test can access it without a getter
-   protected static final Preferences prefs = Preferences.userRoot().node("/org/fross/cal/colors");
+   protected static Preferences prefs = Preferences.userRoot().node("/org/fross/cal/colors");
    private static boolean colorEnabled = true;
 
    // Add a setter for your -z switch to call
@@ -109,12 +109,12 @@ public class ColorSettings {
          colorValue = switch (key) {
             case "todayfg"      -> defaultTodayFG;
             case "todaybg"      -> defaultTodayBG;
-            case "month"        -> "73";
-            case "dayofweek"    -> "229";
+            case "month"        -> "228";
+            case "dayofweek"    -> "14";
             case "day"          -> "231";
-            case "holtitle"     -> "73";
-            case "holtext"      -> "244";
-            case "holhighlight" -> "63";
+            case "holtitle"     -> "14";
+            case "holtext"      -> "250";
+            case "holhighlight" -> "165";
             default             -> "231"; // This is the defaultColor
          };
 
