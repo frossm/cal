@@ -29,7 +29,7 @@ import java.util.*
 plugins {
    java
    application
-   id("io.github.ben-manes.versions") version "0.61.0"
+   id("io.github.ben-manes.versions") version "0.65.0"
    id("com.gradleup.shadow") version "9.6.1"
 }
 
@@ -79,8 +79,8 @@ dependencies {
    implementation("com.google.code.gson:gson:2.14.0")
 
    // --- JLine Terminal Access for Colorized Output
-   implementation("org.jline:jline-terminal:4.4.0")
-   implementation("org.jline:jline-terminal-ffm:4.4.0")
+   implementation("org.jline:jline-terminal:4.4.7")
+   implementation("org.jline:jline-terminal-ffm:4.4.7")
 
    // --- JUnit Testing
    testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
