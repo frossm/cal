@@ -49,6 +49,8 @@ public class Help {
       Output.printColorln(Output.WHITE, " -n #        Number of calendars per row in Year view. Will autoscale to your term");
       Output.printColorln(Output.WHITE, " -d          Display local country holidays in the calendar");
       Output.printColorln(Output.WHITE, " -c          Clear the holiday cache on the local computer and exit");
+      Output.printColorln(Output.WHITE, " -m          Start the week on Monday (saved to preferences)");
+      Output.printColorln(Output.WHITE, " -s          Start the week on Sunday (saved to preferences)");
       Output.printColorln(Output.WHITE, " -D          Start in debug mode");
       Output.printColorln(Output.WHITE, " -v          Display the program version and latest GitHub Cal release");
       Output.printColorln(Output.WHITE, " -z          Disable colorized output");

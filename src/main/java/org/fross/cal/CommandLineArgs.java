@@ -42,6 +42,9 @@ public class CommandLineArgs {
    static int monthToUse = org.fross.library.Date.getCurrentMonth();
    static int yearToUse = org.fross.library.Date.getCurrentYear();
    static boolean monthSpecified = false;
+   protected static Preferences prefs = Preferences.userRoot().node("/org/fross/cal");
+   static final String PREF_START_ON_MONDAY = "startonmonday";
+   static boolean startOnMonday = false;
 
    // ---------------------------------------------------------------------------------------------
    // Define command line options that can be used
@@ -64,6 +67,12 @@ public class CommandLineArgs {
 
    @Parameter(names = {"-c", "--clear-cache"}, description = "Clear the holiday cache from the local computer")
    protected boolean clClearCache = false;
+
+   @Parameter(names = {"-m", "--monday"}, description = "Start the week on Monday")
+   protected boolean clMonday = false;
+
+   @Parameter(names = {"-s", "--sunday"}, description = "Start the week on Sunday")
+   protected boolean clSunday = false;
 
    @Parameter(names = {"-n", "--num"}, description = "Number of calendar months to display per row")
    protected int clNum = 0;
@@ -144,6 +153,31 @@ public class CommandLineArgs {
       if (cli.clClearCache) {
          clearCache();
          System.exit(0);
+      }
+
+      // Determine starting day of week (Monday vs Sunday)
+      // Check if user specified a preference override on the command line
+      if (cli.clMonday && cli.clSunday) {
+         Output.fatalError("Cannot specify both -m (Monday) and -s (Sunday) as starting day of week.", 2);
+      } else if (cli.clMonday) {
+         startOnMonday = true;
+         prefs.putBoolean(PREF_START_ON_MONDAY, true);
+         try {
+            prefs.flush();
+         } catch (BackingStoreException ex) {
+            Output.debugPrintln("Failed to save startOnMonday preference: " + ex.getMessage());
+         }
+      } else if (cli.clSunday) {
+         startOnMonday = false;
+         prefs.putBoolean(PREF_START_ON_MONDAY, false);
+         try {
+            prefs.flush();
+         } catch (BackingStoreException ex) {
+            Output.debugPrintln("Failed to save startOnMonday preference: " + ex.getMessage());
+         }
+      } else {
+         // Neither flag passed, load from preference (default: false for Sunday)
+         startOnMonday = prefs.getBoolean(PREF_START_ON_MONDAY, false);
       }
 
       // Show Help and Exit
@@ -229,6 +263,24 @@ public class CommandLineArgs {
    }
 
    /**
+    * Return whether weeks start on Monday instead of Sunday
+    *
+    * @return boolean true if Monday start, false if Sunday start
+    */
+   public static boolean queryStartOnMonday() {
+      return startOnMonday;
+   }
+
+   /**
+    * Set whether weeks start on Monday (primarily used for testing)
+    *
+    * @param value true for Monday start, false for Sunday start
+    */
+   public static void setStartOnMonday(boolean value) {
+      startOnMonday = value;
+   }
+
+   /**
     * clearCache(): Clear the holiday preferences cache
     */
    public static void clearCache() {
@@ -251,6 +303,7 @@ public class CommandLineArgs {
       monthToUse = org.fross.library.Date.getCurrentMonth();
       yearToUse = org.fross.library.Date.getCurrentYear();
       monthSpecified = false;
+      startOnMonday = prefs.getBoolean(PREF_START_ON_MONDAY, false);
       // Note: jc doesn't strictly need a reset as it's rebuilt in ProcessCommandLine
    }
 }

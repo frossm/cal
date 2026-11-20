@@ -25,10 +25,12 @@ package org.fross.cal;
 
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,13 +41,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class CommandLineArgsTest {
    private Terminal testTerminal;
 
-
    /**
-    * setUp: Initialize a 'Dumb' terminal before each test.
-    * This provides a predictable 80-character width for testing the auto-fit math.
+    * setUp: Initialize test node and 'Dumb' terminal before each test.
+    * This provides a predictable 80-character width for testing the auto-fit math
+    * and ensures preferences are isolated from the user's registry.
     */
    @BeforeEach
    void setUp() throws IOException {
+      CommandLineArgs.prefs = Preferences.userRoot().node("/org/fross/cal/testprefs");
+      try {
+         CommandLineArgs.prefs.clear();
+         CommandLineArgs.prefs.flush();
+      } catch (Exception e) {}
+
       CommandLineArgs.reset(); // Reset statics before every test
 
       testTerminal = TerminalBuilder.builder()
@@ -56,6 +64,17 @@ class CommandLineArgsTest {
             .streams(new java.io.ByteArrayInputStream(new byte[0]), new java.io.ByteArrayOutputStream())
             .size(org.jline.terminal.Size.of(80, 24))
             .build();
+   }
+
+   @AfterEach
+   void tearDown() {
+      try {
+         CommandLineArgs.prefs.removeNode();
+         CommandLineArgs.prefs.flush();
+      } catch (Exception e) {}
+
+      // Restore standard preference path
+      CommandLineArgs.prefs = Preferences.userRoot().node("/org/fross/cal");
    }
 
    /**
@@ -149,13 +168,54 @@ class CommandLineArgsTest {
    void testFlagParsing() {
       // We parse into a local instance to check internal state without triggering System.exit
       CommandLineArgs testCli = new CommandLineArgs();
-      String[] args = {"--debug", "--no-color", "--display-holidays"};
+      String[] args = {"--debug", "--no-color", "--display-holidays", "--monday"};
 
       com.beust.jcommander.JCommander.newBuilder().addObject(testCli).build().parse(args);
 
       assertTrue(testCli.clDebug, "Debug flag should be true.");
       assertTrue(testCli.clNoColor, "No-Color flag should be true.");
       assertTrue(testCli.clDisplayHolidays, "Display Holidays flag should be true.");
+      assertTrue(testCli.clMonday, "Monday flag should be true.");
+      assertFalse(testCli.clSunday, "Sunday flag should remain false.");
       assertFalse(testCli.clHelp, "Help flag should remain false.");
+
+      // Test short flags -m and -s
+      CommandLineArgs testCli2 = new CommandLineArgs();
+      com.beust.jcommander.JCommander.newBuilder().addObject(testCli2).build().parse(new String[]{"-m"});
+      assertTrue(testCli2.clMonday);
+
+      CommandLineArgs testCli3 = new CommandLineArgs();
+      com.beust.jcommander.JCommander.newBuilder().addObject(testCli3).build().parse(new String[]{"-s"});
+      assertTrue(testCli3.clSunday);
+   }
+
+   /**
+    * testMondayPreferencePersistence: Verifies that passing -m persists the preference,
+    * and -s can reset it back to Sunday.
+    */
+   @Test
+   void testMondayPreferencePersistence() {
+      // By default, startOnMonday should be false (Sunday)
+      assertFalse(CommandLineArgs.queryStartOnMonday());
+
+      // Pass -m to process command line
+      CommandLineArgs.ProcessCommandLine(new String[]{"-m"}, testTerminal);
+      assertTrue(CommandLineArgs.queryStartOnMonday(), "startOnMonday should be true after -m");
+      assertTrue(CommandLineArgs.prefs.getBoolean(CommandLineArgs.PREF_START_ON_MONDAY, false),
+            "Preference should be saved as true in registry");
+
+      // Reset static state and verify it loads the saved preference
+      CommandLineArgs.reset();
+      assertTrue(CommandLineArgs.queryStartOnMonday(), "startOnMonday should persist across resets");
+
+      // Now pass -s to switch back to Sunday
+      CommandLineArgs.ProcessCommandLine(new String[]{"-s"}, testTerminal);
+      assertFalse(CommandLineArgs.queryStartOnMonday(), "startOnMonday should be false after -s");
+      assertFalse(CommandLineArgs.prefs.getBoolean(CommandLineArgs.PREF_START_ON_MONDAY, true),
+            "Preference should be saved as false in registry");
+
+      // Reset static state and verify it loads the saved Sunday preference
+      CommandLineArgs.reset();
+      assertFalse(CommandLineArgs.queryStartOnMonday(), "startOnMonday should remain false across resets");
    }
 }

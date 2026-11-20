@@ -45,9 +45,10 @@ public class MonthBlock {
    private final int month;
    private final LocalDate today;
    private final TreeMap<String, String> holidayMap;
+   private final boolean startOnMonday;
 
    /**
-    * Constructor for MonthBlock
+    * Constructor for MonthBlock using global start-of-week setting
     *
     * @param year       The year to render
     * @param month      The month to render (1-12)
@@ -55,10 +56,24 @@ public class MonthBlock {
     * @param holidayMap TreeMap of ISO date strings (yyyy-MM-dd) to holiday names
     */
    public MonthBlock(int year, int month, LocalDate today, TreeMap<String, String> holidayMap) {
+      this(year, month, today, holidayMap, CommandLineArgs.queryStartOnMonday());
+   }
+
+   /**
+    * Constructor for MonthBlock with explicit start-of-week setting
+    *
+    * @param year          The year to render
+    * @param month         The month to render (1-12)
+    * @param today         Current date for highlighting
+    * @param holidayMap    TreeMap of ISO date strings (yyyy-MM-dd) to holiday names
+    * @param startOnMonday true to start the week on Monday, false for Sunday
+    */
+   public MonthBlock(int year, int month, LocalDate today, TreeMap<String, String> holidayMap, boolean startOnMonday) {
       this.year = year;
       this.month = month;
       this.today = today;
       this.holidayMap = holidayMap;
+      this.startOnMonday = startOnMonday;
    }
 
    /**
@@ -76,11 +91,13 @@ public class MonthBlock {
       // Use ColorSettings to get the "month" style
       lines.add(new AttributedString(center(monthName + " " + year, 20), ColorSettings.getStyle("month")));
 
-      // 2. DAY LABELS: Styled using "dow"
-      lines.add(new AttributedString("Su Mo Tu We Th Fr Sa", ColorSettings.getStyle("dayofweek")));
+      // 2. DAY LABELS: Styled using "dayofweek"
+      String dayLabels = startOnMonday ? "Mo Tu We Th Fr Sa Su" : "Su Mo Tu We Th Fr Sa";
+      lines.add(new AttributedString(dayLabels, ColorSettings.getStyle("dayofweek")));
 
       // 3. GRID CALCULATION
-      int offset = ym.atDay(1).getDayOfWeek().getValue() % 7;
+      int dowValue = ym.atDay(1).getDayOfWeek().getValue();
+      int offset = startOnMonday ? (dowValue - 1) : (dowValue % 7);
       int daysInMonth = ym.lengthOfMonth();
 
       AttributedStringBuilder asb = new AttributedStringBuilder();

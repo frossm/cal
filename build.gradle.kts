@@ -45,6 +45,7 @@ application {
 // --------------------------------------------------------------------------------------------------------
 tasks.withType<JavaCompile> {
    options.release.set(javaVersion)
+   mustRunAfter("clean")
 }
 
 // --------------------------------------------------------------------------------------------------------
@@ -100,6 +101,7 @@ tasks.named<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask>("
 // ProcessResources Tasks: Update the Java resources with project version and inception date
 // --------------------------------------------------------------------------------------------------------
 tasks.processResources {
+   mustRunAfter("clean")
    // Before you process resources, update the snapcraft version
    dependsOn("updateSnapVersion")
 

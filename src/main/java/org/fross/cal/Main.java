@@ -100,6 +100,7 @@ public class Main {
       Output.debugPrintln("  -n:  " + CommandLineArgs.queryNumToUse());
       Output.debugPrintln("  -z:  " + Output.queryColorEnabled());
       Output.debugPrintln("  -d:  " + Holidays.queryHolidaysEnabled());
+      Output.debugPrintln("  -m:  " + CommandLineArgs.queryStartOnMonday());
       Output.debugPrintln("Number of command line arguments:  " + args.length);
 
       // Ensure there are not more than 2 parameters given

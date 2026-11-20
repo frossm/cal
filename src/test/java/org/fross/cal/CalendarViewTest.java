@@ -100,4 +100,27 @@ public class CalendarViewTest {
       assertTrue(output.contains("January"), "Full year view is missing January");
       assertTrue(output.contains("December"), "Full year view is missing December");
    }
+
+   /**
+    * testMondayStartMonthOutput:
+    * Verifies that CalendarView renders the Monday-start header when configured.
+    */
+   @Test
+   void testMondayStartMonthOutput() throws Exception {
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      Terminal terminal = new DumbTerminal(System.in, out);
+      Output.setTerminal(terminal);
+
+      CommandLineArgs.setStartOnMonday(true);
+      try {
+         LocalDate testDate = LocalDate.of(2025, 12, 25);
+         CalendarView cv = new CalendarView(terminal, testDate);
+         cv.printMonth(2025, 12);
+
+         String output = out.toString();
+         assertTrue(output.contains("Mo Tu We Th Fr Sa Su"), "Monday-start day labels missing in output");
+      } finally {
+         CommandLineArgs.setStartOnMonday(false);
+      }
+   }
 }
