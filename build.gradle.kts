@@ -29,7 +29,7 @@ import java.util.*
 plugins {
    java
    application
-   id("io.github.ben-manes.versions") version "0.65.0"
+   id("io.github.ben-manes.versions") version "0.67.0"
    id("com.gradleup.shadow") version "9.6.1"
 }
 
@@ -77,16 +77,16 @@ repositories {
 dependencies {
    implementation("com.beust:jcommander:1.82")
    implementation("org.apache.commons:commons-math3:3.6.1")
-   implementation("com.google.code.gson:gson:2.14.0")
+   implementation("com.google.code.gson:gson:2.15.0")
 
    // --- JLine Terminal Access for Colorized Output
-   implementation("org.jline:jline-terminal:4.4.7")
-   implementation("org.jline:jline-terminal-ffm:4.4.7")
+   implementation("org.jline:jline-terminal:4.7.0")
+   implementation("org.jline:jline-terminal-ffm:4.7.0")
 
    // --- JUnit Testing
-   testImplementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
-   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.3")
-   testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.3")
+   testImplementation("org.junit.jupiter:junit-jupiter-api:6.2.0-M1")
+   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.2.0-M1")
+   testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.2.0-M1")
 }
 
 // --------------------------------------------------------------------------------------------------------
